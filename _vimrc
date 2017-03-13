@@ -7,11 +7,7 @@
 
     " Identify platform {
         silent function! OSX()
-            if system('uname')=~'Darwin'
-                let g:test = ''
-            else
-                let g:test = ''
-            return has('macunix')
+            return system('uname')=~'Darwin'
         endfunction
         silent function! LINUX()
             return has('unix') && !has('macunix') && !has('win32unix')
@@ -20,7 +16,7 @@
             return  (has('win16') || has('win32') || has('win64'))
         endfunction
     " }
-
+    
     " Windows Compatible {
         if WINDOWS()
             let g:isWIN = 1
@@ -35,8 +31,9 @@
             let g:isWIN = 0
             " 兼容windows的环境变量$VIM
             let $VIM = $HOME."/.vim"
-            " 没有效果，待定
             set shell=/bin/sh
+            " adapt gvim $VIMRC
+            let $VIMRC=$MYVIMRC
         endif
     " }
 
@@ -81,41 +78,8 @@
         "     set t_Sb=[4%dm
         "     set t_Sf=[3%dm
         " endif
-    " }
-
-    " Package manager{
-        " 添加vundle插件管理器
-        set nocompatible               " 设置不与之前版本兼容 be iMproved
-        filetype off                   " 检测文件类型 required!
-        " set vimrc_no_plugin=1 to do not add-on plugin
-        " let g:vimrc_no_plugin=1
-        if !exists("g:vimrc_no_plugin")
-            " if filereadable(expand("$VIM/_vimrc.bundles"))
-                if filereadable(expand("$VIM/bundle/Vundle.vim/README.md"))
-                    set rtp+=$VIM/bundle/Vundle.vim  "添加vendle环境变量
-                    source $VIM/_vimrc.bundles
-                endif
-            " endif
-        endif
-        " you can put it in tmpfs:/dev/shm/.dotfiles/vimrc/vimfiles/bundle/Vundle.vim
-        " 安装新的插件 :PluginInstall
-        " 在命令行运行 vim +PluginInstall +qall
-        " 更新插件:PluginUpdate
-        " 清除不再使用的插件:PluginClean,
-        " 列出所有插件:PluginList
-        " 查找插件:PluginSearch
-
-    " }
-
-    " Basic {
-        "set powerline
-        "set guifont=Powerline
-        " Uncomment the following to have Vim jump to the last position when reopening a file
-        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-        " set vimrc
-        let $VIMRC=$MYVIMRC
-
+        "
+        " 共享系统粘贴板
         if has('clipboard')
             if has('unnamedplus')  " When possible use + register for copy-paste
                 set clipboard=unnamed,unnamedplus
@@ -126,14 +90,43 @@
             endif
         endif
 
+
+
     " }
 
-    " 判断是否处于GUI界面
-    if has("gui_running")
-        let g:isGUI = 1
-    else
-        let g:isGUI = 0
-    endif
+    " Package manager{
+        " 添加vundle插件管理器
+        set nocompatible               " 设置不与之前版本兼容 be iMproved
+        filetype off                   " 检测文件类型 required!
+        " set no_plugin=1 to do not add-on plugin
+        " let g:no_plugin=1
+        if !exists("g:no_plugin")
+            if filereadable(expand("$VIM/bundle/Vundle.vim/README.md"))
+                set rtp+=$VIM/bundle/Vundle.vim  "添加vendle环境变量
+                source $VIM/_vimrc.bundles
+            endif
+        endif
+        " you can put it in tmpfs:/dev/shm/.dotfiles/vimrc/vimfiles/bundle/Vundle.vim
+        " 安装新的插件 :PluginInstall
+        " 在命令行运行 vim +PluginInstall +qall
+        " 更新插件:PluginUpdate
+        " 清除不再使用的插件:PluginClean,
+        " 列出所有插件:PluginList
+        " 查找插件:PluginSearch
+    " }
+
+    " Basic {
+        " restore last postion in file to vimfiles/view
+        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+		" 判断是否处于GUI界面
+		if has("gui_running")
+			let g:isGUI = 1
+		else
+			let g:isGUI = 0
+		endif
+
+    " }
 
 " }}}
 
@@ -550,12 +543,12 @@ endif
 
 
 if v:version > 703
-    " set relativenumber " 开启相对行号
-    " set nu                       " 显示行号
+    set relativenumber " 开启相对行号
+    set nu                       " 显示行号
     set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
 
     " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
-    if !exists("g:vimrc_no_plugin")
+    if !exists("g:no_plugin")
         if filereadable(expand("$VIM/bundle/vim-easymotion/README.md"))
             map  / <Plug>(easymotion-sn)
             omap / <Plug>(easymotion-tn)
@@ -801,7 +794,7 @@ au FileType javascript set sw=2
 set foldmethod=indent        " 选择代码折叠类型, other:marker,indent,syntax
 set foldlevel=99             " 禁止自动折叠 also same: set [no]foldenable
 nnoremap <space> za             " 用空格来切换折叠状态
-if !exists("g:vimrc_no_plugin")
+if !exists("g:no_plugin")
     au BufWinLeave * silent mkview  " 保存文件的折叠状态
     au BufRead * silent loadview    " 恢复文件的折叠状态
 endif
@@ -1435,16 +1428,17 @@ if filereadable(expand("~/.local/.vimrc_local"))
     source ~/.local/.vimrc_local
 endif
 
-
-if ($MYENV == 'windows')
-elseif ($MYENV == 'macmini')
-    set background=light
-    colorscheme solarized
-
+if WINDOWS()
+	set background=dark
 endif
 
-set nu
-set relativenumber
+if OSX() 
+	if ($MYENV == 'macmini')
+		set background=light
+		colorscheme solarized
+	endif
+endif
+
 " }}}
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
