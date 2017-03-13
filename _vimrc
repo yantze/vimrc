@@ -307,6 +307,8 @@ func! Compile_Run_Code()
         exec "!node %:t"
     elseif &filetype == "sh"
         exec "!bash %:t"
+    elseif &filetype == "applescript"
+        exec "!osascript %:t"
     endif
 endfunc
 
@@ -601,6 +603,8 @@ au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
 au BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
 
 au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
+au BufRead,BufNewFile *.applescript set filetype=applescript
+au BufRead,BufNewFile *.scpt set filetype=applescript
 
 
 " there use special tech, when you put ':ag ', will display ':Ag '
@@ -787,6 +791,7 @@ autocmd FileType css noremap <buffer> <s-f> :call CSSBeautify()<cr>
 autocmd FileType javascript vnoremap <buffer>  <s-f> :call RangeJsBeautify()<cr>
 autocmd FileType html vnoremap <buffer> <s-f> :call RangeHtmlBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <s-f> :call RangeCSSBeautify()<cr>
+au FileType javascript set sw=2
 
 " Emmet.vim
 " div>p#foo$*3>a
@@ -795,12 +800,12 @@ autocmd FileType css vnoremap <buffer> <s-f> :call RangeCSSBeautify()<cr>
 " Enable folding with the spacebar
 set foldmethod=indent        " 选择代码折叠类型, other:marker,indent,syntax
 set foldlevel=99             " 禁止自动折叠 also same: set [no]foldenable
-au BufWinLeave * silent mkview  " 保存文件的折叠状态
-au BufRead * silent loadview    " 恢复文件的折叠状态
 nnoremap <space> za             " 用空格来切换折叠状态
+if !exists("g:vimrc_no_plugin")
+    au BufWinLeave * silent mkview  " 保存文件的折叠状态
+    au BufRead * silent loadview    " 恢复文件的折叠状态
+endif
 " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
-
-au FileType javascript set sw=2
 
 
 
