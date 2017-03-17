@@ -1169,73 +1169,12 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " Node {{{
 let g:used_javascript_libs = 'underscore,jquery,react'
 
-" }}}
-
-" }}}
-
-" Plugins {{{
-
-" =======
-" Plugins
-" =======
-
-" NERDTree
-let NERDTreeQuitOnOpen = 1
-let NERDChristmasTree=1
-let g:NERDTreeWinSize = 18
-" autocmd VimEnter * NERDTree " auto start nerdtree
-" autocmd vimenter * if !argc() | NERDTree | endif " if not file start too
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " when no file colse nerdtree
-let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] "不显示的文件
-map <leader>fl :NERDTreeToggle<CR>
-" 不显示项目树上额外的信息，例如帮助、提示
-let NERDTreeMinimalUI=1
-
-
-" tComment - inherit the NERD_commenter shortkey
-map <leader>ci <Plug>TComment_<Leader>__
-map <leader>cm <Plug>TComment_<Leader>_b
-" NERD_commenter      注释处理插件
-" let loaded_nerd_tree = 1
-" let NERDSpaceDelims = 1                        " 自动添加前置空格
-
-
-" RUBY
-" auto completed
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-autocmd FileType ruby compiler ruby
-
-
-" vim-markdown
-" 设置md文件是否用自己的方式折叠
-let g:vim_markdown_folding_disabled = 1
-
-
-
-
-"set zen coding
- let g:user_zen_settings = {
-  \  'php' : {
-  \    'extends' : 'html',
-  \    'filters' : 'c',
-  \  },
-  \  'xml' : {
-  \    'extends' : 'html',
-  \  },
-  \  'haml' : {
-  \    'extends' : 'html',
-  \  },
-  \  'erb' : {
-  \    'extends' : 'html',
-  \  },
-  \}
-
-
 "scss,sass
 au BufRead,BufNewFile *.scss set filetype=scss
 au BufRead,BufNewFile *.sass set filetype=scss
+
+" 自定义关联文件类型
+au BufNewFile,BufRead *.less set filetype=css
 
 "coffee script
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
@@ -1245,79 +1184,22 @@ hi link coffeeSemicolonError NONE
 hi link coffeeReservedError NONE
 map <leader>cf :CoffeeCompile watch vert<cr>
 
-"let skim use slim syntax
-au BufRead,BufNewFile *.skim set filetype=slim
+" }}}
+
+    " RUBY {{{
+    " auto completed
+    let g:rubycomplete_buffer_loading = 1
+    let g:rubycomplete_classes_in_global = 1
+    let g:rubycomplete_rails = 1
+    autocmd FileType ruby compiler ruby
+    }}}
 
 
-" Enable omni completion.还不确定这个有什么用
-" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-" autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
-
-" neocomplcache setting
-" Enable heavy omni completion.
-" if !exists('g:neocomplcache_omni_patterns')
-"   let g:neocomplcache_omni_patterns = {}
-" endif
-" let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-
-" minitest
-" set completefunc=syntaxcomplete#Complete
-
-
-"auto completed
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-
-
-
-
-
-" 配置高亮括号 kien/rainbow_parentheses.vim
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-
-"自定义关联文件类型
-au BufNewFile,BufRead *.less set filetype=css
-
-" Indent_guides       显示对齐线
-let g:indent_guides_enable_on_vim_startup = 1  " 默认关闭
-let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
-" 因为go自动会添加tab, 使用<leader>ig也可以切换
-let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
-
-
-":Tlist               调用TagList
-let Tlist_Show_One_File        = 1             " 只显示当前文件的tags
-let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
-let Tlist_Use_Right_Window     = 1             " 在右侧窗口中显示
-let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
 
 " }}}
 
 " Plugin {{{
+
     " CtrlP {{{
         let g:ctrlp_map = '<c-p>'
         let g:ctrlp_cmd = 'CtrlP'
@@ -1325,7 +1207,8 @@ let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
         set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.png,*.gif,*.jpeg,.DS_Store  " MacOSX/Linux
         " nnoremap <Leader>t :CtrlP getcwd()<CR>
         " nnoremap <Leader>f :CtrlPClearAllCaches<CR>
-        " nnoremap <Leader>bl :CtrlPBuffer<CR>
+        nnoremap <Leader>bl :CtrlPBuffer<CR>
+        nnoremap <Leader>bfl :CtrlPBuffer<CR>
         " nnoremap <Leader>j :CtrlP ~/<CR>
         nnoremap <c-s-p> :CtrlPBuffer<CR>
         " 下面这句话是说ctrlp自动默认取消探索所有tmp目录下的文件,所以会导致在tmp目录中
@@ -1407,7 +1290,7 @@ let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
         vmap gb <Plug>(openbrowser-smart-search)
         " Open URI you also can use <leader>gb because of "textbrowser.vim"
     " }}}
-    " Goyo:the pure writer {{{
+    " :Goyo   - the pure writer {{{
         function! s:goyo_before()
           silent !tmux set status off
           set noshowmode
@@ -1421,6 +1304,87 @@ let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
         let g:goyo_callbacks = [function('s:goyo_before'), function('s:goyo_after')]
         nmap <Leader><Space> :Goyo<CR>
     " }}}
+    ":Tlist  - 调用TagList {{{
+    let Tlist_Show_One_File        = 1             " 只显示当前文件的tags
+    let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
+    let Tlist_Use_Right_Window     = 1             " 在右侧窗口中显示
+    let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
+    " }}}
+    " :NERDTree - FileList {{{
+    let NERDTreeQuitOnOpen = 1
+    let NERDChristmasTree=1
+    let g:NERDTreeWinSize = 18
+    " autocmd VimEnter * NERDTree " auto start nerdtree
+    " autocmd vimenter * if !argc() | NERDTree | endif " if not file start too
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " when no file colse nerdtree
+    let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] "不显示的文件
+    map <leader>fl :NERDTreeToggle<CR>
+    " 不显示项目树上额外的信息，例如帮助、提示
+    let NERDTreeMinimalUI=1
+    " }}}
+    " :tComment - inherit the NERD_commenter shortkey {{{
+    map <leader>ci <Plug>TComment_<Leader>__
+    map <leader>cm <Plug>TComment_<Leader>_b
+    " NERD_commenter      注释处理插件
+    " let loaded_nerd_tree = 1
+    " let NERDSpaceDelims = 1                        " 自动添加前置空格
+    " }}}
+    " vim-markdown {{{
+    " 设置md文件是否用自己的方式折叠
+    let g:vim_markdown_folding_disabled = 1
+    " }}}
+    " zen {{{
+    "set zen coding
+     let g:user_zen_settings = {
+      \  'php' : {
+      \    'extends' : 'html',
+      \    'filters' : 'c',
+      \  },
+      \  'xml' : {
+      \    'extends' : 'html',
+      \  },
+      \  'haml' : {
+      \    'extends' : 'html',
+      \  },
+      \  'erb' : {
+      \    'extends' : 'html',
+      \  },
+      \}
+     "}}}
+    " 配置高亮括号 kien/rainbow_parentheses.vim {{{
+    let g:rbpt_colorpairs = [
+        \ ['brown',       'RoyalBlue3'],
+        \ ['Darkblue',    'SeaGreen3'],
+        \ ['darkgray',    'DarkOrchid3'],
+        \ ['darkgreen',   'firebrick3'],
+        \ ['darkcyan',    'RoyalBlue3'],
+        \ ['darkred',     'SeaGreen3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['brown',       'firebrick3'],
+        \ ['gray',        'RoyalBlue3'],
+        \ ['black',       'SeaGreen3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['Darkblue',    'firebrick3'],
+        \ ['darkgreen',   'RoyalBlue3'],
+        \ ['darkcyan',    'SeaGreen3'],
+        \ ['darkred',     'DarkOrchid3'],
+        \ ['red',         'firebrick3'],
+        \ ]
+    let g:rbpt_max = 16
+    let g:rbpt_loadcmd_toggle = 0
+    " }}}
+    " Other {{{
+    "auto completed
+    " Disable AutoComplPop.
+    let g:acp_enableAtStartup = 0
+
+    " Indent_guides       显示对齐线
+    let g:indent_guides_enable_on_vim_startup = 1  " 默认关闭
+    let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
+    " 因为go自动会添加tab, 使用<leader>ig也可以切换
+    let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
+    }}}
+
 " }}}
 
 " Locals {{{
