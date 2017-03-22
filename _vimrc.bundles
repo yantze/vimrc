@@ -30,40 +30,27 @@ Plugin 'Keithbsmiley/swift.vim'
 " another swift
 " Plugin 'toyamarinyon/vim-swift'
 
-    " Plugin
+    " 自动补全
 
 " fuzzy compolier
 "ycm=clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
 Plugin 'Valloric/YouCompleteMe'
 
-
-" http://blog.163.com/lgh_2002/blog/static/440175262010613105148657/
-" Plugin 'ervandew/supertab'
-" Plugin 'Shougo/neocomplcache.vim' "不兼容另外一个自动完成ycm
-
-" C自动补全
-" cscope
-" Plugin 'brookhong/cscope.vim'
-" Plugin 'liuyug/cscope.vim'
-" 自动补全引用库中的内容，包括'->','.','::'
-" Plugin 'OmniCppComplete'
-
-    " snip综合解决方案
-
+" snip 综合解决方案
 Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+" 代码补全/snippets
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets' " garbas is inherit from honza
+
 " let g:snippets_dir="$VIM/vimfiles/resource/vim-snippets/" "添加新的片段
 " Trigger configuration. if comflict then change the <tab>
 " let g:UltiSnipsUsePythonVersion = 2
 " let g:UltiSnipsExpandTrigger="<tab>"
 " let g:UltiSnipsJumpForwardTrigger="<c-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-" 代码补全/snippets
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-" UltiSnips is a drop-in replacement for snipMate
-" Plugin 'garbas/vim-snipmate'
-"
+
 " javascript 补全
 Plugin 'marijnh/tern_for_vim'
 
@@ -171,7 +158,7 @@ Plugin 'tyru/open-browser.vim'
     " Color
 
 Plugin 'molokai'
-Plugin 'altercation/vim-colors-solarized'
+" Plugin 'altercation/vim-colors-solarized'
 Plugin 'flazz/vim-colorschemes'
 " Rainbows default for lisp,scheme and clojure
 Plugin 'amdt/vim-niji'

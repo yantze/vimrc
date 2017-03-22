@@ -16,7 +16,7 @@
             return  (has('win16') || has('win32') || has('win64'))
         endfunction
     " }
-    
+
     " Windows Compatible {
         if WINDOWS()
             let g:isWIN = 1
@@ -83,7 +83,7 @@
         if has('clipboard')
             if has('unnamedplus')  " When possible use + register for copy-paste
                 set clipboard=unnamed,unnamedplus
-            else  
+            else
                 " On mac and Windows, use * register for copy-paste
                 " windows/mac 粘贴板一起用，不方便
                 set clipboard=unnamed
@@ -447,10 +447,10 @@ else
         " g:solarized_termcolors= 16 | 256
         " g:solarized_termtrans = 0 | 1
         " g:solarized_degrade = 0 | 1
-        " g:solarized_bold = 1 | 0 
-        " g:solarized_underline = 1 | 0 
-        " g:solarized_italic = 1 | 0 
-        " g:solarized_contrast = “normal”| “high” or “low” 
+        " g:solarized_bold = 1 | 0
+        " g:solarized_underline = 1 | 0
+        " g:solarized_italic = 1 | 0
+        " g:solarized_contrast = “normal”| “high” or “low”
         " g:solarized_visibility= “normal”| “high” or “low”
 
         " colortheme list: ir_black grb256 BusyBee pt_black solarized
@@ -923,7 +923,7 @@ nmap <leader>16 <ESC>:%!xxd<ESC>
 " \r16                返回普通格式
 nmap <leader>r16 <ESC>:%!xxd -r<ESC>
 
-" \rb                 一键去除所有尾部空白
+" \rb                 一键去除所有尾部空白 trailing
 " imap <leader>rb <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 nmap <leader>rb <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 vmap <leader>rb <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
@@ -1192,7 +1192,7 @@ map <leader>cf :CoffeeCompile watch vert<cr>
     let g:rubycomplete_classes_in_global = 1
     let g:rubycomplete_rails = 1
     autocmd FileType ruby compiler ruby
-    }}}
+    " }}}
 
 
 
@@ -1383,7 +1383,7 @@ map <leader>cf :CoffeeCompile watch vert<cr>
     let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
     " 因为go自动会添加tab, 使用<leader>ig也可以切换
     let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
-    }}}
+    " }}}
 
 " }}}
 
@@ -1396,11 +1396,15 @@ if WINDOWS()
 	set background=dark
 endif
 
-if OSX() 
+if OSX()
 	if ($MYENV == 'macmini')
 		set background=light
 		colorscheme solarized
 	endif
+    if ($MYENV == 'pt_light')
+        set background=light
+        color pt_black
+    endif
 endif
 
 " }}}
