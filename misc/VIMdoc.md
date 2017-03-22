@@ -9,6 +9,10 @@
     `<buffer>` 其实就是你当前打开的文件。
     `.vimrc` 是vim的配置文件
     `_vimrc.bundles` 是插件配置，里面有介绍每个插件的作用
+
+    #install Bundle's Plugin
+    git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    vim +BundleInstall +qall
 <!--}}}-->
 
 ## 掌握这些可以高效使用 <!--{{{-->
