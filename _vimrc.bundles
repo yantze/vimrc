@@ -206,14 +206,14 @@ Plugin 'Simple-Javascript-Indenter'
 
 "GO
 " goland的多种vim功能/安装
-Plugin 'cespare/vim-golang'
+" Plugin 'cespare/vim-golang'
 " go get github.com/bradfitz/goimports
 " 需要添加let g:gofmt_command = "goimports" 可以使用下面的功能
 " 让任何Go文件保存前，调用goimports对该文件排版并插入/删除相应的import语句。
 
 " 这个是go的自动补全插件需要先安装下面这个
 " go get github.com/nsf/gocode
-Plugin 'undx/vim-gocode'
+" Plugin 'undx/vim-gocode'
 
 " Go 自动调用goimport添加删除模块
 autocmd BufWritePre *.go :Fmt
@@ -221,6 +221,12 @@ autocmd BufWritePre *.go :Fmt
 set completeopt=longest,menu
 "设置CTRL+J补全
 inoremap <c-;> <c-x><c-o>
+
+
+Plugin 'fatih/vim-go'
+
+
+
 
 " Ruby
 " Plugin 'thoughtbot/vim-rspec'

@@ -3,8 +3,6 @@ snippet sn        snippet自用
 	snippet ${0}
 snippet cprt      版权信息
 	`&enc[:2] == "utf" ? "©" : "(c)"` Copyright ${1:`strftime("%Y")`} `g:snips_author`. All Rights Reserved.${0}
-snippet time      插入当前时间
-	`strftime("%Y-%m-%d %H:%M")`${0}
 snippet fiok      最后更新时间
 	# LastUpdated: `strftime("%Y-%m-%d %H:%M")`${0}
 snippet desc      文件描述
