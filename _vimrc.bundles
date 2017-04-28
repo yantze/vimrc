@@ -9,6 +9,19 @@ call vundle#begin()
 " let Vundle manage Vundle Required!
 Plugin 'gmarik/Vundle.vim'
 
+    " Compatible
+if v:version < 800
+    " fuzzy compolier
+    "ycm=clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
+    Plugin 'Valloric/YouCompleteMe'
+
+    " snip 综合解决方案
+    Plugin 'SirVer/ultisnips'
+
+    " javascript 补全
+    Plugin 'marijnh/tern_for_vim'
+endif
+
     " Syntax
 
 " 语法查错
@@ -32,12 +45,7 @@ Plugin 'Keithbsmiley/swift.vim'
 
     " 自动补全
 
-" fuzzy compolier
-"ycm=clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
-Plugin 'Valloric/YouCompleteMe'
 
-" snip 综合解决方案
-Plugin 'SirVer/ultisnips'
 " 代码补全/snippets
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
@@ -50,9 +58,6 @@ Plugin 'honza/vim-snippets' " garbas is inherit from honza
 " let g:UltiSnipsExpandTrigger="<tab>"
 " let g:UltiSnipsJumpForwardTrigger="<c-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-" javascript 补全
-Plugin 'marijnh/tern_for_vim'
 
 
     " 快捷注释
@@ -160,22 +165,6 @@ Plugin 'tyru/open-browser.vim'
 Plugin 'molokai'
 " Plugin 'altercation/vim-colors-solarized'
 Plugin 'flazz/vim-colorschemes'
-" Rainbows default for lisp,scheme and clojure
-Plugin 'amdt/vim-niji'
-let g:niji_matching_filetypes = ['lisp', 'scheme', 'clojure', 'php', 'ruby', 'python']
-" let g:niji_darkblood_colours = [
-"     \ ['255', '255'],
-"     \ ['253', '253'],
-"     \ ['251', '251'],
-"     \ ['249', '249'],
-"     \ ['247', '247'],
-"     \ ['245', '245'],
-"     \ ['243', '243'],
-"     \ ['241', '241'],
-"     \ ['239', '239'],
-"     \ ['237', '237'],
-"     \ ['235', '235'],
-"     \]
 
 " For Writer
 Plugin 'junegunn/goyo.vim'
@@ -216,11 +205,11 @@ Plugin 'Simple-Javascript-Indenter'
 " Plugin 'undx/vim-gocode'
 
 " Go 自动调用goimport添加删除模块
-autocmd BufWritePre *.go :Fmt
+" autocmd BufWritePre *.go :Fmt
 "去掉预览窗口preview和设置longest
-set completeopt=longest,menu
+" set completeopt=longest,menu
 "设置CTRL+J补全
-inoremap <c-;> <c-x><c-o>
+" inoremap <c-;> <c-x><c-o>
 
 
 Plugin 'fatih/vim-go'
