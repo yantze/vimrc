@@ -4,33 +4,34 @@
 可运行无插件模式，速度非常快，`alias v='vim --cmd "let g:no_plugin=1"'`
 ```
 /xxx                    # 查找xxx字符串
-,n/,p                   # 切换buffer的标签(因为vim的一个窗口里面有多个buffer)
-                        # 同时设置了新的快捷键F2/F3对应,n/,p
 10G                     # 数字10和大写的G，跳到第十行
-
-:s/^/#                  # 用"#"注释当前行 ,":s/<search>/<replace>"
-:%s/x/b                 # 在所有行替换x为b,":%s/<search>/<replace>"
-:2,50s/x/b              # 在2~50行替换x为b
-:.,+3s/x/b              # 在前行和当前行后面的三行，替换x为b
-:set notextmode         # 这个可以去掉^M这个符号
-:set pastetoggle        # 可以解决在linux命令行复制内容的时候，
-                        # 内容被识别为vim操作和乱序缩进,在我的配置中快捷键为F3
-
+zz                      # 把当前行移到屏幕中间
 f<char>                 # 查找当前行的字符
 gb                      # go browser，光标下如果是url链接，自动用默认浏览器打开链接，
                         # 如果是选中的字符串，就用浏览器搜索, ,gb是另外一个插件提供的同样功能
 gf                      # 如果光标下是一个文件路径，则可以用vim自动打开这个文件
 gd                      # 找到光标下的标签定义
-Ctrl+Tab/Ctrl+Shift+Tab # 切换vim标签
-Ctrl+w,v/h              # 在gvim下创建多窗口
-Ctrl+h/j/k/l            # 在gvim下切换多窗口
-Ctrl+x,Ctrl+n/p         # 文件或者关键字补全，日常情况这个就够用了
 ]p                      # 和p的功能差不多，但是它会自动调整被粘贴的文本的缩进去适应当前代码的位置
 Ctrl+X,Ctrl+O           # 自动补全，ycm占用Ctrl+n/p, 支持 PHP
-zz                      # 把当前行移到屏幕中间
 光标定位                # <c-o/i>上下选择前一次后一次光标位.
 :Sw                     # 当需要root权限保存时，不用重新打开
 
+:s/^/#                  # 用"#"注释当前行 ,":s/<search>/<replace>"
+:%s/x/b                 # 在所有行替换x为b,":%s/<search>/<replace>"
+:2,50s/x/b              # 在2~50行替换x为b
+:.,+3s/x/b              # 在前行和当前行后面的三行，替换x为b
+F3                      # 粘贴内容缩进错误，切换为 nopaste 模式 `:set pastetoggle`
+
+,n/,p                   # 切换buffer的标签(因为vim的一个窗口里面有多个buffer)
+Ctrl+Tab/Ctrl+Shift+Tab # 切换vim标签
+Ctrl+w,v/h              # 创建多窗口
+Ctrl+h/j/k/l            # 切换多窗口
+Ctrl+x,Ctrl+n/p         # 文件或者关键字补全，日常情况这个就够用了
+
+,rb                     # 一键去除所有尾部空白 trailing
+,rt                     # 一键替换全部Tab为空格
+,r<enter>               # 一键替换所有尾部 ^M, `:set notextmode` 也可以实现
+:set fenc=utf8          # 设置文件编码
 :set display=uhex       # 这个是用来查看^@这种不可显示的字符，自动转换这些字符为hex进制
                         # 也可以ga查看当前光标的进制
 ,16                     # 转换当前文件为16进制，,r16为恢复，只有十六进制部分修改才有用

@@ -936,7 +936,8 @@ vmap <leader>rt <ESC>:call RemoveTabs()<CR>
 " \rl
 nmap <leader>rl :so ~/.vimrc<CR>
 
-" \r<cr>                 一键替换全部Tab为空格
+" \r<cr>              一键替换特殊字符 ^M
+" 相同功能 :set notextmode
 " imap <leader>rcr <ESC>:%s/\r//g<CR>
 nmap <leader>r<cr> :%s/\r//g<CR>
 vmap <leader>r<cr> <ESC>:%s/\r//g<CR>
