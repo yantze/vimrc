@@ -1,7 +1,7 @@
-# VIM 使用说明
+# VIM
 
 ## 不需要插件常用命令
-运行无插件模式，速度非常快，`alias v='vim --cmd "let g:no_plugin=1"'`
+可运行无插件模式，速度非常快，`alias v='vim --cmd "let g:no_plugin=1"'`
 ```
 /xxx                    # 查找xxx字符串
 ,n/,p                   # 切换buffer的标签(因为vim的一个窗口里面有多个buffer)
