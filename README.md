@@ -5,7 +5,6 @@
 
 | Action                  | Description                                                                     |
 | ---                     | ---                                                                             |
-| /xxx                    | 查找xxx字符串                                                                   |
 | 10G                     | 数字10和大写的G，跳到第十行                                                     |
 | zz                      | 把当前行移到屏幕中间                                                            |
 | `f<char>`               | 查找当前行的字符                                                                |
@@ -74,7 +73,7 @@
 ### Vim学习
 - [简明Vim练级攻略](http://coolshell.cn/articles/5426.html)
 - [vim游戏](http://vim-adventures.com/)
-- [VIMdoc.md](https://github.com/yantze/vimrc/blob/master/VIMdoc.md) 整理的一份基础和扩展文件，如果上面的功能没有找到，我一般会在这里找，比如`标记`
+- [VIMdoc.md](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md) 整理的一份基础和扩展文件，如果上面的功能没有找到，我一般会在这里找，比如`标记`
 
 ### 一些说明
 
