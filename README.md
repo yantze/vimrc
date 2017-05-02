@@ -1,6 +1,6 @@
-# VIM
+# VIMRC
 
-## 不需要插件常用命令
+### 不需要插件常用命令
 可运行无插件模式，速度非常快，`alias v='vim --cmd "let g:no_plugin=1"'`
 ```
 /xxx                    # 查找xxx字符串
@@ -75,7 +75,7 @@ K                       # 判断文件类型，自动调用:Man function/command
 - 前文关键词补全
 
 
-#### Vim学习
+### Vim学习
 - [简明Vim练级攻略](http://coolshell.cn/articles/5426.html)
 - [vim游戏](http://vim-adventures.com/)
 - [VIMdoc.md](https://github.com/yantze/vimrc/blob/master/VIMdoc.md) 整理的一份基础和扩展文件，如果上面的功能没有找到，我一般会在这里找，比如`标记`
