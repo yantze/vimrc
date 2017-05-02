@@ -75,16 +75,10 @@
 - [UltraSnip](https://github.com/SirVer/ultisnips), 类自动补全，可以让多处同名的动更新，对 python 支持较好,快捷键与 YCM 已经合并，不需要修改
 - [vim-snippets](https://github.com/honza/vim-snippets) , 常见snippets 都有，根据文件类型和语法补全，同时可以在 `~/.vim/snippets` 中自行添加
 
-### Vim学习
-- [简明Vim练级攻略](http://coolshell.cn/articles/5426.html)
-- [vim游戏](http://vim-adventures.com/)
-- [VIMdoc.md](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md) 整理的一份基础和扩展文件，如果上面的功能没有找到，我一般会在这里找，比如`标记`
-
 ### Thanks
-这份vim配置的所以完成，会如此热爱vim，是看到了[ruchee](https://github.com/ruchee/vimrc) 的配置，其完善的配置让我感觉 vim 生命的质量 ，一些曾经学习的配置和资料:
+这份vim配置的所以完成，会如此热爱vim，是看到了[ruchee](https://github.com/ruchee/vimrc) 的配置，其完善的配置让我感觉 vim 生命的质量。一些曾经学习的配置和资料:
 - [vimfiles](https://github.com/coderhwz/vimfiles)
 - [dotfiles](https://github.com/luin/dotfiles)
-- [vimrc](https://github.com/rhyzx/vimrc)
 - [dotvim](https://github.com/lilydjwg/dotvim)
 - [Seven habits of effective text editing](http://www.moolenaar.net/habits.html) vim 主要作者写的
 
