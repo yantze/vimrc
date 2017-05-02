@@ -8,13 +8,13 @@
 | /xxx                    | 查找xxx字符串                                                                   |
 | 10G                     | 数字10和大写的G，跳到第十行                                                     |
 | zz                      | 把当前行移到屏幕中间                                                            |
-| f<char>                 | 查找当前行的字符                                                                |
+| `f<char>`               | 查找当前行的字符                                                                |
 | gb                      | go browser，光标下如果是url链接，自动用默认浏览器打开链接，                     |
 |                         | 如果是选中的字符串，就用浏览器搜索, ,gb是另外一个插件提供的同样功能             |
 | gf                      | 如果光标下是一个文件路径，则可以用vim自动打开这个文件                           |
 | gd                      | 找到光标下的标签定义                                                            |
 | ]p                      | 和p的功能差不多，但是它会自动调整被粘贴的文本的缩进去适应当前代码的位置         |
-| <c-x><c-o>               | 自动补全，ycm占用Ctrl+n/p, 支持 PHP                                             |
+| `<c-x><c-o>`               | 自动补全，ycm占用Ctrl+n/p, 支持 PHP                                             |
 | 光标定位                | <c-o/i>上下选择前一次后一次光标位.                                              |
 |                         |                                                                                 |
 | :s/^/#                  | 用"#"注释当前行 ,":s/<search>/<replace>"                                        |
@@ -47,18 +47,18 @@
 ### 加载插件常用命令
 | Action              | Description                                                                                                                                                                                                                  |
 | ---                 | ---                                                                                                                                                                                                                          |
-| <c-p>               | 快速查找当前文件夹下所有子目录的文件,ctrl+j/k上下选择文件                                                                                                                                                                    |
+| `<c-p>`               | 快速查找当前文件夹下所有子目录的文件,ctrl+j/k上下选择文件                                                                                                                                                                    |
 | :ag                 | 查找当前目录下的所有文件的关键字                                                                                                                                                                                             |
 | ,gd                 | 使用YCM的快速查找头文件定义,类似vs中的F12                                                                                                                                                                                    |
 | ,ci                 | 注释当前行或选定行(自动识别文件类型后添加注释)                                                                                                                                                                               |
 | ,cm                 | 块注释(可选中)                                                                                                                                                                                                               |
-| key<Tab>            | UltiSnip And YCM 可以自动补全，UltiSnip对py，ycm对c好一些, <c-j/k>上下选择下一个瞄准位                                                                                                                                       |
-| <c-n><c-j/k>        | 用<c-n>当前选中的行，用<c-j/k>来移动行的位置(vim-multipe-cursors)                                                                                                                                                            |
-| <m-j/k>             | 用alt/command+j/k移动当前行的位置(功能同上)                                                                                                                                                                                  |
-| <c-n>               | 不停的选中<c-n>,可以执行多光标编辑 , <c-p>回到前一个,<c-x>放弃当前这个光标到下一个 , 其中i,a,I,A可以在insert模式，c,s可以在normal模式，c是清除当前选中的文字 , 有个小bug,就是在多光标选中模式下，要先按i或者a这个键，再按I/A |
+| `key<Tab>`            | UltiSnip And YCM 可以自动补全，UltiSnip对py，ycm对c好一些, <c-j/k>上下选择下一个瞄准位                                                                                                                                       |
+| `<c-n><c-j/k>`        | 用<c-n>当前选中的行，用<c-j/k>来移动行的位置(vim-multipe-cursors)                                                                                                                                                            |
+| `<m-j/k>`             | 用alt/command+j/k移动当前行的位置(功能同上)                                                                                                                                                                                  |
+| `<c-n>`               | 不停的选中<c-n>,可以执行多光标编辑 , <c-p>回到前一个,<c-x>放弃当前这个光标到下一个 , 其中i,a,I,A可以在insert模式，c,s可以在normal模式，c是清除当前选中的文字 , 有个小bug,就是在多光标选中模式下，要先按i或者a这个键，再按I/A |
 | ,mt                 | 生成每个语言的ctags文件，可以通过ctrl+]跳转和ctrl+t返回                                                                                                                                                                      |
 | +/-                 | +可以扩大选择区域/-相反                                                                                                                                                                                                      |
-| ,bb /,bn<type char> | 按等于号对其或者自定义符号对齐                                                                                                                                                                                               |
+| `,bb /,bn<type char>` | 按等于号对其或者自定义符号对齐                                                                                                                                                                                               |
 | :DiffSaved          | 比较在保存文件之后修改了什么那些内容                                                                                                                                                                                         |
 | :Man glob           | 查看linux关于glob的man文档(only linux/mac)                                                                                                                                                                                   |
 | :Man glob.php       | 查看从php.net中访问glob的相关语法和示例(only linux/mac)                                                                                                                                                                      |
