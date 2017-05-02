@@ -41,7 +41,7 @@
 编辑模式下
 | Action | Description |
 | --- | --- |
-|Ctrl+w| 删除光标前一个单词|
+| Ctrl+w | 删除光标前一个单词 |
 
 ### 加载插件常用命令
 | Action | Description |
