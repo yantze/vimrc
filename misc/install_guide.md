@@ -1,5 +1,24 @@
 # 本项目安装指南
 
+### Main
+```
+# vimrc
+git clone http://github.com/yantze/vimrc ~/vimrc
+ln -s ~/vimrc/_vimrc ~/.vimrc
+ln -s ~/vimrc/vimfiles ~/.vim
+
+# vimrc plugin manager
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +BundleInstall +qall
+```
+除非有什么问题，下面的配置可忽略。
+
+
+### Airline 背景色问题
+Mac 下的 terminal 中，airline 是黑色的看不清，在下面的文件，把第四行 `let s:termbg = 232` 改成 `235`
+```
+vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes/serene.vim
+```
 ### 添加字体
 YaHei.Consolas.1.12.Revise https://github.com/yantze/vimrc/tree/master/vimfiles/fonts
 

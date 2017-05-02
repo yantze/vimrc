@@ -1,7 +1,9 @@
 # VIMRC
+- [安装指南](https://github.com/yantze/vimrc/blob/master/misc/install_guide.md)
+- [简易手册](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md)
 
-### 不需要插件常用命令
-可运行无插件模式，速度非常快，`alias v='vim --cmd "let g:no_plugin=1"'`
+### 常用命令[无需插件]
+可运行无插件模式，速度极快，`alias v='vim --cmd "let g:no_plugin=1"'`
 
 | Action                  | Description                                                                     |
 | ---                     | ---                                                                             |
@@ -43,7 +45,7 @@
 | ---    | ---                |
 | Ctrl+w | 删除光标前一个单词 |
 
-### 加载插件常用命令
+### 常用命令[有加载插件]
 | Action              | Description                                                                                                                                                                                                                  |
 | ---                 | ---                                                                                                                                                                                                                          |
 | `<c-p>`               | 快速查找当前文件夹下所有子目录的文件,ctrl+j/k上下选择文件                                                                                                                                                                    |
@@ -65,30 +67,21 @@
 
 
 ### 关于自动补全
-本配置自动补全三个部分:
-- YouCompleteMe , 综合自动补全， <tab>选定，c-j/k 上下选择
-- UltraSnip , 类自动补全，可以让多处同名的动更新，对 python 支持较好,快捷键与 YCM 已经合并，不需要修改
-- vim-snippets , 常见snippets 都有，根据文件类型和语法补全，同时可以在 `~/.vim/snippets` 中自行添加
+本配置自动补全有三个部分:
+- [YouCompleteMe](https://github.com/Valloric/YouCompleteMe) , 综合自动补全， <tab>选定，c-j/k 上下选择
+- [UltraSnip](https://github.com/SirVer/ultisnips), 类自动补全，可以让多处同名的动更新，对 python 支持较好,快捷键与 YCM 已经合并，不需要修改
+- [vim-snippets](https://github.com/honza/vim-snippets) , 常见snippets 都有，根据文件类型和语法补全，同时可以在 `~/.vim/snippets` 中自行添加
 
 ### Vim学习
 - [简明Vim练级攻略](http://coolshell.cn/articles/5426.html)
 - [vim游戏](http://vim-adventures.com/)
 - [VIMdoc.md](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md) 整理的一份基础和扩展文件，如果上面的功能没有找到，我一般会在这里找，比如`标记`
 
-### 一些说明
-
-Mac 下的 terminal 中，airline 是黑色的看不清，在下面的文件，把第四行 `let s:termbg = 232` 改成 `235`
-```
-vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes/serene.vim
-```
-
 ### Thanks
+这份vim配置的所以完成，会如此热爱vim，是看到了[ruchee](https://github.com/ruchee/vimrc) 的配置，其完善的配置让我感觉 vim 生命的质量 ，一些曾经学习的配置和资料:
+- [vimfiles](https://github.com/coderhwz/vimfiles)
+- [dotfiles](https://github.com/luin/dotfiles)
+- [vimrc](https://github.com/rhyzx/vimrc)
+- [dotvim](https://github.com/lilydjwg/dotvim)
+- [Seven habits of effective text editing](http://www.moolenaar.net/habits.html) vim 主要作者写的
 
-- 这份vim配置的所以完成，会如此热爱vim，是看到了[ruchee](https://github.com/ruchee/vimrc) 的配置，其完善的配置让我感觉 vim 生命的质量
-
-- 一些曾经学习的配置和资料:
-    - [vimfiles](https://github.com/coderhwz/vimfiles)
-    - [dotfiles](https://github.com/luin/dotfiles)
-    - [vimrc](https://github.com/rhyzx/vimrc)
-    - [dotvim](https://github.com/lilydjwg/dotvim)
-    - [Seven habits of effective text editing](http://www.moolenaar.net/habits.html) vim 主要作者写的
