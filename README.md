@@ -2,7 +2,7 @@
 - [安装指南](https://github.com/yantze/vimrc/blob/master/misc/install_guide.md)
 - [简易手册](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md)
 
-### 常用命令[无需插件]
+### 常用命令(无需插件)
 可运行无插件模式，速度极快，`alias v='vim --cmd "let g:no_plugin=1"'`
 
 | Action                  | Description                                                                     |
@@ -11,12 +11,12 @@
 | zz                      | 把当前行移到屏幕中间                                                            |
 | `f<char>`               | 查找当前行的字符                                                                |
 | gb                      | go browser，光标下如果是url链接，自动用默认浏览器打开链接，                     |
-|                         | 如果是选中的字符串，就用浏览器搜索, ,gb是另外一个插件提供的同样功能             |
+|                         | 如果是选中的字符串，就用浏览器搜索, `,gb`是另外一个插件提供的同样功能           |
 | gf                      | 如果光标下是一个文件路径，则可以用vim自动打开这个文件                           |
 | gd                      | 找到光标下的标签定义                                                            |
 | ]p                      | 和p的功能差不多，但是它会自动调整被粘贴的文本的缩进去适应当前代码的位置         |
-| `<c-x><c-o>`               | 自动补全，ycm占用Ctrl+n/p, 支持 PHP                                             |
 | 光标定位                | <c-o/i>上下选择前一次后一次光标位.                                              |
+| <c-v>10j$Aa<esc>        | 在后面 10 行尾部添加字母 a                                                      |
 |                         |                                                                                 |
 | :s/^/#                  | 用"#"注释当前行 ,":s/<search>/<replace>"                                        |
 | :%s/x/b                 | 在所有行替换x为b,":%s/<search>/<replace>"                                       |
@@ -28,6 +28,8 @@
 | Ctrl+w,v/h              | 创建多窗口                                                                      |
 | Ctrl+h/j/k/l            | 切换多窗口                                                                      |
 | Ctrl+x,Ctrl+n/p         | 文件或者关键字补全，日常情况这个就够用了                                        |
+| Ctrl+x,Ctrl+f           | 文件路径自动补全                                                                |
+| `<c-x><c-o>`            | 自动补全，ycm占用Ctrl+n/p, 支持 PHP                                             |
 |                         |                                                                                 |
 | ,rb                     | 一键去除所有尾部空白 trailing                                                   |
 | ,rt                     | 一键替换全部Tab为空格                                                           |
@@ -44,8 +46,9 @@
 | Action | Description        |
 | ---    | ---                |
 | Ctrl+w | 删除光标前一个单词 |
+| <m-h/j/k/l> | 编辑模式下移动光标 |
 
-### 常用命令[有加载插件]
+### 常用命令(有加载插件)
 | Action              | Description                                                                                                                                                                                                                  |
 | ---                 | ---                                                                                                                                                                                                                          |
 | `<c-p>`               | 快速查找当前文件夹下所有子目录的文件,ctrl+j/k上下选择文件                                                                                                                                                                    |
