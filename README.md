@@ -40,6 +40,15 @@
 | :set display=uhex       | 查看^@这种不可显示的字符，自动转换这些字符为hex进制。也可以ga查看当前光标的进制 |
 | ,16                     | 转换当前文件为16进制,`,r16`为恢复，只有十六进制部分修改才有用                   |
 | :vert command           | 垂直打开command中的命令,示例 :vert h manpageview                                |
+| `%`                     | 跳转到配对的括号去                                                              |
+| `[[`                    | 跳转到代码块的开头去(但要求代码块中'{'必须单独占一行)                           |
+| `gD`                    | 跳转到局部变量的定义处（一个单词会自动高亮整个文件的所有相同单词）              |
+| `''`                    | 跳转到光标上次停靠的地方, 是两个', 而不是一个"                                  |
+| `mx`                    | 设置书签,x只能是a-z的26个字母                                                   |
+| ``x`                    | 跳转到书签处("`"是1左边的键)                                                    |
+| ``>`                    | 增加缩进,"x>"表示增加以下x行的缩进                                              |
+| ``<`                    | 减少缩进,"x<"表示减少以下x行的缩进                                              |
+
 
 编辑模式下
 
@@ -54,7 +63,7 @@
 | `<c-p>`               | 快速查找当前文件夹下所有子目录的文件,ctrl+j/k上下选择文件                                                                                                                                                                    |
 | :ag                 | 查找当前目录下的所有文件的关键字                                                                                                                                                                                             |
 | ,gd                 | 使用YCM的快速查找头文件定义,类似vs中的F12                                                                                                                                                                                    |
-| ,ci                 | 注释当前行或选定行(自动识别文件类型后添加注释)                                                                                                                                                                               |
+| ,ci                 | 注释当前行或选定行(自动识别文件类型后添加注释)                                                                                                             f                                                                 |
 | ,cm                 | 块注释(可选中)                                                                                                                                                                                                               |
 | `key<Tab>`            | UltiSnip And YCM 可以自动补全，UltiSnip对py，ycm对c好一些, <c-j/k>上下选择下一个瞄准位                                                                                                                                       |
 | `<c-n><c-j/k>`        | 用<c-n>当前选中的行，用<c-j/k>来移动行的位置(vim-multipe-cursors)                                                                                                                                                            |
@@ -76,9 +85,5 @@
 - [vim-snippets](https://github.com/honza/vim-snippets) , 常见snippets 都有，根据文件类型和语法补全，同时可以在 `~/.vim/snippets` 中自行添加
 
 ### Thanks
-这份vim配置的所以完成，会如此热爱vim，是看到了[ruchee](https://github.com/ruchee/vimrc) 的配置，其完善的配置让我感觉 vim 生命的质量。一些曾经学习的配置和资料:
-- [vimfiles](https://github.com/coderhwz/vimfiles)
-- [dotfiles](https://github.com/luin/dotfiles)
-- [dotvim](https://github.com/lilydjwg/dotvim)
-- [Seven habits of effective text editing](http://www.moolenaar.net/habits.html) vim 主要作者写的
+[ruchee's vimrc](https://github.com/ruchee/vimrc) 
 

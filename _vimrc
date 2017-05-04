@@ -375,7 +375,6 @@ endfunction
 
 " Setting {{{
 
-" Theme {{{
 " 设置着色模式和字体
 if g:isWIN
     " 使用GUI界面时的设置
@@ -457,9 +456,6 @@ else
         colorscheme pt_black
     endif
 endif
-" }}}
-
-" Base Setting {{{
 
 syntax enable                " 打开语法高亮
 syntax on                    " 开启文件类型侦测
@@ -472,6 +468,14 @@ au GuiEnter * set t_vb=      " 关闭beep/屏闪
 
 " 文件配置
 " set fileformats=unix                             " 设定换行符
+
+if has("multi_byte")
+	set formatoptions+=mM
+	if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+		set ambiwidth=double
+	endif
+endif
+
 set bsdir=buffer                                 " 设定文件浏览器目录为当前目录
 set enc=utf-8                                    " 设置编码
 set fenc=utf-8                                   " 设置文件编码
@@ -556,9 +560,6 @@ if v:version > 703
     endif
 endif
 
-" }}}
-
-" System Setting {{{
 
 " tabn/tabp 切换tab
 " tabnew 创建新窗口
@@ -846,7 +847,6 @@ nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><
 " 使用!bash启动一个console
 " 直接执行:!命令
 
-" }}}
 " }}}
 
 " Shorcut {{{
