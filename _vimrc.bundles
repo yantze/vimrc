@@ -10,7 +10,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
     " Compatible
-if v:version < 800
+if v:version >= 800
     " fuzzy compolier
     "ycm=clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
     Plugin 'Valloric/YouCompleteMe'
@@ -26,20 +26,20 @@ endif
 
 " 语法查错
 Plugin 'scrooloose/syntastic'
-"校验JavaScript。JSHint 来检查代码错误，同时控制代码质量。
+" 校验JavaScript。JSHint 来检查代码错误，同时控制代码质量。
 
 " DBGP Debug
 " http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
-Plugin 'joonty/vdebug'
+" Plugin 'joonty/vdebug'
 
     "Highlight
 
 " sass
-Bundle 'JulesWang/css.vim'
-Bundle 'cakebaker/scss-syntax.vim'
+" Bundle 'JulesWang/css.vim'
+" Bundle 'cakebaker/scss-syntax.vim'
 
 " swift
-Plugin 'Keithbsmiley/swift.vim'
+" Plugin 'Keithbsmiley/swift.vim'
 " another swift
 " Plugin 'toyamarinyon/vim-swift'
 
@@ -72,10 +72,6 @@ Plugin 'tomtom/tcomment_vim'
 
 
 
-" 文件管理器
-Plugin 'scrooloose/nerdtree'
-" tagbar is like the taglist
-Plugin 'majutsushi/tagbar'
 " multiple cursors
 Plugin 'terryma/vim-multiple-cursors'
 " 会出现缩进一条一条的颜色
@@ -90,10 +86,13 @@ Plugin 'godlygeek/tabular'
 " Plugin 'kchmck/vim-coffee-script'
 " Plugin 'tpope/vim-haml'
 
+" 文件管理器
+Plugin 'scrooloose/nerdtree'
 " 内置的文件浏览器已经够了
 " Bundle 'winmanager'
 Bundle 'taglist.vim'
-
+" tagbar is like the taglist
+Plugin 'majutsushi/tagbar'
 
 
 " 集成了md的语法和颜色配置,里面的toc功能不可用
@@ -103,15 +102,15 @@ Plugin 'plasticboy/vim-markdown'
 " helps editing xml (and [x]html, sgml, xslt) files
 Plugin 'othree/xml.vim'
 " A filetype plugin for VIM to help edit XML files
-Plugin 'sukima/xmledit'
-Plugin 'tpope/vim-ragtag'
+" Plugin 'sukima/xmledit'
+" Plugin 'tpope/vim-ragtag'
 Plugin 'elzr/vim-json'
 
 
 " Git
-Plugin 'tpope/vim-fugitive'
-"Fugitive (Git) in status line
-set statusline=%{exists(\"*fugitive#statusline\")?\"branch:\ \".fugitive#statusline():\"\"}\ %F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
+" Plugin 'tpope/vim-fugitive'
+" Fugitive (Git) in status line
+" set statusline=%{exists(\"*fugitive#statusline\")?\"branch:\ \".fugitive#statusline():\"\"}\ %F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 
 
     " Web
@@ -174,10 +173,10 @@ Plugin 'junegunn/goyo.vim'
 " Bundle 'Lokaltog/powerline'
 Bundle 'bling/vim-airline'
 
-Plugin 'MarcWeber/vim-addon-manager-known-repositories'
+" Plugin 'MarcWeber/vim-addon-manager-known-repositories'
 
 " 输入体验
-Plugin 'dart-lang/dart-vim-plugin'
+" Plugin 'dart-lang/dart-vim-plugin'
 
 
 
@@ -185,9 +184,9 @@ Plugin 'dart-lang/dart-vim-plugin'
 
 " javascript
 " Syntax file for jQuery
-Plugin 'jQuery'
+" Plugin 'jQuery'
 " A simple javascript indent script, support OOP, jquery
-Plugin 'Simple-Javascript-Indenter'
+" Plugin 'Simple-Javascript-Indenter'
 
 " 对javascript整体上的改进
 " Plugin 'maksimr/vim-jsbeautify'
@@ -263,7 +262,7 @@ Plugin 'lilydjwg/colorizer'
 " Plugin 'kien/rainbow_parentheses.vim'
 
 " Ruby
-Plugin 'vim-ruby/vim-ruby'
+" Plugin 'vim-ruby/vim-ruby'
 
 "对txt文件列目录 dep:taglist.vim
 Plugin 'TxtBrowser'
@@ -278,8 +277,8 @@ Plugin 'python.vim'
 " Find & Search
 " Plugin 'ack.vim'
 " let g:ackprg = 'ag --nogroup --nocolor --column'
-Plugin 'rking/ag.vim'
-let g:agprg="ag --column"
+" Plugin 'rking/ag.vim'
+" let g:agprg="ag --column"
 
 " 快速打开文件的功能
 " Bundle 'ctrlp.vim'
@@ -290,7 +289,7 @@ let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 map <leader>b :CtrlPBuffer<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.png,*.gif,*.jpeg,.DS_Store  " MacOSX/Linux
 
-" 快速移动，替换f,这个还没有完全弄懂
+" 快速移动
 if v:version > 703
     Plugin 'Lokaltog/vim-easymotion'
 endif

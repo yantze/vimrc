@@ -222,7 +222,7 @@ func! Compile_Run_Code()
             exec "!g++ -Wall -std=c++11 -o %:r %:t && %:r.exe"
         else
             " exec "!g++ -Wall -std=c++11 -o %:r %:t && ./%:r"
-            exec "!clang++ -Wall -std=c++11 -o %:r %:t && ./%:r"
+            exec "!clang++ -Wall -std=c++11 -ggdb `pkg-config --cflags --libs opencv`  -o %:r %:t && ./%:r"
         endif
     elseif &filetype == "d"
         if g:isWIN
