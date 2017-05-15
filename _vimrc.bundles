@@ -1,15 +1,8 @@
-"call vundle#rc()
-" 下面这里可以规定bundle的安装路径
-" call vundle#rc('$VIM/vimfiles/bundle/')
-
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle Required!
 Plugin 'gmarik/Vundle.vim'
 
-    " Compatible
 if v:version >= 800
     " fuzzy compolier
     "ycm=clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
@@ -20,28 +13,20 @@ if v:version >= 800
 
     " javascript 补全
     Plugin 'marijnh/tern_for_vim'
+
+	" 语法查错
+	Plugin 'scrooloose/syntastic'
 endif
 
-    " Syntax
-
-" 语法查错
-Plugin 'scrooloose/syntastic'
-" 校验JavaScript。JSHint 来检查代码错误，同时控制代码质量。
+if v:version > 703
+	" 快速移动
+    Plugin 'Lokaltog/vim-easymotion'
+endif
 
 " DBGP Debug
 " http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
 " Plugin 'joonty/vdebug'
 
-    "Highlight
-
-" sass
-" Bundle 'JulesWang/css.vim'
-" Bundle 'cakebaker/scss-syntax.vim'
-
-" swift
-" Plugin 'Keithbsmiley/swift.vim'
-" another swift
-" Plugin 'toyamarinyon/vim-swift'
 
     " 自动补全
 
@@ -70,8 +55,6 @@ Plugin 'tomtom/tcomment_vim'
 
 
 
-
-
 " multiple cursors
 Plugin 'terryma/vim-multiple-cursors'
 " 会出现缩进一条一条的颜色
@@ -97,20 +80,12 @@ Plugin 'majutsushi/tagbar'
 
 " 集成了md的语法和颜色配置,里面的toc功能不可用
 Plugin 'plasticboy/vim-markdown'
-" 这个没有多少用，用本配置的:Sw可以直接保存
-" Plugin 'sudo.vim'
 " helps editing xml (and [x]html, sgml, xslt) files
 Plugin 'othree/xml.vim'
 " A filetype plugin for VIM to help edit XML files
 " Plugin 'sukima/xmledit'
 " Plugin 'tpope/vim-ragtag'
 Plugin 'elzr/vim-json'
-
-
-" Git
-" Plugin 'tpope/vim-fugitive'
-" Fugitive (Git) in status line
-" set statusline=%{exists(\"*fugitive#statusline\")?\"branch:\ \".fugitive#statusline():\"\"}\ %F%m%r%h%w\ (%{&ff}){%Y}\ [%l,%v][%p%%]
 
 
     " Web
@@ -128,7 +103,7 @@ Plugin 'lukaszb/vim-web-indent'
 Plugin 'digitaltoad/vim-jade'
 
 " support css word with -
-set iskeyword+=-
+" set iskeyword+=-
 
 " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 "
@@ -146,14 +121,6 @@ set iskeyword+=-
 
 " 智能打开浏览器
 Plugin 'tyru/open-browser.vim'
-" 同上，这个只在Mac上,刷新
-" Bundle 'mkitt/browser-refresh.vim'
-
-" 平滑滚动插件
-" Plugin 'yonchu/accelerated-smooth-scroll'
-
-" markdown live html, so hard to set to give up
-" Plugin 'visualHtml'
 
 
 " 读取大文件
@@ -162,56 +129,15 @@ Plugin 'tyru/open-browser.vim'
     " Color
 
 Plugin 'molokai'
-" Plugin 'altercation/vim-colors-solarized'
 Plugin 'flazz/vim-colorschemes'
 
-" For Writer
-Plugin 'junegunn/goyo.vim'
-
-" 以下三个都是增强状态栏的，vim-powerline < powerline < vim-airline
-" Bundle 'Lokaltog/vim-powerline'
-" Bundle 'Lokaltog/powerline'
+" 增强状态栏的，vim-powerline < powerline < vim-airline
 Bundle 'bling/vim-airline'
 
-" Plugin 'MarcWeber/vim-addon-manager-known-repositories'
-
-" 输入体验
-" Plugin 'dart-lang/dart-vim-plugin'
-
-
-
-    " 编程环境
-
-" javascript
-" Syntax file for jQuery
-" Plugin 'jQuery'
-" A simple javascript indent script, support OOP, jquery
-" Plugin 'Simple-Javascript-Indenter'
-
-" 对javascript整体上的改进
-" Plugin 'maksimr/vim-jsbeautify'
-" Plugin 'einars/js-beautify'
-
-"GO
-" goland的多种vim功能/安装
-" Plugin 'cespare/vim-golang'
-" go get github.com/bradfitz/goimports
-" 需要添加let g:gofmt_command = "goimports" 可以使用下面的功能
-" 让任何Go文件保存前，调用goimports对该文件排版并插入/删除相应的import语句。
-
-" 这个是go的自动补全插件需要先安装下面这个
-" go get github.com/nsf/gocode
-" Plugin 'undx/vim-gocode'
-
-" Go 自动调用goimport添加删除模块
-" autocmd BufWritePre *.go :Fmt
-"去掉预览窗口preview和设置longest
-" set completeopt=longest,menu
-"设置CTRL+J补全
-" inoremap <c-;> <c-x><c-o>
-
-
+" Go
 Plugin 'fatih/vim-go'
+
+" Plugin 'MarcWeber/vim-addon-manager-known-repositories'
 
 
 
@@ -289,22 +215,23 @@ let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 map <leader>b :CtrlPBuffer<CR>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.png,*.gif,*.jpeg,.DS_Store  " MacOSX/Linux
 
-" 快速移动
-if v:version > 703
-    Plugin 'Lokaltog/vim-easymotion'
-endif
 " 在()、""、甚至HTML标签之间快速跳转；
 Plugin 'matchit.zip'
 
 " 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
 " Plugin 'bufexplorer.zip'
 
-" vim post wordpress: vimpress
-" Plugin 'pentie/VimRepress'
-" Plugin 'VimRepress'
 
-" vim 7.4 backspace fix
-" set backspace=indent,eol,start
+    "Highlight
+
+" sass
+" Bundle 'JulesWang/css.vim'
+" Bundle 'cakebaker/scss-syntax.vim'
+
+" swift
+" Plugin 'Keithbsmiley/swift.vim'
+" another swift
+" Plugin 'toyamarinyon/vim-swift'
 
 call vundle#end()            " required
 
