@@ -222,7 +222,8 @@ func! Compile_Run_Code()
             exec "!g++ -Wall -std=c++11 -o %:r %:t && %:r.exe"
         else
             " exec "!g++ -Wall -std=c++11 -o %:r %:t && ./%:r"
-            exec "!clang++ -Wall -std=c++11 -ggdb `pkg-config --cflags --libs opencv`  -o %:r %:t && ./%:r"
+            exec "!clang++ -Wall -std=c++11 `pkg-config --cflags --libs opencv`  -o %:r %:t && ./%:r"
+            " -ggdb " add gdb support
         endif
     elseif &filetype == "d"
         if g:isWIN
@@ -277,7 +278,7 @@ func! Compile_Run_Code()
     elseif &filetype == "php"
         exec "!php %:t"
     elseif &filetype == "python"
-        exec "!python %:t"
+        exec "!python3 %:t"
     elseif &filetype == "ruby"
         exec "!ruby %:t"
     elseif &filetype == "elixir"
@@ -796,8 +797,9 @@ set foldmethod=indent        " 选择代码折叠类型, other:marker,indent,syn
 set foldlevel=99             " 禁止自动折叠 also same: set [no]foldenable
 nnoremap <space> za             " 用空格来切换折叠状态
 if !exists("g:no_plugin")
-    au BufWinLeave * silent mkview  " 保存文件的折叠状态
-    au BufRead * silent loadview    " 恢复文件的折叠状态
+    au BufWinLeave ?* silent mkview 1  " 保存文件的折叠状态
+    au BufRead ?* silent loadview 1    " 恢复文件的折叠状态
+    " 星号前面的问号是忽略未命名文件
 endif
 " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
 
@@ -1019,6 +1021,8 @@ set pastetoggle=<F3>
 " no num and relative
 nnoremap <leader><F3> :set relativenumber!<CR>:set nu!<CR>
 imap <leader><F3>     :set relativenumber!<CR>:set nu!<CR>
+nnoremap <leader><F4> :set undofile!<CR>
+imap <leader><F4>     :set undofile!<CR>
 
 " 切换窗口光标
 " switch window
@@ -1398,14 +1402,19 @@ if WINDOWS()
 endif
 
 if OSX()
-	if ($MYENV == 'macmini')
-		set background=light
-		colorscheme solarized
-	endif
+    set background=light
+	
     if ($MYENV == 'pt_light')
-        set background=light
-        color pt_black
+        colorscheme pt_black
+    else
+        colorscheme solarized
     endif
+
+endif
+
+if exists("g:termius")
+    set background=light
+    colorscheme pt_light
 endif
 
 " }}}

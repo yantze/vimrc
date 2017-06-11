@@ -1549,6 +1549,20 @@ vim    Perl    意义
 ```
 <!--}}}-->
 
+## DEBUG <!--{{{-->
+
+### Vim Verbose mode
+显示所有插件和相关参数的信息
+```
+vim -V
+```
+
+显示 vim 的编译结果
+```
+vim --version
+```
+
+<!--}}}-->
 
 
 modeline vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
