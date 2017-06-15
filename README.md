@@ -1,4 +1,6 @@
 # VIMRC
+> 2017-06-15 更新了整体结构, 原来的结构在 `tag v0.1`
+
 - [安装指南](https://github.com/yantze/vimrc/blob/master/misc/install_guide.md)
 - [简易手册](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md)
 
