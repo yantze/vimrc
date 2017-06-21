@@ -182,15 +182,6 @@ function! CleanClose(tosave,bang)
     exe "bd".bng.todelbufNr
 endfunction
 
-" Append modeline after last line in buffer.
-" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX files.
-function! AppendModeline()
-    let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
-                \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-    let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-    call append(line("$"), l:modeline)
-endfunction
-
 " Mydict, use *dict* in vim {
 function! Mydict()
     let expl=system('dict ' . expand("<cword>"))
@@ -453,7 +444,7 @@ else
         " g:solarized_contrast = “normal”| “high” or “low”
         " g:solarized_visibility= “normal”| “high” or “low”
 
-        " colortheme list: ir_black grb256 BusyBee pt_black solarized
+        " colortheme list: ir_black grb256 BusyBee pt_black solarized xoria256
         colorscheme pt_black
     endif
 endif
@@ -849,6 +840,10 @@ nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><
 " 使用!bash启动一个console
 " 直接执行:!命令
 
+    "auto completed
+    " Disable AutoComplPop.
+    let g:acp_enableAtStartup = 0
+
 " }}}
 
 " Shorcut {{{
@@ -1199,196 +1194,6 @@ map <leader>cf :CoffeeCompile watch vert<cr>
     autocmd FileType ruby compiler ruby
     " }}}
 
-
-
-" }}}
-
-" Plugin {{{
-
-    " CtrlP {{{
-        let g:ctrlp_map = '<c-p>'
-        let g:ctrlp_cmd = 'CtrlP'
-        let g:ctrlp_working_path_mode = 'ra'
-        set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.png,*.gif,*.jpeg,.DS_Store  " MacOSX/Linux
-        " nnoremap <Leader>t :CtrlP getcwd()<CR>
-        " nnoremap <Leader>f :CtrlPClearAllCaches<CR>
-        nnoremap <Leader>bl :CtrlPBuffer<CR>
-        nnoremap <Leader>bfl :CtrlPBuffer<CR>
-        " nnoremap <Leader>j :CtrlP ~/<CR>
-        nnoremap <c-s-p> :CtrlPBuffer<CR>
-        " 下面这句话是说ctrlp自动默认取消探索所有tmp目录下的文件,所以会导致在tmp目录中
-        " 不能使用ctrlp,其实我发现在随便一种tmp目录下面,使用vim的 :e path/to/filename
-        " 都没有作用,具体原因可能和ctrlp类似
-        " default gtrlp_custom_ignore =  '\v[\/]\.(git|hg|svn)$',
-        if exists('g:ctrlp_custom_ignore')
-            unlet g:ctrlp_custom_ignore
-        endif
-        let g:ctrlp_custom_ignore = {
-                    \'dir': '\.git$\|\.hg$\|\.svn$\|bower_components$\|dist$\|node_modules$\|project_files$\|test$',
-                    \'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.pyo$\|\.rbc$\|\.rbo$\|\.class$\|\.o$\|\~$'
-                    \}
-
-        " command! -nargs=* -complete=function Call exec 'call '.<f-args>
-        " command! Q q
-        " command! -bang Q q<bang>
-        " command! Qall qall
-        " command! -bang Qall qall<bang>
-        " command! W w
-        " command! -nargs=1 -complete=file E e <args>
-        " command! -bang -nargs=1 -complete=file E e<bang> <args>
-        " command! -nargs=1 -complete=tag Tag tag <args>
-        "
-        " Save a file that requires sudoing even when
-        " you opened it as a normal user.
-        command! Sw w !sudo tee % > /dev/null
-        " Show difference between modified buffer and original file
-        command! DiffSaved call s:DiffWithSaved()
-
-        command! Bw call CleanClose(1,0)
-        command! Bq call CleanClose(0,0)
-        command! -bang Bw call CleanClose(1,1)
-        command! -bang Bq call CleanClose(0,1)
-    " }}}
-    " YCM {{{
-        "competeble with UltraSnips
-        let g:ycm_key_list_select_completion   = []
-        let g:ycm_key_list_previous_completion = []
-        let g:ycm_global_ycm_extra_conf        = $VIM . '/rc/ycm_extra_conf.py'
-        " 下里的filetype主要是和上面的syntastic对应，用于使用clang编译的情况
-        let g:ycm_extra_conf_vim_data          = ['&filetype', 'g:syntastic_c_compiler_options', 'g:syntastic_cpp_compiler_options']
-        let g:ycm_filetype_blacklist = {
-            \ 'notes' : 1,
-            \ 'markdown' : 1,
-            \ 'text' : 1,
-            \ 'gitcommit': 1,
-            \ 'mail': 1,
-        \}
-        let g:ycm_error_symbol   = '>>'
-        let g:ycm_warning_symbol = '>!'
-        let g:ycm_collect_identifiers_from_tags_files = 1
-        let g:ycm_collect_identifiers_from_comments_and_strings = 1
-        " 确保了在你完成操作之后，自动补全窗口不会消失
-        let g:ycm_autoclose_preview_window_after_completion=1
-        " offer like ctags: declara, define and multi, only support c/cpp
-        " nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
-        " nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
-        nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-    " }}}
-    " Airline {{{
-        " 打开airline的扩展tab buffer exploer功能
-        " let g:airline#extensions#tabline#enabled = 1
-        " determine whether bufferline will overwrite customization variables
-        " let g:airline#extensions#bufferline#overwrite_variables = 1
-        " AirLine彩色状态栏:badwolf, bubblegum, luna, raven, serene
-        " serene需要修改的地方：
-        " 白色状态栏: sol
-        " ~/.dotfiles/vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes +4
-        " 改为235
-        " let g:airline_theme = 'serene'                " 设置主题
-        " configure the title text for quickfix buffers
-        " let g:airline#extensions#quickfix#quickfix_text = 'Quickfix'
-
-        " Open URI under cursor or search.--go brower
-        nmap gb <Plug>(openbrowser-smart-search)
-        " Open URI selected word or search.
-        vmap gb <Plug>(openbrowser-smart-search)
-        " Open URI you also can use <leader>gb because of "textbrowser.vim"
-    " }}}
-    " :Goyo   - the pure writer {{{
-        function! s:goyo_before()
-          silent !tmux set status off
-          set noshowmode
-          set noshowcmd
-        endfunction
-        function! s:goyo_after()
-          silent !tmux set status on
-          set showmode
-          set showcmd
-        endfunction
-        let g:goyo_callbacks = [function('s:goyo_before'), function('s:goyo_after')]
-        nmap <Leader><Space> :Goyo<CR>
-    " }}}
-    ":Tlist  - 调用TagList {{{
-    let Tlist_Show_One_File        = 1             " 只显示当前文件的tags
-    let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
-    let Tlist_Use_Right_Window     = 1             " 在右侧窗口中显示
-    let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
-    " }}}
-    " :NERDTree - FileList {{{
-    let NERDTreeQuitOnOpen = 1
-    let NERDChristmasTree=1
-    let g:NERDTreeWinSize = 18
-    " autocmd VimEnter * NERDTree " auto start nerdtree
-    " autocmd vimenter * if !argc() | NERDTree | endif " if not file start too
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " when no file colse nerdtree
-    let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] "不显示的文件
-    map <leader>fl :NERDTreeToggle<CR>
-    " 不显示项目树上额外的信息，例如帮助、提示
-    let NERDTreeMinimalUI=1
-    " }}}
-    " :tComment - inherit the NERD_commenter shortkey {{{
-    map <leader>ci <Plug>TComment_<Leader>__
-    map <leader>cm <Plug>TComment_<Leader>_b
-    " NERD_commenter      注释处理插件
-    " let loaded_nerd_tree = 1
-    " let NERDSpaceDelims = 1                        " 自动添加前置空格
-    " }}}
-    " vim-markdown {{{
-    " 设置md文件是否用自己的方式折叠
-    let g:vim_markdown_folding_disabled = 1
-    " }}}
-    " zen {{{
-    "set zen coding
-     let g:user_zen_settings = {
-      \  'php' : {
-      \    'extends' : 'html',
-      \    'filters' : 'c',
-      \  },
-      \  'xml' : {
-      \    'extends' : 'html',
-      \  },
-      \  'haml' : {
-      \    'extends' : 'html',
-      \  },
-      \  'erb' : {
-      \    'extends' : 'html',
-      \  },
-      \}
-     "}}}
-    " 配置高亮括号 kien/rainbow_parentheses.vim {{{
-    let g:rbpt_colorpairs = [
-        \ ['brown',       'RoyalBlue3'],
-        \ ['Darkblue',    'SeaGreen3'],
-        \ ['darkgray',    'DarkOrchid3'],
-        \ ['darkgreen',   'firebrick3'],
-        \ ['darkcyan',    'RoyalBlue3'],
-        \ ['darkred',     'SeaGreen3'],
-        \ ['darkmagenta', 'DarkOrchid3'],
-        \ ['brown',       'firebrick3'],
-        \ ['gray',        'RoyalBlue3'],
-        \ ['black',       'SeaGreen3'],
-        \ ['darkmagenta', 'DarkOrchid3'],
-        \ ['Darkblue',    'firebrick3'],
-        \ ['darkgreen',   'RoyalBlue3'],
-        \ ['darkcyan',    'SeaGreen3'],
-        \ ['darkred',     'DarkOrchid3'],
-        \ ['red',         'firebrick3'],
-        \ ]
-    let g:rbpt_max = 16
-    let g:rbpt_loadcmd_toggle = 0
-    " }}}
-    " Other {{{
-    "auto completed
-    " Disable AutoComplPop.
-    let g:acp_enableAtStartup = 0
-
-    " Indent_guides       显示对齐线
-    let g:indent_guides_enable_on_vim_startup = 1  " 默认关闭
-    let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
-    " 因为go自动会添加tab, 使用<leader>ig也可以切换
-    let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
-    " }}}
 
 " }}}
 

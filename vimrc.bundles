@@ -3,33 +3,48 @@ call vundle#begin()
 " let Vundle manage Vundle Required!
 Plugin 'gmarik/Vundle.vim'
 
+" {{{ Global
+
+" AutoComplete
 if v:version >= 800
-    " fuzzy compolier
     "ycm=clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
-    Plugin 'Valloric/YouCompleteMe'
+    " YCM {{{
+        Plugin 'Valloric/YouCompleteMe'
+        " let g:ycm_add_preview_to_completeopt=0
+        " let g:ycm_confirm_extra_conf=0
+        " set completeopt-=preview
+        "competeble with UltraSnips
+        let g:ycm_key_list_select_completion   = []
+        let g:ycm_key_list_previous_completion = []
+        let g:ycm_global_ycm_extra_conf        = $VIM . '/rc/ycm_extra_conf.py'
+        " 下里的filetype主要是和上面的syntastic对应，用于使用clang编译的情况
+        let g:ycm_extra_conf_vim_data          = ['&filetype', 'g:syntastic_c_compiler_options', 'g:syntastic_cpp_compiler_options']
+        let g:ycm_filetype_blacklist = {
+            \ 'notes' : 1,
+            \ 'markdown' : 1,
+            \ 'text' : 1,
+            \ 'gitcommit': 1,
+            \ 'mail': 1,
+        \}
+        let g:ycm_error_symbol   = '>>'
+        let g:ycm_warning_symbol = '>!'
+        let g:ycm_collect_identifiers_from_tags_files = 1
+        let g:ycm_collect_identifiers_from_comments_and_strings = 1
+        " 确保了在你完成操作之后，自动补全窗口不会消失
+        let g:ycm_autoclose_preview_window_after_completion=1
+        " offer like ctags: declara, define and multi, only support c/cpp
+        " nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
+        " nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
+        nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+    " }}}
 
     " snip 综合解决方案
     Plugin 'SirVer/ultisnips'
 
-    " javascript 补全
-    Plugin 'marijnh/tern_for_vim'
-
 	" 语法查错
 	Plugin 'scrooloose/syntastic'
 endif
-
-if v:version > 703
-	" 快速移动
-    Plugin 'Lokaltog/vim-easymotion'
-endif
-
-" DBGP Debug
-" http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
-" Plugin 'joonty/vdebug'
-
-
-    " 自动补全
-
 
 " 代码补全/snippets
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -45,58 +60,267 @@ Plugin 'honza/vim-snippets' " garbas is inherit from honza
 " let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
 
-    " 快捷注释
-" comments.vim 用c-c/c-x做注释
-" Plugin 'comments.vim'
-" 用<leader>ci/cm做注释
-" Plugin 'scrooloose/nerdcommenter'
-" 这个更智能一些,我的配置里面快捷键inhert了nerdcommenter
-Plugin 'tomtom/tcomment_vim'
 
 
+" }}}
 
-" multiple cursors
-Plugin 'terryma/vim-multiple-cursors'
+" {{{ Colorschemes
+
+Plugin 'molokai'
+Plugin 'flazz/vim-colorschemes'
+
+" 增强状态栏的，vim-powerline < powerline < vim-airline
+    " Airline {{{
+        Plugin 'bling/vim-airline'
+        " 打开airline的扩展tab buffer exploer功能
+        " let g:airline#extensions#tabline#enabled = 1
+        " determine whether bufferline will overwrite customization variables
+        " let g:airline#extensions#bufferline#overwrite_variables = 1
+        " AirLine彩色状态栏:badwolf, bubblegum, luna, raven, serene
+        " serene需要修改的地方：
+        " 白色状态栏: sol
+        " ~/.dotfiles/vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes +4
+        " 改为235
+        " let g:airline_theme = 'serene'                " 设置主题
+        " configure the title text for quickfix buffers
+        " let g:airline#extensions#quickfix#quickfix_text = 'Quickfix'
+
+        " Open URI under cursor or search.--go brower
+        nmap gb <Plug>(openbrowser-smart-search)
+        " Open URI selected word or search.
+        vmap gb <Plug>(openbrowser-smart-search)
+        " Open URI you also can use <leader>gb because of "textbrowser.vim"
+    " }}}
+
 " 会出现缩进一条一条的颜色
-Plugin 'nathanaelkane/vim-indent-guides'
+    " indent-guide{{{
+        Plugin 'nathanaelkane/vim-indent-guides'
+        " Indent_guides       显示对齐线
+        let g:indent_guides_enable_on_vim_startup = 1  " 默认关闭
+        let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
+        " 因为go自动会添加tab, 使用<leader>ig也可以切换
+        let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
+    " }}}
+
+" }}}
+
+" {{{ Editor
+" 操作
+if v:version > 703
+	" 快速移动
+    Plugin 'Lokaltog/vim-easymotion'
+endif
+
 " Press + to expand the visual selection and _ to shrink it.
 Plugin 'terryma/vim-expand-region'
 " quoting/parenthesizing made simple, there have many shortkey
 Plugin 'tpope/vim-surround'
 " 按等号或者其它符号对齐
 Plugin 'godlygeek/tabular'
+" Plugin 'junegunn/vim-easy-align'
+" http://www.wklken.me/posts/2015/06/07/vim-plugin-easyalign.html
+
+
+    " 快捷注释
+    " :tComment - inherit the NERD_commenter shortkey {{{
+        " comments.vim 用c-c/c-x做注释
+        " Plugin 'comments.vim'
+        " 用<leader>ci/cm做注释
+        " Plugin 'scrooloose/nerdcommenter'
+        " 这个更智能一些,我的配置里面快捷键inhert了nerdcommenter
+        Plugin 'tomtom/tcomment_vim'
+
+        map <leader>ci <Plug>TComment_<Leader>__
+        map <leader>cm <Plug>TComment_<Leader>_b
+        " NERD_commenter      注释处理插件
+        " let loaded_nerd_tree = 1
+        " let NERDSpaceDelims = 1                        " 自动添加前置空格
+    " }}}
+
+
+" multiple cursors
+Plugin 'terryma/vim-multiple-cursors'
+let g:multi_cursor_use_default_mapping=0
+" Default mapping
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-N>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
+" }}}
+
+" {{{ Browsing
+    " :NERDTree - FileList {{{
+        " 文件管理器
+        Plugin 'scrooloose/nerdtree'
+        " 内置的文件浏览器已经够了
+        " Bundle 'winmanager'
+
+        " e    to open file and close the quickfix window
+        " o    to open (same as enter)
+        " go   to preview file (open but maintain focus on ag.vim results)
+
+
+        let NERDTreeQuitOnOpen = 1
+        let NERDChristmasTree=1
+        let g:NERDTreeWinSize = 18
+        " autocmd VimEnter * NERDTree " auto start nerdtree
+        " autocmd vimenter * if !argc() | NERDTree | endif " if not file start too
+        autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " when no file colse nerdtree
+        let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] "不显示的文件
+        map <leader>fl :NERDTreeToggle<CR>
+        " 不显示项目树上额外的信息，例如帮助、提示
+        let NERDTreeMinimalUI=1
+    " }}}
+    ":Tlist  - 调用TagList {{{
+    Bundle 'taglist.vim'
+    " tagbar is like the taglist
+    Plugin 'majutsushi/tagbar'
+
+    let Tlist_Show_One_File        = 1             " 只显示当前文件的tags
+    let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
+    let Tlist_Use_Right_Window     = 1             " 在右侧窗口中显示
+    let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
+    " }}}
+
+" 智能打开浏览器
+Plugin 'tyru/open-browser.vim'
+
+" 快速打开文件的功能
+" Bundle 'ctrlp.vim'
+    " CtrlP {{{
+Plugin 'kien/ctrlp.vim'
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+map <leader>b :CtrlPBuffer<CR>
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.png,*.gif,*.jpeg,.DS_Store  " MacOSX/Linux
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.png,*.gif,*.jpeg,.DS_Store  " MacOSX/Linux
+" nnoremap <Leader>t :CtrlP getcwd()<CR>
+" nnoremap <Leader>f :CtrlPClearAllCaches<CR>
+nnoremap <Leader>bl :CtrlPBuffer<CR>
+nnoremap <Leader>bfl :CtrlPBuffer<CR>
+" nnoremap <Leader>j :CtrlP ~/<CR>
+nnoremap <c-s-p> :CtrlPBuffer<CR>
+" 下面这句话是说ctrlp自动默认取消探索所有tmp目录下的文件,所以会导致在tmp目录中
+" 不能使用ctrlp,其实我发现在随便一种tmp目录下面,使用vim的 :e path/to/filename
+" 都没有作用,具体原因可能和ctrlp类似
+" default gtrlp_custom_ignore =  '\v[\/]\.(git|hg|svn)$',
+if exists('g:ctrlp_custom_ignore')
+    unlet g:ctrlp_custom_ignore
+endif
+let g:ctrlp_custom_ignore = {
+            \'dir': '\.git$\|\.hg$\|\.svn$\|bower_components$\|dist$\|node_modules$\|project_files$\|test$',
+            \'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.pyo$\|\.rbc$\|\.rbo$\|\.class$\|\.o$\|\~$'
+            \}
+
+" command! -nargs=* -complete=function Call exec 'call '.<f-args>
+" command! Q q
+" command! -bang Q q<bang>
+" command! Qall qall
+" command! -bang Qall qall<bang>
+" command! W w
+" command! -nargs=1 -complete=file E e <args>
+" command! -bang -nargs=1 -complete=file E e<bang> <args>
+" command! -nargs=1 -complete=tag Tag tag <args>
+"
+" Save a file that requires sudoing even when
+" you opened it as a normal user.
+command! Sw w !sudo tee % > /dev/null
+" Show difference between modified buffer and original file
+command! DiffSaved call s:DiffWithSaved()
+
+command! Bw call CleanClose(1,0)
+command! Bq call CleanClose(0,0)
+command! -bang Bw call CleanClose(1,1)
+command! -bang Bq call CleanClose(0,1)
+    " }}}
+
+" 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
+" Plugin 'bufexplorer.zip'
+
+
+" }}}
+
+" {{{ Web
+
+Plugin 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'lukaszb/vim-web-indent' " 包含了javascript.vim 和html.vim
+
+Plugin 'Raimondi/delimitMate' " automatically add the closing quote, bracket 
+" javascript 补全
+Plugin 'marijnh/tern_for_vim' " install the tern server by `npm install` in `bundle/tern_for_vim`
+Plugin 'moll/vim-node'
+Plugin 'maksimr/vim-jsbeautify' " based on .editorconfig
+" 如果上面的 jsbeautify 不理想使用下面的
+" esformatter Javascript indenting. Handles promise chains correctly while
+" other indenters do not.
+" https://gist.github.com/nisaacson/6939960
+Plugin 'jamescarr/snipmate-nodejs' " snipmate extend node
+
+
+" linting intergration nedd 'scrooloose/syntastic' installed above
+" npm install -g jshint
 
 " Plugin 'kchmck/vim-coffee-script'
 " Plugin 'tpope/vim-haml'
 
-" 文件管理器
-Plugin 'scrooloose/nerdtree'
-" 内置的文件浏览器已经够了
-" Bundle 'winmanager'
-Bundle 'taglist.vim'
-" tagbar is like the taglist
-Plugin 'majutsushi/tagbar'
+    " zen {{{
+        " Plugin 'ZenCoding.vim' " 原来的zen coding
+        Plugin 'mattn/emmet-vim'
+        " 每次打开php都要很久，暂时关闭
 
+        "set zen coding
+         let g:user_zen_settings = {
+          \  'php' : {
+          \    'extends' : 'html',
+          \    'filters' : 'c',
+          \  },
+          \  'xml' : {
+          \    'extends' : 'html',
+          \  },
+          \  'haml' : {
+          \    'extends' : 'html',
+          \  },
+          \  'erb' : {
+          \    'extends' : 'html',
+          \  },
+          \}
+     "}}}
+" Plugin 'skammer/vim-css-color'
+" 这个是vimcsscolor的替代
+Plugin 'lilydjwg/colorizer'
+    " 配置高亮括号 kien/rainbow_parentheses.vim {{{
+    " 给原来的括号加上高亮
+    " Plugin 'kien/rainbow_parentheses.vim'
+    let g:rbpt_colorpairs = [
+        \ ['brown',       'RoyalBlue3'],
+        \ ['Darkblue',    'SeaGreen3'],
+        \ ['darkgray',    'DarkOrchid3'],
+        \ ['darkgreen',   'firebrick3'],
+        \ ['darkcyan',    'RoyalBlue3'],
+        \ ['darkred',     'SeaGreen3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['brown',       'firebrick3'],
+        \ ['gray',        'RoyalBlue3'],
+        \ ['black',       'SeaGreen3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['Darkblue',    'firebrick3'],
+        \ ['darkgreen',   'RoyalBlue3'],
+        \ ['darkcyan',    'SeaGreen3'],
+        \ ['darkred',     'DarkOrchid3'],
+        \ ['red',         'firebrick3'],
+        \ ]
+    let g:rbpt_max = 16
+    let g:rbpt_loadcmd_toggle = 0
+    " }}}
 
-" 集成了md的语法和颜色配置,里面的toc功能不可用
-Plugin 'plasticboy/vim-markdown'
-" helps editing xml (and [x]html, sgml, xslt) files
-Plugin 'othree/xml.vim'
-" A filetype plugin for VIM to help edit XML files
-" Plugin 'sukima/xmledit'
-" Plugin 'tpope/vim-ragtag'
-Plugin 'elzr/vim-json'
-
-
-    " Web
-
-"HTML/JS混排缩进改善
-" Plugin 'pangloss/vim-javascript'
-Bundle 'jelera/vim-javascript-syntax'
-Plugin 'lukaszb/vim-web-indent'
-" vim-web-indent包含了javascript.vim 和html.vim
-" Plugin 'javascript.vim'
-
+" 在()、""、甚至HTML标签之间快速跳转；
+Plugin 'matchit.zip'
 
 
 "适配jade
@@ -117,22 +341,29 @@ Plugin 'digitaltoad/vim-jade'
 " Plugin 'mhinz/vim-signify'
 " Plugin 'tpope/vim-sleuth'
 
+" }}}
+
+" DBGP Debug
+" http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
+" Plugin 'joonty/vdebug'
 
 
-" 智能打开浏览器
-Plugin 'tyru/open-browser.vim'
+" 集成了md的语法和颜色配置,里面的toc功能不可用
+    " vim-markdown {{{
+        Plugin 'plasticboy/vim-markdown'
+        " 设置md文件是否用自己的方式折叠
+        let g:vim_markdown_folding_disabled = 1
+    " }}}
+" helps editing xml (and [x]html, sgml, xslt) files
+Plugin 'othree/xml.vim'
+" A filetype plugin for VIM to help edit XML files
+" Plugin 'sukima/xmledit'
+" Plugin 'tpope/vim-ragtag'
+Plugin 'elzr/vim-json'
 
 
 " 读取大文件
 " Plugin 'LargeFile'
-
-    " Color
-
-Plugin 'molokai'
-Plugin 'flazz/vim-colorschemes'
-
-" 增强状态栏的，vim-powerline < powerline < vim-airline
-Bundle 'bling/vim-airline'
 
 " Go
 Plugin 'fatih/vim-go'
@@ -176,17 +407,6 @@ Plugin 'tobyS/vmustache'
 " nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
 
 
-" Web : HTML CSS
-" Plugin 'ZenCoding.vim'
-" 原来的zen coding
-Plugin 'mattn/emmet-vim'
-" 每次打开php都要很久，暂时关闭
-" Plugin 'skammer/vim-css-color'
-" 这个是vimcsscolor的替代
-Plugin 'lilydjwg/colorizer'
-" 给原来的括号加上高亮
-" Plugin 'kien/rainbow_parentheses.vim'
-
 " Ruby
 " Plugin 'vim-ruby/vim-ruby'
 
@@ -206,21 +426,6 @@ Plugin 'python.vim'
 " Plugin 'rking/ag.vim'
 " let g:agprg="ag --column"
 
-" 快速打开文件的功能
-" Bundle 'ctrlp.vim'
-Plugin 'kien/ctrlp.vim'
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-map <leader>b :CtrlPBuffer<CR>
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.jpg,*.png,*.gif,*.jpeg,.DS_Store  " MacOSX/Linux
-
-" 在()、""、甚至HTML标签之间快速跳转；
-Plugin 'matchit.zip'
-
-" 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
-" Plugin 'bufexplorer.zip'
-
 
     "Highlight
 
@@ -235,10 +440,4 @@ Plugin 'matchit.zip'
 
 call vundle#end()            " required
 
-" NOTE:
-" ag.vim: You must, of course, install ag / the_silver_searcher
-" :Ag [options] {pattern} [{directory}]
-" :Ag '\\\#define foo'
-" e    to open file and close the quickfix window
-" o    to open (same as enter)
-" go   to preview file (open but maintain focus on ag.vim results)
+" vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
