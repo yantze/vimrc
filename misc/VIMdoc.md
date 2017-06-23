@@ -1562,6 +1562,23 @@ vim -V
 vim --version
 ```
 
+显示 vim 加载的文件
+``
+:scriptnames
+```
+
+vim 插件调试
+```
+"检测插件加载时间
+vim filename --startuptime 'time.txt'
+
+"下面代码可以检测加载插件总用时
+awk '{print $2}' time.txt | sed '/[0-9].*:/d' | awk '{sum+=$1} END {print sum}'
+
+"检测vim在干什么
+vim filename -V > savefilename
+```
+
 <!--}}}-->
 
 
