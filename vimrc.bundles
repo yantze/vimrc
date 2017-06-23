@@ -1,9 +1,7 @@
 call vundle#begin()
-
-" let Vundle manage Vundle Required!
 Plugin 'gmarik/Vundle.vim'
 
-" {{{ Global
+" {{{ General
 
 " AutoComplete
 if v:version >= 800
@@ -42,8 +40,31 @@ if v:version >= 800
     " snip 综合解决方案
     Plugin 'SirVer/ultisnips'
 
-	" 语法查错
-	Plugin 'scrooloose/syntastic'
+    " 语法查错
+    Plugin 'scrooloose/syntastic'
+
+    " Syntastic
+    let g:syntastic_check_on_open        = 0
+    let g:syntastic_enable_signs         = 1
+    let g:syntastic_error_symbol         = '!!'
+    let g:syntastic_style_error_symbol   = '!¡'
+    let g:syntastic_warning_symbol       = '??'
+    let g:syntastic_style_warning_symbol = '?¿'
+
+    let c_no_curly_error = 1
+
+    let g:syntastic_c_checker          = "clang"
+    let g:syntastic_c_compiler_options = "-std=c11"
+
+    let g:syntastic_cpp_checker          = "clang++"
+    let g:syntastic_cpp_compiler_options = "-std=c++11"
+
+    let g:syntastic_mode_map = { 'mode': 'active',
+       \ 'passive_filetypes': ['elixir', 'javascript'] }
+
+
+
+
 endif
 
 " 代码补全/snippets
@@ -107,8 +128,11 @@ Plugin 'flazz/vim-colorschemes'
 " {{{ Editor
 " 操作
 if v:version > 703
-	" 快速移动
+    " 快速移动
+    " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
     Plugin 'Lokaltog/vim-easymotion'
+    map  / <Plug>(easymotion-sn)
+    omap / <Plug>(easymotion-tn)
 endif
 
 " Press + to expand the visual selection and _ to shrink it.
@@ -150,9 +174,11 @@ let g:multi_cursor_quit_key='<Esc>'
 " }}}
 
 " {{{ Browsing
+
     " :NERDTree - FileList {{{
         " 文件管理器
         Plugin 'scrooloose/nerdtree'
+        map <leader>fl :NERDTreeToggle<CR>
         " 内置的文件浏览器已经够了
         " Bundle 'winmanager'
 
@@ -164,14 +190,13 @@ let g:multi_cursor_quit_key='<Esc>'
         let NERDTreeQuitOnOpen = 1
         let NERDChristmasTree=1
         let g:NERDTreeWinSize = 18
+        let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] " ignore displa file
+        let NERDTreeMinimalUI=0 " 不显示项目树上额外的信息，例如帮助、提示
         " autocmd VimEnter * NERDTree " auto start nerdtree
         " autocmd vimenter * if !argc() | NERDTree | endif " if not file start too
         autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " when no file colse nerdtree
-        let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] "不显示的文件
-        map <leader>fl :NERDTreeToggle<CR>
-        " 不显示项目树上额外的信息，例如帮助、提示
-        let NERDTreeMinimalUI=1
     " }}}
+
     ":Tlist  - 调用TagList {{{
     Bundle 'taglist.vim'
     " tagbar is like the taglist
@@ -181,6 +206,7 @@ let g:multi_cursor_quit_key='<Esc>'
     let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
     let Tlist_Use_Right_Window     = 1             " 在右侧窗口中显示
     let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
+
     " }}}
 
 " 智能打开浏览器
@@ -251,19 +277,25 @@ Plugin 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'lukaszb/vim-web-indent' " 包含了javascript.vim 和html.vim
 
-Plugin 'Raimondi/delimitMate' " automatically add the closing quote, bracket 
+Plugin 'Raimondi/delimitMate' " automatically add the closing quote, bracket
 " javascript 补全
 Plugin 'marijnh/tern_for_vim' " install the tern server by `npm install` in `bundle/tern_for_vim`
 Plugin 'moll/vim-node'
-Plugin 'maksimr/vim-jsbeautify' " based on .editorconfig
-" 如果上面的 jsbeautify 不理想使用下面的
-" esformatter Javascript indenting. Handles promise chains correctly while
-" other indenters do not.
-" https://gist.github.com/nisaacson/6939960
 Plugin 'jamescarr/snipmate-nodejs' " snipmate extend node
 
+Plugin 'maksimr/vim-jsbeautify' " based on .editorconfig
+" 如果上面的 jsbeautify 不理想使用下面的
+" esformatter Javascript indenting. Handles promise chains correctly while other indenters do not.
+" https://gist.github.com/nisaacson/6939960
+" js-beautify 格式化网页代码
+autocmd FileType javascript noremap <buffer>  <s-f> :call JsBeautify()<cr>
+autocmd FileType html noremap <buffer> <s-f> :call HtmlBeautify()<cr>
+autocmd FileType css noremap <buffer> <s-f> :call CSSBeautify()<cr>
+autocmd FileType javascript vnoremap <buffer>  <s-f> :call RangeJsBeautify()<cr>
+autocmd FileType html vnoremap <buffer> <s-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType css vnoremap <buffer> <s-f> :call RangeCSSBeautify()<cr>
 
-" linting intergration nedd 'scrooloose/syntastic' installed above
+" linting intergration require plugin 'scrooloose/syntastic' installed above
 " npm install -g jshint
 
 " Plugin 'kchmck/vim-coffee-script'
@@ -291,6 +323,7 @@ Plugin 'jamescarr/snipmate-nodejs' " snipmate extend node
           \  },
           \}
      "}}}
+
 " Plugin 'skammer/vim-css-color'
 " 这个是vimcsscolor的替代
 Plugin 'lilydjwg/colorizer'
@@ -330,7 +363,11 @@ Plugin 'digitaltoad/vim-jade'
 " set iskeyword+=-
 
 " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-"
+
+" sass
+" Bundle 'JulesWang/css.vim'
+" Bundle 'cakebaker/scss-syntax.vim'
+
 " Bundle 'pangloss/vim-javascript'
 " Bundle 'Townk/vim-autoclose'
 " Bundle 'hail2u/vim-css3-syntax'
@@ -343,17 +380,21 @@ Plugin 'digitaltoad/vim-jade'
 
 " }}}
 
+" {{{ Misc
+
+" vim-markdown {{{
+    " 集成了md的语法和颜色配置,里面的toc功能不可用
+    Plugin 'plasticboy/vim-markdown'
+    " 设置md文件是否用自己的方式折叠
+    let g:vim_markdown_folding_disabled = 1
+" }}}
+
+Plugin 'tpope/vim-fugitive'
+
 " DBGP Debug
 " http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
 " Plugin 'joonty/vdebug'
 
-
-" 集成了md的语法和颜色配置,里面的toc功能不可用
-    " vim-markdown {{{
-        Plugin 'plasticboy/vim-markdown'
-        " 设置md文件是否用自己的方式折叠
-        let g:vim_markdown_folding_disabled = 1
-    " }}}
 " helps editing xml (and [x]html, sgml, xslt) files
 Plugin 'othree/xml.vim'
 " A filetype plugin for VIM to help edit XML files
@@ -371,8 +412,6 @@ Plugin 'fatih/vim-go'
 " Plugin 'MarcWeber/vim-addon-manager-known-repositories'
 
 
-
-
 " Ruby
 " Plugin 'thoughtbot/vim-rspec'
 " Plugin 'rspec.vim'
@@ -384,7 +423,7 @@ Plugin 'fatih/vim-go'
 " Plugin 'briancollins/vim-jst'
 " Slim is a template language for ruby or ROR whose goal is reduce the syntax to the essential parts without becoming cryptic.
 " Plugin 'slim-template/vim-slim'
-
+" Plugin 'vim-ruby/vim-ruby'
 
 " PHP
 " php genner
@@ -407,8 +446,6 @@ Plugin 'tobyS/vmustache'
 " nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
 
 
-" Ruby
-" Plugin 'vim-ruby/vim-ruby'
 
 "对txt文件列目录 dep:taglist.vim
 Plugin 'TxtBrowser'
@@ -425,19 +462,21 @@ Plugin 'python.vim'
 " let g:ackprg = 'ag --nogroup --nocolor --column'
 " Plugin 'rking/ag.vim'
 " let g:agprg="ag --column"
+" there use special tech, when you put ':ag ', will display ':Ag '
+" cnoreabbrev ag Ag
+" cabbrev ag <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Ag' : 'ag')<CR>
+" search the cur word by ag
+" command! Agg exe 'Ag -Q ' . expand('<cword>')
 
 
     "Highlight
-
-" sass
-" Bundle 'JulesWang/css.vim'
-" Bundle 'cakebaker/scss-syntax.vim'
 
 " swift
 " Plugin 'Keithbsmiley/swift.vim'
 " another swift
 " Plugin 'toyamarinyon/vim-swift'
 
-call vundle#end()            " required
+" }}}
 
+call vundle#end()
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :

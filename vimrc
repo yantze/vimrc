@@ -4,6 +4,21 @@
 " 下面的两行，配置基本保持不变,一般不需要修改,所以折叠,可以用za打开
 " two lines below folded because of not often changing
 " Environment {{{
+    " Base {
+        let mapleader=","
+        " 如果在这之前用<leader>，那么<leader>代表的是之前的leader"
+        map ; :
+
+        " restore last postion in file to vimfiles/view
+        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+        " 判断是否处于GUI界面
+        if has("gui_running")
+            let g:isGUI = 1
+        else
+            let g:isGUI = 0
+        endif
+    " }
 
     " Identify platform {
         silent function! OSX()
@@ -115,20 +130,6 @@
         " 查找插件:PluginSearch
     " }
 
-    " Basic {
-        " restore last postion in file to vimfiles/view
-        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-		" 判断是否处于GUI界面
-		if has("gui_running")
-			let g:isGUI = 1
-		else
-			let g:isGUI = 0
-		endif
-
-    " }
-
-" }}}
 
 " Functions {{{
 
@@ -137,15 +138,15 @@
 
 func! RemoveTabs()
     if &shiftwidth == 2
-        exec "%s/	/  /g"
+        exec "%s/    /  /g"
     elseif &shiftwidth == 4
-        exec "%s/	/    /g"
+        exec "%s/    /    /g"
     elseif &shiftwidth == 6
-        exec "%s/	/      /g"
+        exec "%s/    /      /g"
     elseif &shiftwidth == 8
-        exec "%s/	/        /g"
+        exec "%s/    /        /g"
     else
-        exec "%s/	/ /g"
+        exec "%s/    / /g"
     end
 endfunc
 
@@ -365,8 +366,11 @@ function! AppendModeline()
 endfunction
 " }}}
 
+" }}}
+
 " Setting {{{
 
+" GUI & WIN {{{
 " 设置着色模式和字体
 if g:isWIN
     " 使用GUI界面时的设置
@@ -433,6 +437,8 @@ else
         colorscheme solarized
         set lines=38 columns=140
 
+        " 在 macvim 中，不支持
+        " set nu!
     else
         " set background=light
         " g:solarized_termcolors= 16 | 256
@@ -449,6 +455,8 @@ else
     endif
 endif
 
+" }}}
+
 syntax enable                " 打开语法高亮
 syntax on                    " 开启文件类型侦测
 filetype indent on           " 针对不同的文件类型采用不同的缩进格式
@@ -462,10 +470,10 @@ au GuiEnter * set t_vb=      " 关闭beep/屏闪
 " set fileformats=unix                             " 设定换行符
 
 if has("multi_byte")
-	set formatoptions+=mM
-	if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
-		set ambiwidth=double
-	endif
+    set formatoptions+=mM
+    if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+        set ambiwidth=double
+    endif
 endif
 
 set bsdir=buffer                                 " 设定文件浏览器目录为当前目录
@@ -481,12 +489,6 @@ set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compati
 " 把这个快捷键放在这里主要是因为dos的vim对这个不支持，其它的系统支持
 imap <c-h> <ESC>I
 
-
-" 基本设置
-" set my leader
-let mapleader=","
-" map : to ;
-map ; :
 
 set backspace=2              " 设置退格键可用
 set autoindent               " 自动对齐
@@ -531,147 +533,14 @@ set expandtab                " 将Tab自动转化成空格 [需要输入真正�
 set smarttab                 "在行首按TAB将加入sw个空格，否则加入ts个空格;按Backspace可以删除4个空格
 
 
-if g:isWIN
-else
-    " 在 macvim 中，不支持
-    " set nu!
-endif
 
 
 if v:version > 703
     set relativenumber " 开启相对行号
     set nu                       " 显示行号
     set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
-
-    " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
-    if !exists("g:no_plugin")
-        if filereadable(expand("$VIM/bundle/vim-easymotion/README.md"))
-            map  / <Plug>(easymotion-sn)
-            omap / <Plug>(easymotion-tn)
-        endif
-    endif
 endif
 
-
-" tabn/tabp 切换tab
-" tabnew 创建新窗口
-" :retab 对当前文档重新替换tab为空格
-" 用Ctrl+v Tab可以产生原生的Tab
-" <leader>Space 打开Goyo编写环境
-" :e $m<tab> 自动扩展到:e $MYVIMRC 然后打开vimrc
-"
-" 少用
-" ga 转换光标下的内容为多进制
-" :set notextmode  去掉^M这个符号
-" :set paste  这个可以解决在linux下面有些字母会被执行 nopaste pastetoggle
-" 碰到不能输入*号键，先按Ctrl+v，再输入想要输入的特殊符号
-" gCtrl+g 统计字数
-" Ctrl+x, Ctrl+f 补全当前要输入的路径
-"
-"
-" manpageview phpfunctionname.php
-" 可以使用快捷键K查询
-" 说明，比如你在centos里面装了man-pages，当你用K查询的时候，自动会弹出man 你光标下面的词
-" manpageview 替代了插件pydoc.vim
-" 查找当前的单词意思,quick close: ZZ/:q
-nmap <silent><leader>K :call Mydict()<CR>
-"
-
-" ===js===
-" 需要用nodejs下的包安装工具npm安装npm install -g jshint
-" shell测试：jshint -version
-"
-
-
-" 这个主要用来对txt文档也可以用taglist列表
-au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
-
-au BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
-
-au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
-au BufRead,BufNewFile *.applescript set filetype=applescript
-au BufRead,BufNewFile *.scpt set filetype=applescript
-
-
-" there use special tech, when you put ':ag ', will display ':Ag '
-" cnoreabbrev ag Ag
-cabbrev ag <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Ag' : 'ag')<CR>
-" search the cur word by ag
-command! Agg exe 'Ag -Q ' . expand('<cword>')
-
-" Syntastic
-let g:syntastic_check_on_open        = 0
-let g:syntastic_enable_signs         = 1
-let g:syntastic_error_symbol         = '!!'
-let g:syntastic_style_error_symbol   = '!¡'
-let g:syntastic_warning_symbol       = '??'
-let g:syntastic_style_warning_symbol = '?¿'
-
-let c_no_curly_error = 1
-
-let g:syntastic_c_checker          = "clang"
-let g:syntastic_c_compiler_options = "-std=c11"
-
-let g:syntastic_cpp_checker          = "clang++"
-let g:syntastic_cpp_compiler_options = "-std=c++11"
-
-let g:syntastic_mode_map = { 'mode': 'active',
-                           \ 'passive_filetypes': ['elixir', 'javascript'] }
-
-
-
-
-
-let g:iswindows=1
-autocmd BufEnter * lcd %:p:h
-map <F12> :call Do_CsTag()<CR>
-nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR>
-nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR>
-nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-
-" Set 'comments' to format dashed lists in comments. setlocal only can use cur
-" file
-" 无效果
-" set comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
-
-" au BufWritePre /tmp/* setl undofile
-" hahaha" dfsdjfksdj
-" z则次
-
-" Ctrl + h/j/k/l 移动光标到上下左右位置
-" Ctrl + H/J/K/L 移动窗口到上下左右位置
-" '+1~9 上次打开的文件
-" m+1~9 mark 1~9文件的位置
-" :vert diffsplit main.c
-" dp : diffput,把增加的部分放到另外一边
-"
-" insert schema, ctrl+w and other keys likes emacs
-
-let g:phpcomplete_relax_static_constraint = 1
-let g:phpcomplete_complete_for_unknown_classes = 1
-let g:phpcomplete_search_tags_for_variables = 1
-let g:phpcomplete_mappings = {
-  \ 'jump_to_def': ',g',
-  \ }
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Modify word boundary characters
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" remove - as a word boundary (i.e. making a keyword character)
-set iskeyword+=-
-" remove $ as a word boundary (i.e. making a keyword character)
-set iskeyword+=$
-set wrap linebreak nolist
-
-" map j to gj and k to gk, so line navigation ignores line wrap
-nnoremap j gj
-nnoremap k gk
-" mapping search with Ack
-"nnoremap <leader>f :Ack<space>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Wild settings
@@ -751,33 +620,15 @@ set wildignore+=*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.
 " q字符 xxx q and @字符      --录制宏   and 执行宏
 
 " 对部分语言设置单独的缩进
-au FileType scala,clojure,lua,ruby,eruby,dart,coffee,slim,jade,sh set shiftwidth=2
-au FileType scala,clojure,lua,ruby,eruby,dart,coffee,slim,jade,sh set tabstop=2
-
-" 根据后缀名指定文件类型
-au BufRead,BufNewFile *.h   setlocal ft=c
-au BufRead,BufNewFile *.sql setlocal ft=mysql
-au BufRead,BufNewFile *.tpl setlocal ft=smarty
-au BufRead,BufNewFile *.txt setlocal ft=txt
-
+au FileType scala,clojure,lua,dart,sh set shiftwidth=2
+au FileType scala,clojure,lua,dart,sh set tabstop=2
 " 针对部分语言取消指定字符的单词属性
 au FileType clojure  set iskeyword-=.
 au FileType clojure  set iskeyword-=>
 au FileType perl,php set iskeyword-=$
-au FileType ruby     set iskeyword+=!
-au FileType ruby     set iskeyword+=?
 
 " 去掉BOM
 " set nobomb; set fileencoding=utf8; w
-
-" js-beautify 格式化网页代码
-autocmd FileType javascript noremap <buffer>  <s-f> :call JsBeautify()<cr>
-autocmd FileType html noremap <buffer> <s-f> :call HtmlBeautify()<cr>
-autocmd FileType css noremap <buffer> <s-f> :call CSSBeautify()<cr>
-autocmd FileType javascript vnoremap <buffer>  <s-f> :call RangeJsBeautify()<cr>
-autocmd FileType html vnoremap <buffer> <s-f> :call RangeHtmlBeautify()<cr>
-autocmd FileType css vnoremap <buffer> <s-f> :call RangeCSSBeautify()<cr>
-au FileType javascript set sw=2
 
 " Emmet.vim
 " div>p#foo$*3>a
@@ -796,37 +647,6 @@ endif
 
 
 
-"vim 插件调试
-"检测插件加载时间
-"vim filename --startuptime 'time.txt'
-"下面代码可以检测加载插件总用时
-"awk '{print $2}' time.txt | sed '/[0-9].*:/d' | awk '{sum+=$1} END {print sum}'
-"检测vim在干什么 vim filename -V > savefilename
-"
-"
-
-" c/c++环境开发IDE
-" c开发介绍：http://blog.csdn.net/bokee/article/details/6633193
-" Ctags
-"inoremap  <c-]> <c-x><c-]> "ctags 补全快捷键
-" 用ctrl+]和Ctrl+t跳转定义和返回
-nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
-" nmap <leader>mt <ESC>:!ctags -R --languages=
-" set tags+=~/gitdb/rails/tags
-" 生成cscope
-" nmap <leader>gc :!cscope -Rbq -f cscope/cs.out <CR><CR>:echo 'generate cscope done'<cr>
-" cscope的使用
-" <leader>f
-" s: Find this C symbol
-" g: Find this definition
-" d: Find functions called by this function
-" c: Find functions calling this function
-" t: Find this text string
-" e: Find this egrep pattern
-" f: Find this file
-" i: Find files #including this file
-" 使用taglist <leader>tl
-" 在. -> :: 等地方可以自动补全
 
 "
 "
@@ -844,6 +664,70 @@ nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><
     " Disable AutoComplPop.
     let g:acp_enableAtStartup = 0
 
+    " ==创建 Tags===
+    "
+    map <F12> :call Do_CsTag()<CR>
+    nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+    nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+    nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+    nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+    nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR>
+    nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR>
+    nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+
+    " c/c++环境开发IDE
+    " c开发介绍：http://blog.csdn.net/bokee/article/details/6633193
+    " Ctags
+    "inoremap  <c-]> <c-x><c-]> "ctags 补全快捷键
+    " 用ctrl+]和Ctrl+t跳转定义和返回
+    nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
+    " nmap <leader>mt <ESC>:!ctags -R --languages=
+    " set tags+=~/gitdb/rails/tags
+    " 生成cscope
+    " nmap <leader>gc :!cscope -Rbq -f cscope/cs.out <CR><CR>:echo 'generate cscope done'<cr>
+    " cscope的使用
+    " <leader>f
+    " s: Find this C symbol
+    " g: Find this definition
+    " d: Find functions called by this function
+    " c: Find functions calling this function
+    " t: Find this text string
+    " e: Find this egrep pattern
+    " f: Find this file
+    " i: Find files #including this file
+    " 使用taglist <leader>tl
+    " 在. -> :: 等地方可以自动补全
+
+
+    " ==类型检测和设置==
+    "
+    " au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
+
+    au BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
+
+    au BufRead,BufNewFile *.applescript set filetype=applescript
+    au BufRead,BufNewFile *.scpt set filetype=applescript
+
+    " ==全局设置==
+    "
+    " let g:iswindows=1
+    autocmd BufEnter * lcd %:p:h  " 每打开一个文件进入当前文件目录
+    " au BufWritePre /tmp/* setl undofile " 无效果
+
+    " => Modify word boundary characters
+    " insert schema, ctrl+w and other keys likes emacs
+    " remove - as a word boundary (i.e. making a keyword character)
+    set iskeyword+=-
+    " remove $ as a word boundary (i.e. making a keyword character)
+    set iskeyword+=$
+    set wrap linebreak nolist
+
+    " map j to gj and k to gk, so line navigation ignores line wrap
+    nnoremap j gj
+    nnoremap k gk
+
+
 " }}}
 
 " Shorcut {{{
@@ -851,6 +735,39 @@ nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><
 " =======
 " 自定义快捷键
 " =======
+
+" tabn/tabp 切换tab
+" tabnew 创建新窗口
+" :retab 对当前文档重新替换tab为空格
+" 用Ctrl+v Tab可以产生原生的Tab
+" <leader>Space 打开Goyo编写环境
+" :e $m<tab> 自动扩展到:e $MYVIMRC 然后打开vimrc
+"
+" 少用
+" ga 转换光标下的内容为多进制
+" :set notextmode  去掉^M这个符号
+" :set paste  这个可以解决在linux下面有些字母会被执行 nopaste pastetoggle
+" 碰到不能输入*号键，先按Ctrl+v，再输入想要输入的特殊符号
+" gCtrl+g 统计字数
+" Ctrl+x, Ctrl+f 补全当前要输入的路径
+"
+"
+
+
+
+
+
+
+
+" Ctrl + h/j/k/l 移动光标到上下左右位置
+" Ctrl + H/J/K/L 移动窗口到上下左右位置
+" '+1~9 上次打开的文件
+" m+1~9 mark 1~9文件的位置
+" :vert diffsplit main.c
+" dp : diffput,把增加的部分放到另外一边
+"
+" mapping search with Ack
+"nnoremap <leader>f :Ack<space>
 
 
 " Win paste
@@ -1031,7 +948,22 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " }}}
 
-" Language {{{
+" Scene {{{
+
+" ManPage {{{
+    " manpageview phpfunctionname.php
+    " 可以使用快捷键K查询
+    " 说明，比如你在centos里面装了man-pages，当你用K查询的时候，自动会弹出man 你光标下面的词
+    " manpageview 替代了插件pydoc.vim
+    " 查找当前的单词意思,quick close: ZZ/:q
+    nmap <silent><leader>K :call Mydict()<CR>
+    "
+" }}}
+
+" Instant Preview Markdown {{{
+    let g:instant_markdown_autostart = 0
+    map <leader>rp :InstantMarkdownPreview<CR>
+" }}}
 
 " Python {{{
     " Base Setting {
@@ -1088,6 +1020,13 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " PHP {{{
     " Base Setting {
+        let g:phpcomplete_relax_static_constraint = 1
+        let g:phpcomplete_complete_for_unknown_classes = 1
+        let g:phpcomplete_search_tags_for_variables = 1
+        let g:phpcomplete_mappings = {
+          \ 'jump_to_def': ',g',
+          \ }
+
         "只有在是PHP文件时，才启用PHP补全
         function! AddPHPFuncList()
             set dictionary+=$HOME/.vim/vimfiles/resource/php-offical.dict
@@ -1166,33 +1105,50 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
     " }
 " }}}
 
-" Node {{{
-let g:used_javascript_libs = 'underscore,jquery,react'
+" RUBY {{{
+    " 针对部分语言取消指定字符的单词属性
+    au FileType ruby     set iskeyword+=!
+    au FileType ruby     set iskeyword+=?
 
-"scss,sass
-au BufRead,BufNewFile *.scss set filetype=scss
-au BufRead,BufNewFile *.sass set filetype=scss
+    " 对部分语言设置单独的缩进
+    au FileType ruby,eruby set shiftwidth=2
+    au FileType ruby,eruby set tabstop=2
 
-" 自定义关联文件类型
-au BufNewFile,BufRead *.less set filetype=css
-
-"coffee script
-au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
-au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
-hi link coffeeSpaceError NONE
-hi link coffeeSemicolonError NONE
-hi link coffeeReservedError NONE
-map <leader>cf :CoffeeCompile watch vert<cr>
-
-" }}}
-
-    " RUBY {{{
     " auto completed
     let g:rubycomplete_buffer_loading = 1
     let g:rubycomplete_classes_in_global = 1
     let g:rubycomplete_rails = 1
     autocmd FileType ruby compiler ruby
-    " }}}
+" }}}
+
+" Node {{{
+
+" shortcut
+" F         格式化当前页面 js,html,css. 可选中局部格式化
+
+    au FileType javascript,coffee,slim,jade set shiftwidth=2
+    au FileType javascript,offee,slim,jade set tabstop=2
+
+    au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
+
+    "scss,sass
+    au BufRead,BufNewFile *.scss set filetype=scss
+    au BufRead,BufNewFile *.sass set filetype=scss
+
+    " 自定义关联文件类型
+    au BufNewFile,BufRead *.less set filetype=css
+
+    "coffee script
+    au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+    au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
+
+    let g:used_javascript_libs = 'underscore,jquery,react'
+    hi link coffeeSpaceError NONE
+    hi link coffeeSemicolonError NONE
+    hi link coffeeReservedError NONE
+    map <leader>cf :CoffeeCompile watch vert<cr>
+
+" }}}
 
 
 " }}}
@@ -1203,12 +1159,12 @@ if filereadable(expand("~/.local/.vimrc_local"))
 endif
 
 if WINDOWS()
-	set background=dark
+    set background=dark
 endif
 
 if OSX()
     set background=light
-	
+
     if ($MYENV == 'pt_light')
         colorscheme pt_black
     else
