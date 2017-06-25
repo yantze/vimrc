@@ -1,10 +1,11 @@
 " author: yantze
 " $VIM/vimrc.bundles " the package location
 
-" 下面的两行，配置基本保持不变,一般不需要修改,所以折叠,可以用za打开
-" two lines below folded because of not often changing
-" Environment {{{
-    " Base {
+" Section folded because of not often change, unfold with key za / space
+" General {{{
+
+" Enviroment {{{
+" Base {
         let mapleader=","
         " 如果在这之前用<leader>，那么<leader>代表的是之前的leader"
         map ; :
@@ -130,6 +131,7 @@
         " 查找插件:PluginSearch
     " }
 
+" }}}
 
 " Functions {{{
 
@@ -366,8 +368,6 @@ function! AppendModeline()
 endfunction
 " }}}
 
-" }}}
-
 " Setting {{{
 
 " GUI & WIN {{{
@@ -561,9 +561,6 @@ set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*,*.un~
 
-" Node and JS stuff
-set wildignore+=*/node_modules/*,*.min.js
-
 " WP Language files
 set wildignore+=*.pot,*.po,*.mo
 
@@ -642,6 +639,7 @@ if !exists("g:no_plugin")
     au BufWinLeave ?* silent mkview 1  " 保存文件的折叠状态
     au BufRead ?* silent loadview 1    " 恢复文件的折叠状态
     " 星号前面的问号是忽略未命名文件
+    " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
 endif
 " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
 
@@ -723,10 +721,8 @@ endif
     set iskeyword+=$
     set wrap linebreak nolist
 
-    " map j to gj and k to gk, so line navigation ignores line wrap
-    nnoremap j gj
-    nnoremap k gk
 
+" }}}
 
 " }}}
 
@@ -946,6 +942,10 @@ nnoremap <C-l> <C-w>l
 
 nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
+" map j to gj and k to gk, so line navigation ignores line wrap
+nnoremap j gj
+nnoremap k gk
+
 " }}}
 
 " Scene {{{
@@ -1123,13 +1123,16 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " Node {{{
 
-" shortcut
-" F         格式化当前页面 js,html,css. 可选中局部格式化
+    " shortcut
+    " F         格式化当前页面 js,html,css. 可选中局部格式化
+
+    " ignore Node and JS stuff
+    set wildignore+=*/node_modules/*,*.min.js
 
     au FileType javascript,coffee,slim,jade set shiftwidth=2
     au FileType javascript,offee,slim,jade set tabstop=2
 
-    au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
+    " au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
 
     "scss,sass
     au BufRead,BufNewFile *.scss set filetype=scss
@@ -1142,7 +1145,6 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
     au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
     au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 
-    let g:used_javascript_libs = 'underscore,jquery,react'
     hi link coffeeSpaceError NONE
     hi link coffeeSemicolonError NONE
     hi link coffeeReservedError NONE

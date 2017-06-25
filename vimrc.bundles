@@ -359,6 +359,13 @@ Plugin 'matchit.zip'
 "适配jade
 Plugin 'digitaltoad/vim-jade'
 
+" javascript libraries syntax
+Plugin 'othree/javascript-libraries-syntax.vim'
+let g:used_javascript_libs = 'underscore,jquery,react,vue'
+" Support Libraries :
+" jQuery, underscore.js, lo-dash, Backbone.js, prelude.ls, AngularJS, AngularUI, AngularUI Router, React, Flux, RequireJS, Sugar.js, Jasmine, Chai, Handlebars, Ramda, Vue, d3, 
+
+
 " support css word with -
 " set iskeyword+=-
 
