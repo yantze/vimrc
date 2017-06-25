@@ -4,6 +4,11 @@
 - [安装指南](https://github.com/yantze/vimrc/blob/master/misc/install_guide.md)
 - [简易手册](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md)
 
+### 翻页
+| Description   | Action |
+| --- | --- |
+| 下/上半页翻 | C-D / C-U |
+
 ### 常用命令(无需插件)
 可运行无插件模式，速度极快，`alias v='vim --cmd "let g:no_plugin=1"'`
 

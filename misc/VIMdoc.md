@@ -227,14 +227,6 @@ Ctrl+u 删除光标前的一行， Ctrl+w 删除前面一个单词
 
 ## practic experience <!--{{{-->
 
-主要的一些查询功能
-```
-:verbose map <所要查找的快捷键>
-:echo $TERM
-:verbose set term?
-:set termcap
-```
-
 #### 配置里面<leader>rsl不同的实现方法
 ##### 执行选中行命令
 " function RunTheSelectLinesInSystem() range
@@ -1556,6 +1548,15 @@ vim    Perl    意义
 ```
 vim -V
 ```
+
+主要的一些查询功能
+```
+:verbose map <所要查找的快捷键>
+:echo $TERM
+:verbose set term?
+:set termcap
+```
+
 
 显示 vim 的编译结果
 ```
