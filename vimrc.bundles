@@ -271,11 +271,11 @@ Plugin 'mileszs/ack.vim'
 " search the current word by ag
 " command! Agg exe 'Ag -Q ' . expand('<cword>')
 
-let g:ackprg = 'ag --vimgrep --smart-case --column'                                                   
-cnoreabbrev ag Ack                                                                           
-cnoreabbrev aG Ack                                                                           
-cnoreabbrev Ag Ack                                                                           
-cnoreabbrev AG Ack  
+let g:ackprg = 'ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
+cnoreabbrev aG Ack
+cnoreabbrev Ag Ack
+cnoreabbrev AG Ack
 
 " 操作
 if v:version > 703
@@ -341,9 +341,9 @@ autocmd FileType css vnoremap <buffer> <s-f> :call RangeCSSBeautify()<cr>
 
     " emmet(zen coding) 介绍
     " 是横扫各大小编辑器的快速编码插件，其使用类`CSS`选择器的语法实现扩展性编码，确实够酷、够快
-    " 
+    "
     " `Zen Coding`在`Vim`下的默认触发键是`Ctrl + Y + ,`（注意，最后还有一个逗号）
-    " 
+    "
     " 调用规则
     " ```
     " `1`、单个元素：`div`
@@ -356,7 +356,7 @@ autocmd FileType css vnoremap <buffer> <s-f> :call RangeCSSBeautify()<cr>
     " `8`、带有序号的元素，使用美元符（`$`），从`1`开始自动递增：`div>p#id$*5`
     " `9`、如果需要指定序号的位数，只须多写几个美元符（`$`）即可：`div>p#id$$$*5`
     " ```
-    " 
+    "
     " 常用缩写
     " ```
     " html:4t  传统的`HTML4.01`模板
@@ -409,7 +409,7 @@ Plugin 'digitaltoad/vim-jade'
 Plugin 'othree/javascript-libraries-syntax.vim'
 let g:used_javascript_libs = 'underscore,jquery,react,vue'
 " Support Libraries :
-" jQuery, underscore.js, lo-dash, Backbone.js, prelude.ls, AngularJS, AngularUI, AngularUI Router, React, Flux, RequireJS, Sugar.js, Jasmine, Chai, Handlebars, Ramda, Vue, d3, 
+" jQuery, underscore.js, lo-dash, Backbone.js, prelude.ls, AngularJS, AngularUI, AngularUI Router, React, Flux, RequireJS, Sugar.js, Jasmine, Chai, Handlebars, Ramda, Vue, d3,
 
 
 " support css word with -
@@ -443,6 +443,10 @@ let g:used_javascript_libs = 'underscore,jquery,react,vue'
 " }}}
 
 Plugin 'tpope/vim-fugitive'
+" :Gdiff - Diffs file with current version in repository
+" :Gw - Saves and git adds
+" :Gco or :Gcommit - Commits
+" :Blame - Who change this line
 
 " DBGP Debug
 " http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
