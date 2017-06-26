@@ -494,15 +494,21 @@ Plugin 'python.vim'
 "
 
 " Find & Search
-" Plugin 'ack.vim'
-" let g:ackprg = 'ag --nogroup --nocolor --column'
-" Plugin 'rking/ag.vim'
-" let g:agprg="ag --column"
+Plugin 'mileszs/ack.vim'
+" original 'ack.vim'
+" Deprecated 'rking/ag.vim'
+
 " there use special tech, when you put ':ag ', will display ':Ag '
 " cnoreabbrev ag Ag
 " cabbrev ag <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Ag' : 'ag')<CR>
-" search the cur word by ag
+" search the current word by ag
 " command! Agg exe 'Ag -Q ' . expand('<cword>')
+
+let g:ackprg = 'ag --vimgrep --smart-case --column'                                                   
+cnoreabbrev ag Ack                                                                           
+cnoreabbrev aG Ack                                                                           
+cnoreabbrev Ag Ack                                                                           
+cnoreabbrev AG Ack  
 
 
     "Highlight

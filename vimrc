@@ -1182,4 +1182,21 @@ endif
 
 " }}}
 
+" if executable('ag')
+"   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
+"   set grepformat^=%f:%l:%c:%m   " file:line:column:message
+" endif
+" 
+" function! MySearch()
+"   let grep_term = input("Enter search term: ")
+"   if !empty(grep_term)
+"     execute 'silent grep' grep_term | copen
+"   else
+"     echo "Empty search term"
+"   endif
+"   redraw!
+" endfunction
+" 
+" command! Search call MySearch()
+
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
