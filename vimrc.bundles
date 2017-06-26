@@ -126,14 +126,6 @@ Plugin 'flazz/vim-colorschemes'
 " }}}
 
 " {{{ Editor
-" 操作
-if v:version > 703
-    " 快速移动
-    " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
-    Plugin 'Lokaltog/vim-easymotion'
-    map  / <Plug>(easymotion-sn)
-    omap / <Plug>(easymotion-tn)
-endif
 
 " Press + to expand the visual selection and _ to shrink it.
 Plugin 'terryma/vim-expand-region'
@@ -173,7 +165,7 @@ let g:multi_cursor_quit_key='<Esc>'
 
 " }}}
 
-" {{{ Browsing
+" {{{ Browsing & Navigating code
 
     " :NERDTree - FileList {{{
         " 文件管理器
@@ -268,6 +260,31 @@ command! -bang Bq call CleanClose(0,1)
 " 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
 " Plugin 'bufexplorer.zip'
 
+" Find & Search
+Plugin 'mileszs/ack.vim'
+" original 'ack.vim'
+" Deprecated 'rking/ag.vim'
+
+" there use special tech, when you put ':ag ', will display ':Ag '
+" cnoreabbrev ag Ag
+" cabbrev ag <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Ag' : 'ag')<CR>
+" search the current word by ag
+" command! Agg exe 'Ag -Q ' . expand('<cword>')
+
+let g:ackprg = 'ag --vimgrep --smart-case --column'                                                   
+cnoreabbrev ag Ack                                                                           
+cnoreabbrev aG Ack                                                                           
+cnoreabbrev Ag Ack                                                                           
+cnoreabbrev AG Ack  
+
+" 操作
+if v:version > 703
+    " 快速移动
+    " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
+    Plugin 'Lokaltog/vim-easymotion'
+    map  / <Plug>(easymotion-sn)
+    omap / <Plug>(easymotion-tn)
+endif
 
 " }}}
 
@@ -492,23 +509,6 @@ Plugin 'python.vim'
 " 检查python的代码错误,编译需要'+python'
 " Plugin 'pyflakes.vim'
 "
-
-" Find & Search
-Plugin 'mileszs/ack.vim'
-" original 'ack.vim'
-" Deprecated 'rking/ag.vim'
-
-" there use special tech, when you put ':ag ', will display ':Ag '
-" cnoreabbrev ag Ag
-" cabbrev ag <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Ag' : 'ag')<CR>
-" search the current word by ag
-" command! Agg exe 'Ag -Q ' . expand('<cword>')
-
-let g:ackprg = 'ag --vimgrep --smart-case --column'                                                   
-cnoreabbrev ag Ack                                                                           
-cnoreabbrev aG Ack                                                                           
-cnoreabbrev Ag Ack                                                                           
-cnoreabbrev AG Ack  
 
 
     "Highlight

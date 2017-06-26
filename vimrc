@@ -636,9 +636,10 @@ set foldmethod=indent        " 选择代码折叠类型, other:marker,indent,syn
 set foldlevel=99             " 禁止自动折叠 also same: set [no]foldenable
 nnoremap <space> za             " 用空格来切换折叠状态
 if !exists("g:no_plugin")
-    au BufWinLeave ?* silent mkview 1  " 保存文件的折叠状态
-    au BufRead ?* silent loadview 1    " 恢复文件的折叠状态
-    " 星号前面的问号是忽略未命名文件
+    autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
+    autocmd BufWinEnter *.* silent loadview  " 恢复状态
+    " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
+    " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
     " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
 endif
 " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
