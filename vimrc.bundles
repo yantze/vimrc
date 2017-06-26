@@ -301,28 +301,57 @@ autocmd FileType css vnoremap <buffer> <s-f> :call RangeCSSBeautify()<cr>
 " Plugin 'kchmck/vim-coffee-script'
 " Plugin 'tpope/vim-haml'
 
-    " zen {{{
-        " Plugin 'ZenCoding.vim' " 原来的zen coding
-        Plugin 'mattn/emmet-vim'
-        " 每次打开php都要很久，暂时关闭
+" zen emmet {{{
+    " Plugin 'ZenCoding.vim' " original zen coding
+    Plugin 'mattn/emmet-vim'
 
-        "set zen coding
-         let g:user_zen_settings = {
-          \  'php' : {
-          \    'extends' : 'html',
-          \    'filters' : 'c',
-          \  },
-          \  'xml' : {
-          \    'extends' : 'html',
-          \  },
-          \  'haml' : {
-          \    'extends' : 'html',
-          \  },
-          \  'erb' : {
-          \    'extends' : 'html',
-          \  },
-          \}
-     "}}}
+    "set zen coding
+     " let g:user_zen_settings = {
+     "  \  'php' : {
+     "  \    'extends' : 'html',
+     "  \    'filters' : 'c',
+     "  \  },
+     "  \  'xml' : {
+     "  \    'extends' : 'html',
+     "  \  },
+     "  \  'haml' : {
+     "  \    'extends' : 'html',
+     "  \  },
+     "  \  'erb' : {
+     "  \    'extends' : 'html',
+     "  \  },
+     "  \}
+
+    " emmet(zen coding) 介绍
+    " 是横扫各大小编辑器的快速编码插件，其使用类`CSS`选择器的语法实现扩展性编码，确实够酷、够快
+    " 
+    " `Zen Coding`在`Vim`下的默认触发键是`Ctrl + Y + ,`（注意，最后还有一个逗号）
+    " 
+    " 调用规则
+    " ```
+    " `1`、单个元素：`div`
+    " `2`、带`id`的元素，使用`#`号：`div#name`
+    " `3`、带`class`的元素，使用点号（`.`）：`div.header`
+    " `4`、`id`与`class`是可以同时使用的，如果`class`名中含多个单词，可以使用点号（`.`）进行连接：`div#name.header.one`
+    " `5`、子元素使用大于号（`>`），子元素的子元素可以连写：`div>p>h1`
+    " `6`、同级兄弟元素使用加号（`+`），可以使用括号避免歧义：`div>p>(h1+h2)`
+    " `7`、多项相同的元素，使用星号（`*`）：`ul>li*5`
+    " `8`、带有序号的元素，使用美元符（`$`），从`1`开始自动递增：`div>p#id$*5`
+    " `9`、如果需要指定序号的位数，只须多写几个美元符（`$`）即可：`div>p#id$$$*5`
+    " ```
+    " 
+    " 常用缩写
+    " ```
+    " html:4t  传统的`HTML4.01`模板
+    " html:5  `HTML5`模板
+    " style  样式标签
+    " script  脚本标签
+    " link  `link`标签
+    " a  链接标签
+    " ```
+    " 更多用法可以查看":help emmet"
+    " 本文修改于：https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
+ "}}}
 
 " Plugin 'skammer/vim-css-color'
 " 这个是vimcsscolor的替代
