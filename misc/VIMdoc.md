@@ -3,7 +3,9 @@
 
 整理： [yantze](http://github.com/yantze)
 
-## 基础 <!--{{{-->
+## CheatSheet
+
+### 基础 <!--{{{-->
     `<leader>和<buffer>`
     `<leader>` 默认是一个按钮，指的是反斜杠'\'，不过我在配置中设置成了','，减少小指的负担。
     `<buffer>` 其实就是你当前打开的文件。
@@ -14,7 +16,7 @@
     https://github.com/VundleVim/Vundle.vim
 <!--}}}-->
 
-## 掌握这些可以高效使用 <!--{{{-->
+### 掌握这些可以高效使用 <!--{{{-->
 > 把本项目的 `_vimrc` 看完就可以玩转 vim 了。下面都是一些补充知识。
 
 ### 常用命令 <!--{{{-->
@@ -225,7 +227,7 @@ Ctrl+u 删除光标前的一行， Ctrl+w 删除前面一个单词
 
 <!--}}}-->
 
-## practic experience <!--{{{-->
+### practic experience <!--{{{-->
 
 #### 配置里面<leader>rsl不同的实现方法
 ##### 执行选中行命令
@@ -387,9 +389,9 @@ set ff=unix
 
 <!--}}}-->
 
-## Manual <!--{{{-->
+## Basic Manual
 
-### 功能介绍 <!--{{{-->
+### 基本功能介绍 <!--{{{-->
 
 1. 查找<!--{{{-->
 ```
@@ -1237,8 +1239,8 @@ via:http://www.cnblogs.com/welkinwalker/archive/2011/05/30/2063587.html
 
 ```
 set foldmethod=indent "set default foldmethod
-"zi 打开关闭折叠
-"zv 查看此行
+zi 打开关闭折叠
+zv 查看此行
 zm 关闭折叠
 zM 关闭所有
 zr 打开
@@ -1332,6 +1334,48 @@ zE                  除去 (Eliminate) 窗口里“所有”的折叠。
 ```
 <!--}}}-->
 
+### vim标记 <!-- {{{ -->
+```
+Ctrl+i/o 跳转到较早/较晚的地方，
+:marks  列出所有的标记
+m{a-zA-Z} 用标记 {a-zA-Z} 记录当前位置
+`{a-z}        至当前文件中的标记 {a-z}
+`{A-Z}        至任何文件中的标记 {A-Z}
+`{0-9}        至 Vim 上次退出的位置
+``          至上次跳转之前的位置
+`"            至上次编辑此文件的位置
+`[           至上次被操作或放置的文本的开始
+`]           至上次被操作或放置的文本的结尾
+`<           至 (前次) 可视区域的开始
+`>           至 (前次) 可视区域的结尾
+`.          至当前文件最后被改动的位置
+```
+
+we can bookmark locations in the buffer m<letter> sets mark named  <letter> at current location
+```
+`<letter> jumps precisely to that mark
+‘<letter> jumps to the line with the mark
+lowercase letter: mark is local to the buffer
+uppercase letter: mark is global, your buffer will be switched to the file with the mark
+:marks shows you your current marks
+
+marks are very handy for changing text set a mark (let’s say  ma ) then you can do:
+d`a - delete text from cursor to mark a
+c`a - change text from cursor to mark a
+=’a - reformat lines from current one to the one with mark a
+
+let’s say you jump somewhere how do you go back?
+`` moves you between the last two locations
+you can set  ` (the context mark) explicitly:
+    m`, jump elsewhere, then come back with ``
+tip:  CTRL-O and  CTRL-I move between
+positions in the full jump history, but can’t be
+used as motions
+‘. and  `. - jump to the line or exact location of
+the last modification
+```
+<!--}}}-->
+
 ### VIM 寄存器 {{{
 ```
 将寄存器与各种删除、复制、粘贴命令组合使用，能够大大提高编辑文本的效率。
@@ -1392,51 +1436,9 @@ zE                  除去 (Eliminate) 窗口里“所有”的折叠。
 ```
 <!-- }}} -->
 
-### vim标记 <!-- {{{ -->
-```
-Ctrl+i/o 跳转到较早/较晚的地方，
-:marks  列出所有的标记
-m{a-zA-Z} 用标记 {a-zA-Z} 记录当前位置
-`{a-z}        至当前文件中的标记 {a-z}
-`{A-Z}        至任何文件中的标记 {A-Z}
-`{0-9}        至 Vim 上次退出的位置
-``          至上次跳转之前的位置
-`"            至上次编辑此文件的位置
-`[           至上次被操作或放置的文本的开始
-`]           至上次被操作或放置的文本的结尾
-`<           至 (前次) 可视区域的开始
-`>           至 (前次) 可视区域的结尾
-`.          至当前文件最后被改动的位置
-```
+## Advance
 
-we can bookmark locations in the buffer m<letter> sets mark named  <letter> at current location
-```
-`<letter> jumps precisely to that mark
-‘<letter> jumps to the line with the mark
-lowercase letter: mark is local to the buffer
-uppercase letter: mark is global, your buffer will be switched to the file with the mark
-:marks shows you your current marks
-
-marks are very handy for changing text set a mark (let’s say  ma ) then you can do:
-d`a - delete text from cursor to mark a
-c`a - change text from cursor to mark a
-=’a - reformat lines from current one to the one with mark a
-
-let’s say you jump somewhere how do you go back?
-`` moves you between the last two locations
-you can set  ` (the context mark) explicitly:
-    m`, jump elsewhere, then come back with ``
-tip:  CTRL-O and  CTRL-I move between
-positions in the full jump history, but can’t be
-used as motions
-‘. and  `. - jump to the line or exact location of
-the last modification
-```
-<!--}}}-->
-
-<!--}}}-->
-
-## Vim 正则表达式 <!--{{{-->
+### Vim 正则表达式 <!--{{{-->
 ```
 *    指前面所出现的字元或字元集合，出现0或0次以上；
 \+    匹配内容同上，只不过出现次数不包括0次；
@@ -1515,7 +1517,7 @@ vim    Perl    意义
 ```
 <!--}}}-->
 
-## DEBUG <!--{{{-->
+### DEBUG <!--{{{-->
 
 ### Vim Verbose mode
 显示所有插件和相关参数的信息
