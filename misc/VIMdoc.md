@@ -1515,6 +1515,24 @@ vim    Perl    意义
 \%(atom\)    (?:    非捕获型括号
 和perl稍有不同的是，vim中的环视和固化分组的模式的位置与perl不同。例如，查找紧跟在 foo 之后的 bar，perl将模式写在环视的括号内，而vim将模式写在环视的元字符之前。
 ```
+
+#### Regex Groups
+One way to fix this is by ensuring the pattern is enclosed by escaped parentheses:
+
+```
+:%s/\(\w\)\(\w\w\)/\1y\2/g
+```
+Slightly shorter (and more magic-al) is to use \v, meaning that in the pattern after it all ASCII characters except '0'-'9', 'a'-'z', 'A'-'Z' and '_' have a special meaning:
+```
+:%s/\v(\w)(\w\w)/\1y\2/g
+```
+See:
+```
+:help \(
+:help \v
+```
+
+
 <!--}}}-->
 
 ### DEBUG <!--{{{-->
@@ -1558,5 +1576,8 @@ vim filename -V > savefilename
 
 <!--}}}-->
 
+
+## Reference
+- https://stackoverflow.com/questions/19902089/vim-regex-capture-groups
 
 modeline vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :

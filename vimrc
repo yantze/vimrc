@@ -946,6 +946,8 @@ nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 " map j to gj and k to gk, so line navigation ignores line wrap
 nnoremap j gj
 nnoremap k gk
+vmap j gj
+vmap k gk
 
 " }}}
 
