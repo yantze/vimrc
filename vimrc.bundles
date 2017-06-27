@@ -271,7 +271,8 @@ Plugin 'mileszs/ack.vim'
 " search the current word by ag
 " command! Agg exe 'Ag -Q ' . expand('<cword>')
 
-let g:ackprg = 'ag --vimgrep --smart-case'
+let g:ackprg = 'ag -i --vimgrep'
+" let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
