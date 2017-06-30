@@ -262,8 +262,7 @@ command! -bang Bq call CleanClose(0,1)
 
 " Find & Search
 Plugin 'mileszs/ack.vim'
-" original 'ack.vim'
-" Deprecated 'rking/ag.vim'
+" original 'ack.vim' and Deprecated 'rking/ag.vim'
 
 " there use special tech, when you put ':ag ', will display ':Ag '
 " cnoreabbrev ag Ag
@@ -271,8 +270,24 @@ Plugin 'mileszs/ack.vim'
 " search the current word by ag
 " command! Agg exe 'Ag -Q ' . expand('<cword>')
 
-let g:ackprg = 'ag -i --vimgrep'
+let g:ackprg = 'rg -i --vimgrep'
 " let g:ackprg = 'ag --vimgrep --smart-case'
+
+" <C-W>p not work
+let g:ack_mappings = { 
+  \ "J": "<CR><C-W>j",
+  \ "K": "<CR><C-W>k",
+  \ "H": "<CR><C-W>h",
+  \ "L": "<CR><C-W>l",
+  \ "t": "<C-W><CR><C-W>T",
+  \ "T": "<C-W><CR><C-W>TgT<C-W>j",
+  \ "o": "<CR>",
+  \ "O": "<CR><C-W><C-W>:ccl<CR>",
+  \ "go": "<CR><C-W>j",
+  \ "h": "<C-W><CR><C-W>K",
+  \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
+  \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
+  " \ "H": "<C-W><CR><C-W>K<C-W>b",
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack

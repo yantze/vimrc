@@ -511,8 +511,8 @@ set incsearch                " 开启实时搜索功能,查询时非常方便，
 set hlsearch                 " 开启高亮显示结果
 set nowrapscan               " 搜索到文件两端时不重新搜索
 set mouse=a                  " 启用鼠标
-set lbr                      " 不在单词中间断行(linebreak)
-" set nowrap                   " 设置不自动换行
+set wrap linebreak nolist    " wrap，only wrap at a character in the breakat option (by default, this includes " ^I!@*-+;:,./?" , linebreak 不在单词中间断行
+
 " set tw=78                    "超过80个字符就折行(textwrap)
 " set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
 set display=lastline         " 不要显示@@@@@
@@ -636,8 +636,8 @@ set foldmethod=indent        " 选择代码折叠类型, other:marker,indent,syn
 set foldlevel=99             " 禁止自动折叠 also same: set [no]foldenable
 nnoremap <space> za             " 用空格来切换折叠状态
 if !exists("g:no_plugin")
-    autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
     autocmd BufWinEnter *.* silent loadview  " 恢复状态
+    autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
     " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
     " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
     " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
@@ -720,7 +720,6 @@ endif
     set iskeyword+=-
     " remove $ as a word boundary (i.e. making a keyword character)
     set iskeyword+=$
-    set wrap linebreak nolist
 
 
 " }}}
@@ -989,11 +988,6 @@ vmap k gk
         " Use UNIX (\n) line endings.
         au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
 
-        au BufNewFile,BufRead *.js,*.html,*.css
-            \ set tabstop=2 |
-            \ set softtabstop=2 |
-            \ set shiftwidth=2 |
-
         " Display tabs at the beginning of a line in Python mode as bad.
         " au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
         " Make trailing whitespace be flagged as bad.
@@ -1129,24 +1123,23 @@ vmap k gk
     " shortcut
     " F         格式化当前页面 js,html,css. 可选中局部格式化
 
+    " au FileType javascript,coffee,slim,jade set shiftwidth=2
+    " au FileType javascript,offee,slim,jade set tabstop=2
+
+    " au BufRead,BufNewFile *.scss set filetype=scss
+    " au BufRead,BufNewFile *.sass set filetype=scss
+    " au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
+    " au BufRead,BufNewFile *.less set filetype=css
+    " au BufRead,BufNewFile *.coffee setl foldmethod=indent nofoldenable
+    " au BufRead,BufNewFile *.coffee setl shiftwidth=2 expandtab
+
+    au BufNewFile,BufRead *.js,*.html,*.css
+        \ set tabstop=4 |
+        \ set softtabstop=4 |
+        \ set shiftwidth=4
+
     " ignore Node and JS stuff
     set wildignore+=*/node_modules/*,*.min.js
-
-    au FileType javascript,coffee,slim,jade set shiftwidth=2
-    au FileType javascript,offee,slim,jade set tabstop=2
-
-    " au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
-
-    "scss,sass
-    au BufRead,BufNewFile *.scss set filetype=scss
-    au BufRead,BufNewFile *.sass set filetype=scss
-
-    " 自定义关联文件类型
-    au BufNewFile,BufRead *.less set filetype=css
-
-    "coffee script
-    au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
-    au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 expandtab
 
     hi link coffeeSpaceError NONE
     hi link coffeeSemicolonError NONE
@@ -1178,28 +1171,15 @@ if OSX()
 
 endif
 
-if exists("g:termius")
+if ($MYENV == 'tmux_light')
     set background=light
+    colorscheme solarized
+elseif ($MYENV == 'tmux_termius_light')
     colorscheme pt_light
+else
+    colorscheme pt_black
 endif
 
 " }}}
-
-" if executable('ag')
-"   set grepprg=ag\ --nogroup\ --nocolor\ --vimgrep
-"   set grepformat^=%f:%l:%c:%m   " file:line:column:message
-" endif
-" 
-" function! MySearch()
-"   let grep_term = input("Enter search term: ")
-"   if !empty(grep_term)
-"     execute 'silent grep' grep_term | copen
-"   else
-"     echo "Empty search term"
-"   endif
-"   redraw!
-" endfunction
-" 
-" command! Search call MySearch()
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
