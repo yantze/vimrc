@@ -35,7 +35,6 @@
 
     " Windows Compatible {
         if WINDOWS()
-            let g:isWIN = 1
             " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
             if has("statusline")
                 set statusline  =%<%f\ %h%m%r%=%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}
@@ -44,7 +43,6 @@
                 set statusline +=\ %h%m%r%=%-14.(%l,%c%V%)\ %P
             endif
         else
-            let g:isWIN = 0
             " 兼容windows的环境变量$VIM
             let $VIM = $HOME."/.vim"
             set shell=/bin/sh
@@ -205,14 +203,14 @@ endfunction
 func! Compile_Run_Code()
     exec "w"
     if &filetype == "c"
-        if g:isWIN
+        if WINDOWS()
             exec !gcc -Wall -std=c11 -o %:r %:t && %:r.exe"
         else
             exec "!clang -Wall -std=c11 -o %:r %:t && ./%:r"
             " exec "!gcc -Wall -o %:r %:t && ./%:r"
         endif
     elseif &filetype == "cpp"
-        if g:isWIN
+        if WINDOWS()
             exec "!g++ -Wall -std=c++11 -o %:r %:t && %:r.exe"
         else
             " exec "!g++ -Wall -std=c++11 -o %:r %:t && ./%:r"
@@ -220,7 +218,7 @@ func! Compile_Run_Code()
             " -ggdb " add gdb support
         endif
     elseif &filetype == "d"
-        if g:isWIN
+        if WINDOWS()
             exec "!dmd -wi %:t && %:r.exe"
         else
             exec "!dmd -wi %:t && ./%:r"
@@ -228,7 +226,7 @@ func! Compile_Run_Code()
     elseif &filetype == "go"
         exec "!go run %:t"
     elseif &filetype == "rust"
-        if g:isWIN
+        if WINDOWS()
             exec "!rustc %:t && %:r.exe"
         else
             exec "!rustc %:t && ./%:r"
@@ -244,7 +242,7 @@ func! Compile_Run_Code()
     elseif &filetype == "cs"
             exec "!mcs %:t && mono %:r.exe"
     elseif &filetype == "fsharp"
-        if g:isWIN
+        if WINDOWS()
             exec "!fsc %:t && %:r.exe"
         else
             exec "!fsharpc %:t && ./%:r.exe"
@@ -254,13 +252,13 @@ func! Compile_Run_Code()
     elseif &filetype == "lisp"
         exec "!sbcl --load %:t"
     elseif &filetype == "ocaml"
-        if g:isWIN
+        if WINDOWS()
             exec "!ocamlc -o %:r.exe %:t && %:r.exe"
         else
             exec "!ocamlc -o %:r %:t && ./%:r"
         endif
     elseif &filetype == "haskell"
-        if g:isWIN
+        if WINDOWS()
             exec "!ghc -o %:r %:t && %:r.exe"
         else
             exec "!ghc -o %:r %:t && ./%:r"
@@ -304,7 +302,7 @@ endfunc
 function! Do_CsTag()
     let dir = getcwd()
     if filereadable("tags")
-        if(g:iswindows==1)
+        if WINDOWS()
             let tagsdeleted=delete(dir."\\"."tags")
         else
             let tagsdeleted=delete("./"."tags")
@@ -318,7 +316,7 @@ function! Do_CsTag()
         silent! execute "cs kill -1"
     endif
     if filereadable("cscope.files")
-        if(g:iswindows==1)
+        if WINDOWS()
             let csfilesdeleted=delete(dir."\\"."cscope.files")
         else
             let csfilesdeleted=delete("./"."cscope.files")
@@ -329,7 +327,7 @@ function! Do_CsTag()
         endif
     endif
     if filereadable("cscope.out")
-        if(g:iswindows==1)
+        if WINDOWS()
             let csoutdeleted=delete(dir."\\"."cscope.out")
         else
             let csoutdeleted=delete("./"."cscope.out")
@@ -344,7 +342,7 @@ function! Do_CsTag()
         silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
     endif
     if(executable('cscope') && has("cscope") )
-        if(g:iswindows!=1)
+        if WINDOWS()
             silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
         else
             silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
@@ -372,7 +370,7 @@ endfunction
 
 " GUI & WIN {{{
 " 设置着色模式和字体
-if g:isWIN
+if WINDOWS()
     " 使用GUI界面时的设置
     if g:isGUI
         " 启动gvim时窗口的大小
@@ -539,6 +537,8 @@ if v:version > 703
     set relativenumber " 开启相对行号
     set nu                       " 显示行号
     set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
+    set undodir=$VIMFILES/\_undodir
+    set undolevels=1000 "maximum number of changes that can be undone"
 endif
 
 
@@ -710,7 +710,6 @@ endif
 
     " ==全局设置==
     "
-    " let g:iswindows=1
     autocmd BufEnter * lcd %:p:h  " 每打开一个文件进入当前文件目录
     " au BufWritePre /tmp/* setl undofile " 无效果
 
