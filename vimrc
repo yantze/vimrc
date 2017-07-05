@@ -364,6 +364,52 @@ function! AppendModeline()
     let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
     call append(line("$"), l:modeline)
 endfunction
+
+function! RemoveOldViewFiles()
+    exe 'find '.$VIM.'/view/* -mtime +90 -exec rm {} \;'
+endfunction
+
+function! MakeSession()
+    if !has('gui_running')
+        hi clear
+    endif
+    if bufname('')  == ''
+        exe 'bdelete '.bufnr('')
+    endif
+    let l:count = 0
+    let l:i = 0
+    while l:i <= bufnr('$')
+        if buflisted(count)
+            let l:count += 1
+        endif
+        let l:i+=1
+    endwhile
+    if l:count >= 4
+        mksession! ~/.last_session.vim
+    endif
+endfunction
+
+function! LoadSession()
+    "if exists('g:SessionLoaded')
+    "return
+    "endif
+    if expand('%') == '' && filereadable($HOME.'/.last_session.vim') && !&diff
+        silent so ~/.last_session.vim
+    endif
+
+    let l:buftotal = bufnr('$')
+    let l:i = 0
+    let l:crtpath = getcwd() 
+    while l:i <= l:buftotal
+        " 列表中还未载入的buffer，如果不在当前工作目录，会被删除
+        if !bufloaded(l:i) && buflisted(l:i) && expand('%:p') !~ l:crtpath
+            exe 'bdelete '.l:i
+            echo expand('%:p') .' !~ '. l:crtpath
+        endif
+        let l:i += 1
+    endwhile
+endfunction
+
 " }}}
 
 " Setting {{{
@@ -537,7 +583,7 @@ if v:version > 703
     set relativenumber " 开启相对行号
     set nu                       " 显示行号
     set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
-    set undodir=$VIMFILES/\_undodir
+    set undodir=$VIM/\_undodir
     set undolevels=1000 "maximum number of changes that can be undone"
 endif
 
@@ -636,8 +682,11 @@ set foldmethod=indent        " 选择代码折叠类型, other:marker,indent,syn
 set foldlevel=99             " 禁止自动折叠 also same: set [no]foldenable
 nnoremap <space> za             " 用空格来切换折叠状态
 if !exists("g:no_plugin")
-    autocmd BufWinEnter *.* silent loadview  " 恢复状态
-    autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
+
+autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
+autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | syntax on | endif
+    " autocmd BufWinEnter *.* silent loadview  " 恢复状态
+    " autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
     " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
     " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
     " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
@@ -1151,6 +1200,7 @@ vmap k gk
 " }}}
 
 " Locals {{{
+
 if filereadable(expand("~/.local/.vimrc_local"))
     source ~/.local/.vimrc_local
 endif
@@ -1178,6 +1228,13 @@ elseif ($MYENV == 'tmux_termius_light')
 else
     colorscheme pt_black
 endif
+
+" Session files Vim关闭时保存会话状态
+" set sessionoptions+=unix
+" set sessionoptions-=blank
+"set sessionoptions-=options
+" autocmd VimEnter * call LoadSession()
+" autocmd VimLeave * call MakeSession() 
 
 " }}}
 

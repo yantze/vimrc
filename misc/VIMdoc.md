@@ -1436,6 +1436,12 @@ the last modification
 ```
 <!-- }}} -->
 
+### 未整理 {{{ 
+
+gv 选中之前选中过的内容 g~{motion} 切换{motion}跨越的文本的大小写 g~~ 切换当前行的大小写 gU{motion} 切换为大写 gu{motion} 切换为小写
+
+}}}
+
 ## Advance
 
 ### Vim 正则表达式 <!--{{{-->
@@ -1593,5 +1599,6 @@ vim filename -V > savefilename
 
 ## Reference
 - https://stackoverflow.com/questions/19902089/vim-regex-capture-groups
+- http://kwiki.github.io/tips/Vim.html
 
 modeline vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
