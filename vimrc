@@ -2,15 +2,16 @@
 " $VIM/vimrc.bundles " the package location
 
 " Section folded because of not often change, unfold with key za / space
-" General {{{
+" General {
 
-" Enviroment {{{
+" Enviroment {
 " Base {
         let mapleader=","
         " 如果在这之前用<leader>，那么<leader>代表的是之前的leader"
         map ; :
 
         " restore last postion in file to vimfiles/view
+        " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
         au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
         " 判断是否处于GUI界面
@@ -129,9 +130,9 @@
         " 查找插件:PluginSearch
     " }
 
-" }}}
+" }
 
-" Functions {{{
+" Functions {
 
 " there func is for internal function invoal
 " not relate the other plugin
@@ -399,7 +400,7 @@ function! LoadSession()
 
     let l:buftotal = bufnr('$')
     let l:i = 0
-    let l:crtpath = getcwd() 
+    let l:crtpath = getcwd()
     while l:i <= l:buftotal
         " 列表中还未载入的buffer，如果不在当前工作目录，会被删除
         if !bufloaded(l:i) && buflisted(l:i) && expand('%:p') !~ l:crtpath
@@ -410,11 +411,11 @@ function! LoadSession()
     endwhile
 endfunction
 
-" }}}
+" }
 
-" Setting {{{
+" Setting {
 
-" GUI & WIN {{{
+" GUI & WIN {
 " 设置着色模式和字体
 if WINDOWS()
     " 使用GUI界面时的设置
@@ -499,7 +500,111 @@ else
     endif
 endif
 
-" }}}
+" }
+
+" 代码折叠 {
+set foldenable
+" 折叠方法
+" manual    手工折叠
+" indent    使用缩进表示折叠
+" expr      使用表达式定义折叠
+" syntax    使用语法定义折叠
+" diff      对没有更改的文本进行折叠
+" marker    使用标记进行折叠, 默认标记是 {{{ 和 }}}, 可以自定义为 `set foldmarker={,}`
+set foldmethod=indent
+set foldlevel=99
+" 代码折叠自定义快捷键 <leader>zz
+nnoremap <space> za             " 用空格来切换折叠状态
+let g:FoldMethod = 0
+map <leader>zz :call ToggleFold()<cr>
+fun! ToggleFold()
+    if g:FoldMethod == 0
+        exe "normal! zM"
+        let g:FoldMethod = 1
+    else
+        exe "normal! zR"
+        let g:FoldMethod = 0
+    endif
+endfun
+" }
+
+" 缩进配置 {
+    set smartindent
+    " 自动缩进
+    set autoindent
+
+    " tab 键宽度为4空格
+    set tabstop=4
+    " 每一次缩进对应的空格数
+    set shiftwidth=4
+    " 按退格键可以一次删掉4个空格
+    set softtabstop=4
+    set smarttab
+    " 将 tab 自动转化成空格 (需要输入真正的Tab键时，使用 Ctrl+V + Tab)
+    set expandtab
+    " 缩进时,取整
+    set shiftround
+
+    set cindent
+    " 详细的tab设置：http://blog.chinaunix.net/uid-24774106-id-3396220.html
+    set smarttab                 "在行首按TAB将加入sw个空格，否则加入ts个空格;按Backspace可以删除4个空格
+
+
+
+" }
+
+" 相对行号 {
+if v:version > 703
+    set relativenumber number
+    autocmd FocusLost * :set norelativenumber number
+    autocmd FocusGained * :set relativenumber
+    " 插入模式下用绝对行号,普通模式下用相对
+    autocmd InsertEnter * :set norelativenumber number
+    autocmd InsertLeave * :set relativenumber
+    function! NumberToggle()
+      if(&relativenumber == 1)
+        set norelativenumber nonumber
+      else
+        set relativenumber number
+      endif
+    endfunc
+    nnoremap <leader><F2> :call NumberToggle()<cr>
+
+    " no num and relative
+    " nnoremap <leader><F3> :set relativenumber!<CR>:set nu!<CR>
+    " imap <leader><F3>     :set relativenumber!<CR>:set nu!<CR>
+endif
+
+" }
+
+" 粘贴模式 {
+" 在插入模式下按 <F3> 进入粘贴模式,这时候粘贴复制过来的代码不会触发自动缩进
+set pastetoggle=<F3>
+" 离开插入模式时,关闭粘贴模式
+autocmd InsertLeave * set nopaste
+" 在插入模式使用粘贴会自动开启粘贴模式,不需要手动设置
+function! XTermPasteBegin()
+    set pastetoggle=<Esc>[201~
+    set paste
+    return ""
+endfunction
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+nnoremap <F3> :set invpaste paste?<CR>
+imap <F3> <C-O>:set invpaste paste?<CR>
+
+" }"
+
+" Search {
+set incsearch                " 开启实时搜索功能,查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词
+set hlsearch                 " 开启高亮显示结果
+set nowrapscan               " 搜索到文件两端时不重新搜索
+" 搜索正则匹配规则改变 见帮助 :h magic
+set magic
+" 搜索模式为默认更先进的正则规则 
+" nnoremap / /\v
+" vnoremap / /\v
+" }
 
 syntax enable                " 打开语法高亮
 syntax on                    " 开启文件类型侦测
@@ -520,7 +625,6 @@ if has("multi_byte")
     endif
 endif
 
-set bsdir=buffer                                 " 设定文件浏览器目录为当前目录
 set enc=utf-8                                    " 设置编码
 set fenc=utf-8                                   " 设置文件编码
 set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
@@ -530,6 +634,7 @@ set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compati
 " set bsdir=buffer                               " 设定文件浏览器目录为当前目录,default value
 " set autochdir
 
+set bsdir=buffer                                 " 设定文件浏览器目录为当前目录
 " 把这个快捷键放在这里主要是因为dos的vim对这个不支持，其它的系统支持
 imap <c-h> <ESC>I
 
@@ -550,10 +655,8 @@ set list                     " 显示特殊字符，其中Tab使用高亮竖线�
 set listchars=tab:\|\ ,trail:. "设置tab/尾部字符用什么填充
 set t_Co=256                 " 设置文字可以显示多少种颜色
 set cursorline               " 突出显示当前行
-set history=50               " keep 50 lines of command line history
-set incsearch                " 开启实时搜索功能,查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词
-set hlsearch                 " 开启高亮显示结果
-set nowrapscan               " 搜索到文件两端时不重新搜索
+" set cursorcolumn             " 突出显示当前列
+set history=500              " keep 500 lines of command line history
 set mouse=a                  " 启用鼠标
 set wrap linebreak nolist    " wrap，only wrap at a character in the breakat option (by default, this includes " ^I!@*-+;:,./?" , linebreak 不在单词中间断行
 
@@ -564,24 +667,11 @@ set display=lastline         " 不要显示@@@@@
 
 " set ambiwidth=double         "如果全角字符不能识别一般用这个(自动用宽字符显示)
 set fo+=mB                   "打开断行模块对亚洲语言支持
-set ai!                      " autoindent 设置自动缩进
-" set showmatch                " 显示括号配对情况
+set showmatch                " 显示括号配对情况
 " set lsp=0                    "设置行间距
-
-" Tab
-set tabstop=4
-set cindent shiftwidth=4
-set expandtab                " 将Tab自动转化成空格 [需要输入真正的Tab键时，使用 Ctrl+V + Tab]
-" 详细的tab设置：http://blog.chinaunix.net/uid-24774106-id-3396220.html
-"set ts=4 sw=4 et  "也可以一行写完:ts=tabstop=4 sw=shiftwidth=4 et=expandtab
-set smarttab                 "在行首按TAB将加入sw个空格，否则加入ts个空格;按Backspace可以删除4个空格
-
-
 
 
 if v:version > 703
-    set relativenumber " 开启相对行号
-    set nu                       " 显示行号
     set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
     set undodir=$VIM/\_undodir
     set undolevels=1000 "maximum number of changes that can be undone"
@@ -613,6 +703,12 @@ set wildignore+=*.pot,*.po,*.mo
 " Fonts and such
 set wildignore+=*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf
 
+set wildignore+=*.aux,*.out,*.toc " LaTeX intermediate files
+set wildignore+=*.luac " Lua byte code
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
+set wildignore+=*.pyc " Python byte code
+set wildignore+=*.spl " compiled spelling word lists
+set wildignore+=*.sw? " Vim swap files
 " \ig                        --显示/关闭对齐线
 " 0 or ^ or $                --跳至 行首 or 第一个非空字符 or 行尾
 "
@@ -677,10 +773,7 @@ au FileType perl,php set iskeyword-=$
 " div>p#foo$*3>a
 " https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
 
-" Enable folding with the spacebar
-set foldmethod=indent        " 选择代码折叠类型, other:marker,indent,syntax
-set foldlevel=99             " 禁止自动折叠 also same: set [no]foldenable
-nnoremap <space> za             " 用空格来切换折叠状态
+
 if !exists("g:no_plugin")
 
 autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
@@ -770,11 +863,11 @@ endif
     set iskeyword+=$
 
 
-" }}}
+" }
 
-" }}}
+" }
 
-" Shorcut {{{
+" Shorcut {
 
 " =======
 " 自定义快捷键
@@ -969,14 +1062,6 @@ nnoremap <silent> <C-j>  :m+<CR>==
 xnoremap <silent> <C-k>  :m'<-2<CR>gv=gv
 xnoremap <silent> <C-j>  :m'>+<CR>gv=gv
 
-" Process past
-set pastetoggle=<F3>
-nnoremap <F3> :set invpaste paste?<CR>
-imap <F3> <C-O>:set invpaste paste?<CR>
-set pastetoggle=<F3>
-" no num and relative
-nnoremap <leader><F3> :set relativenumber!<CR>:set nu!<CR>
-imap <leader><F3>     :set relativenumber!<CR>:set nu!<CR>
 nnoremap <leader><F4> :set undofile!<CR>
 imap <leader><F4>     :set undofile!<CR>
 
@@ -996,11 +1081,11 @@ nnoremap k gk
 vmap j gj
 vmap k gk
 
-" }}}
+" }
 
-" Scene {{{
+" Scene {
 
-" ManPage {{{
+" ManPage {
     " manpageview phpfunctionname.php
     " 可以使用快捷键K查询
     " 说明，比如你在centos里面装了man-pages，当你用K查询的时候，自动会弹出man 你光标下面的词
@@ -1008,14 +1093,14 @@ vmap k gk
     " 查找当前的单词意思,quick close: ZZ/:q
     nmap <silent><leader>K :call Mydict()<CR>
     "
-" }}}
+" }
 
-" Instant Preview Markdown {{{
+" Instant Preview Markdown {
     let g:instant_markdown_autostart = 0
     map <leader>rp :InstantMarkdownPreview<CR>
-" }}}
+" }
 
-" Python {{{
+" Python {
     " Base Setting {
         " python highlight
         let python_highlight_all = 1
@@ -1061,9 +1146,9 @@ vmap k gk
         " 如果有一天一直使用 python  可以考虑把 python 放在单独的一个文件配置中, 参考这篇文章
         " https://segmentfault.com/a/1190000003962806
     " }
-" }}}
+" }
 
-" PHP {{{
+" PHP {
     " Base Setting {
         let g:phpcomplete_relax_static_constraint = 1
         let g:phpcomplete_complete_for_unknown_classes = 1
@@ -1148,9 +1233,9 @@ vmap k gk
         " 在打开文件的时候检查
         let g:phpqa_messdetector_autorun = 0
     " }
-" }}}
+" }
 
-" RUBY {{{
+" RUBY {
     " 针对部分语言取消指定字符的单词属性
     au FileType ruby     set iskeyword+=!
     au FileType ruby     set iskeyword+=?
@@ -1164,9 +1249,9 @@ vmap k gk
     let g:rubycomplete_classes_in_global = 1
     let g:rubycomplete_rails = 1
     autocmd FileType ruby compiler ruby
-" }}}
+" }
 
-" Node {{{
+" Node {
 
     " shortcut
     " F         格式化当前页面 js,html,css. 可选中局部格式化
@@ -1194,39 +1279,25 @@ vmap k gk
     hi link coffeeReservedError NONE
     map <leader>cf :CoffeeCompile watch vert<cr>
 
-" }}}
+" }
 
 
-" }}}
+" }
 
-" Locals {{{
+" Locals {
 
 if filereadable(expand("~/.local/.vimrc_local"))
     source ~/.local/.vimrc_local
 endif
 
-if WINDOWS()
-    set background=dark
-endif
-
-if OSX()
-    set background=light
-
-    if ($MYENV == 'pt_light')
-        colorscheme pt_black
-    else
-        colorscheme solarized
-    endif
-
-endif
-
-if ($MYENV == 'tmux_light')
+if $MYENV == 'tmux_light'
     set background=light
     colorscheme solarized
-elseif ($MYENV == 'tmux_termius_light')
+elseif $MYENV == 'term_light'
     colorscheme pt_light
 else
-    colorscheme pt_black
+    " set background=dark
+    " colorscheme pt_black
 endif
 
 " Session files Vim关闭时保存会话状态
@@ -1234,8 +1305,42 @@ endif
 " set sessionoptions-=blank
 "set sessionoptions-=options
 " autocmd VimEnter * call LoadSession()
-" autocmd VimLeave * call MakeSession() 
+" autocmd VimLeave * call MakeSession()
 
-" }}}
+" 自动补全配置
+" 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+set completeopt=longest,menu
 
-" vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
+" 回车即选中当前项
+inoremap <expr> <CR>       pumvisible() ? "\<c-y>" : "\<cr>"
+
+
+
+" F4 换行开关
+nnoremap <F4> :set wrap! wrap?<CR>
+
+" F5 显示可打印字符开关
+nnoremap <F5> :set list! list?<CR>
+
+    " 退出 vim 后,vim 的内容仍显示在屏幕上
+    set t_ti= t_te=
+
+    " 光标的上下方至少保留显示的行数
+    set scrolloff=10
+
+    " 滚动屏幕为2行
+    nnoremap <C-e> 2<C-e>
+    nnoremap <C-y> 2<C-y>
+
+    " 退出所有窗口
+    nnoremap <leader>q :qa<CR>
+
+    " 保存并退出当前编辑文件
+    nnoremap <leader>x :x<CR>
+
+
+
+
+" }
+
+" vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
