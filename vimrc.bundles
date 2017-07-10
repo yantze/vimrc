@@ -87,31 +87,39 @@ Plugin 'honza/vim-snippets' " garbas is inherit from honza
 
 " {{{ Colorschemes
 
-Plugin 'molokai'
 Plugin 'flazz/vim-colorschemes'
 
-" 增强状态栏的，vim-powerline < powerline < vim-airline
-    " Airline {{{
-        Plugin 'bling/vim-airline'
-        " 打开airline的扩展tab buffer exploer功能
-        " let g:airline#extensions#tabline#enabled = 1
-        " determine whether bufferline will overwrite customization variables
-        " let g:airline#extensions#bufferline#overwrite_variables = 1
-        " AirLine彩色状态栏:badwolf, bubblegum, luna, raven, serene
-        " serene需要修改的地方：
-        " 白色状态栏: sol
-        " ~/.dotfiles/vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes +4
-        " 改为235
-        " let g:airline_theme = 'serene'                " 设置主题
-        " configure the title text for quickfix buffers
-        " let g:airline#extensions#quickfix#quickfix_text = 'Quickfix'
+" vim-airline > powerline > vim-powerline
+" Powerline {{{
+    Plugin 'vim-airline/vim-airline'
+    Plugin 'vim-airline/vim-airline-themes'
 
-        " Open URI under cursor or search.--go brower
-        nmap gb <Plug>(openbrowser-smart-search)
-        " Open URI selected word or search.
-        vmap gb <Plug>(openbrowser-smart-search)
-        " Open URI you also can use <leader>gb because of "textbrowser.vim"
-    " }}}
+
+    let g:airline_powerline_fonts = 1
+
+    " 打开airline的扩展tab buffer exploer功能
+    " let g:airline#extensions#tabline#enabled = 1
+    " determine whether bufferline will overwrite customization variables
+    " let g:airline#extensions#bufferline#overwrite_variables = 1
+
+    " About theme
+    let g:airline_theme='solarized' " serene
+    " Solarized 主题
+    let g:solarized_termcolors=16 " 16 | 256
+    let g:solarized_termtrans=1 " 0 | 1
+    let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
+    let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
+
+    " AirLine彩色状态栏:badwolf, bubblegum, luna, raven, serene
+    " serene需要修改的地方：
+    " 白色状态栏: sol
+    " ~/.dotfiles/vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes +4
+    " 改为235
+    " let g:airline_theme = 'serene'                " 设置主题
+    " configure the title text for quickfix buffers
+    " let g:airline#extensions#quickfix#quickfix_text = 'Quickfix'
+
+" }}}
 
 " 会出现缩进一条一条的颜色
     " indent-guide{{{
@@ -274,7 +282,7 @@ let g:ackprg = 'rg -i --vimgrep'
 " let g:ackprg = 'ag --vimgrep --smart-case'
 
 " <C-W>p not work
-let g:ack_mappings = { 
+let g:ack_mappings = {
   \ "J": "<CR><C-W>j",
   \ "K": "<CR><C-W>k",
   \ "H": "<CR><C-W>h",
@@ -457,6 +465,12 @@ let g:used_javascript_libs = 'underscore,jquery,react,vue'
     " 设置md文件是否用自己的方式折叠
     let g:vim_markdown_folding_disabled = 1
 " }}}
+
+        " Open URI under cursor or search.--go brower
+        nmap gb <Plug>(openbrowser-smart-search)
+        " Open URI selected word or search.
+        vmap gb <Plug>(openbrowser-smart-search)
+        " Open URI you also can use <leader>gb because of "textbrowser.vim"
 
 Plugin 'tpope/vim-fugitive'
 " :Gdiff - Diffs file with current version in repository
