@@ -599,9 +599,10 @@ imap <F3> <C-O>:set invpaste paste?<CR>
 set incsearch                " 开启实时搜索功能,查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词
 set hlsearch                 " 开启高亮显示结果
 set nowrapscan               " 搜索到文件两端时不重新搜索
+set ic                       " 忽略大小写查找
 " 搜索正则匹配规则改变 见帮助 :h magic
 set magic
-" 搜索模式为默认更先进的正则规则 
+" 搜索模式为默认更先进的正则规则
 " nnoremap / /\v
 " vnoremap / /\v
 " }
@@ -611,7 +612,6 @@ syntax on                    " 开启文件类型侦测
 filetype indent on           " 针对不同的文件类型采用不同的缩进格式
 filetype plugin on           " 针对不同的文件类型加载对应的插件
 filetype plugin indent on    " 启用自动补全
-set ic                       " 忽略大小写查找
 set visualbell t_vb=         " 关闭visual bell/声音
 au GuiEnter * set t_vb=      " 关闭beep/屏闪
 
@@ -773,11 +773,11 @@ au FileType perl,php set iskeyword-=$
 " div>p#foo$*3>a
 " https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
 
+"{
 
 if !exists("g:no_plugin")
-
-autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
-autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | syntax on | endif
+    autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
+    autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
     " autocmd BufWinEnter *.* silent loadview  " 恢复状态
     " autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
     " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
@@ -804,6 +804,8 @@ endif
     "auto completed
     " Disable AutoComplPop.
     let g:acp_enableAtStartup = 0
+
+    " }
 
     " ==创建 Tags===
     "
