@@ -370,47 +370,6 @@ function! RemoveOldViewFiles()
     exe 'find '.$VIM.'/view/* -mtime +90 -exec rm {} \;'
 endfunction
 
-function! MakeSession()
-    if !has('gui_running')
-        hi clear
-    endif
-    if bufname('')  == ''
-        exe 'bdelete '.bufnr('')
-    endif
-    let l:count = 0
-    let l:i = 0
-    while l:i <= bufnr('$')
-        if buflisted(count)
-            let l:count += 1
-        endif
-        let l:i+=1
-    endwhile
-    if l:count >= 4
-        mksession! ~/.last_session.vim
-    endif
-endfunction
-
-function! LoadSession()
-    "if exists('g:SessionLoaded')
-    "return
-    "endif
-    if expand('%') == '' && filereadable($HOME.'/.last_session.vim') && !&diff
-        silent so ~/.last_session.vim
-    endif
-
-    let l:buftotal = bufnr('$')
-    let l:i = 0
-    let l:crtpath = getcwd()
-    while l:i <= l:buftotal
-        " 列表中还未载入的buffer，如果不在当前工作目录，会被删除
-        if !bufloaded(l:i) && buflisted(l:i) && expand('%:p') !~ l:crtpath
-            exe 'bdelete '.l:i
-            echo expand('%:p') .' !~ '. l:crtpath
-        endif
-        let l:i += 1
-    endwhile
-endfunction
-
 " }
 
 " Setting {
@@ -613,7 +572,9 @@ filetype indent on           " 针对不同的文件类型采用不同的缩进�
 filetype plugin on           " 针对不同的文件类型加载对应的插件
 filetype plugin indent on    " 启用自动补全
 set visualbell t_vb=         " 关闭visual bell/声音
-au GuiEnter * set t_vb=      " 关闭beep/屏闪
+set t_Co=256                 " 设置文字可以显示多少种颜色
+" au GuiEnter * set t_vb=    " 关闭beep/屏闪
+" set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
 " 文件配置
 " set fileformats=unix                             " 设定换行符
@@ -653,7 +614,6 @@ set noswapfile               " 不生成交换文件
 set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
 set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
 set listchars=tab:\|\ ,trail:. "设置tab/尾部字符用什么填充
-set t_Co=256                 " 设置文字可以显示多少种颜色
 set cursorline               " 突出显示当前行
 " set cursorcolumn             " 突出显示当前列
 set history=500              " keep 500 lines of command line history
@@ -1083,6 +1043,22 @@ nnoremap k gk
 vmap j gj
 vmap k gk
 
+" F4 换行开关
+nnoremap <F4> :set wrap! wrap?<CR>
+
+" F5 显示可打印字符开关
+nnoremap <F5> :set list! list?<CR>
+
+" 滚动屏幕为2行
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
+
+" 退出所有窗口
+nnoremap <leader>q :qa<CR>
+
+" 保存并退出当前编辑文件
+nnoremap <leader>x :x<CR>
+
 " }
 
 " Scene {
@@ -1302,44 +1278,15 @@ else
     " colorscheme pt_black
 endif
 
-" Session files Vim关闭时保存会话状态
-" set sessionoptions+=unix
-" set sessionoptions-=blank
-"set sessionoptions-=options
-" autocmd VimEnter * call LoadSession()
-" autocmd VimLeave * call MakeSession()
-
 " 自动补全配置
 " 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 set completeopt=longest,menu
 
+" 光标的上下方至少保留显示的行数
+set scrolloff=5
+
 " 回车即选中当前项
 inoremap <expr> <CR>       pumvisible() ? "\<c-y>" : "\<cr>"
-
-
-
-" F4 换行开关
-nnoremap <F4> :set wrap! wrap?<CR>
-
-" F5 显示可打印字符开关
-nnoremap <F5> :set list! list?<CR>
-
-    " 退出 vim 后,vim 的内容仍显示在屏幕上
-    set t_ti= t_te=
-
-    " 光标的上下方至少保留显示的行数
-    set scrolloff=10
-
-    " 滚动屏幕为2行
-    nnoremap <C-e> 2<C-e>
-    nnoremap <C-y> 2<C-y>
-
-    " 退出所有窗口
-    nnoremap <leader>q :qa<CR>
-
-    " 保存并退出当前编辑文件
-    nnoremap <leader>x :x<CR>
-
 
 
 
