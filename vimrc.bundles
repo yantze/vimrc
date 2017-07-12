@@ -466,6 +466,9 @@ let g:used_javascript_libs = 'underscore,jquery,react,vue'
     let g:vim_markdown_folding_disabled = 1
 " }}}
 
+" highlighting for applescript
+Plugin 'dearrrfish/vim-applescript'
+
         " Open URI under cursor or search.--go brower
         nmap gb <Plug>(openbrowser-smart-search)
         " Open URI selected word or search.

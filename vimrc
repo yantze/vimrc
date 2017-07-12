@@ -430,8 +430,9 @@ else
             " set guifont=DejaVu\ Sans\ Mono\ 14
         elseif has("gui_macvim")
             " set guifont=DejaVu_Sans_Mono:h14
-            set guifont=Monaco:h12
+            set guifont=Monaco\ for\ Powerline:h12
             set guifontwide=HiraginoSansGB-W3:h12
+            " set guifontwide=Go\ Mono\ for\ Powerline:h12
         end
 
         " set guifont=Monaco\ 13
@@ -669,7 +670,8 @@ set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
 set wildignore+=*.pyc " Python byte code
 set wildignore+=*.spl " compiled spelling word lists
 set wildignore+=*.sw? " Vim swap files
-" \ig                        --显示/关闭对齐线
+
+" ,ig                        --显示/关闭对齐线
 " 0 or ^ or $                --跳至 行首 or 第一个非空字符 or 行尾
 "
 
