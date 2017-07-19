@@ -139,15 +139,15 @@
 
 func! RemoveTabs()
     if &shiftwidth == 2
-        exec "%s/    /  /g"
+        exec "%s/	/  /g"
     elseif &shiftwidth == 4
-        exec "%s/    /    /g"
+        exec "%s/	/    /g"
     elseif &shiftwidth == 6
-        exec "%s/    /      /g"
+        exec "%s/	/      /g"
     elseif &shiftwidth == 8
-        exec "%s/    /        /g"
+        exec "%s/	/        /g"
     else
-        exec "%s/    / /g"
+        exec "%s/	/    /g"
     end
 endfunc
 
@@ -1261,7 +1261,6 @@ nnoremap <leader>x :x<CR>
 
 " }
 
-
 " }
 
 " Locals {
@@ -1282,7 +1281,8 @@ endif
 
 " 自动补全配置
 " 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
-set completeopt=longest,menu
+" set completeopt=longest,menu
+" 试了一下，感觉操作不流畅
 
 " 光标的上下方至少保留显示的行数
 set scrolloff=5
