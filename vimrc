@@ -1290,6 +1290,26 @@ set scrolloff=5
 " 回车即选中当前项
 inoremap <expr> <CR>       pumvisible() ? "\<c-y>" : "\<cr>"
 
+" command! -nargs=* -complete=function Call exec 'call '.<f-args>
+" command! Q q
+" command! -bang Q q<bang>
+" command! Qall qall
+" command! -bang Qall qall<bang>
+" command! W w
+" command! -nargs=1 -complete=file E e <args>
+" command! -bang -nargs=1 -complete=file E e<bang> <args>
+" command! -nargs=1 -complete=tag Tag tag <args>
+"
+" Save a file that requires sudoing even when
+" you opened it as a normal user.
+command! Sw w !sudo tee % > /dev/null
+" Show difference between modified buffer and original file
+command! DiffSaved call s:DiffWithSaved()
+
+command! Bw call CleanClose(1,0)
+command! Bq call CleanClose(0,0)
+command! -bang Bw call CleanClose(1,1)
+command! -bang Bq call CleanClose(0,1)
 
 
 " }
