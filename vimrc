@@ -456,7 +456,7 @@ else
         " g:solarized_visibility= “normal”| “high” or “low”
 
         " colortheme list: ir_black grb256 BusyBee pt_black solarized xoria256
-        colorscheme pt_black
+        silent! colorscheme pt_black
     endif
 endif
 
@@ -644,7 +644,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Disable output and VCS files
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+set wildignore+=*.rbc,*.rbo,*.gem,.git,.svn
 
 " Disable image files
 set wildignore+=*.psd,*.png,*.jpg,*.gif,*.jpeg
@@ -656,7 +656,7 @@ set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 
 " Disable temp and backup files
-set wildignore+=*.swp,*~,._*,*.un~
+set wildignore+=*.sw?,*~,._*,*.un~
 
 " WP Language files
 set wildignore+=*.pot,*.po,*.mo
@@ -665,11 +665,12 @@ set wildignore+=*.pot,*.po,*.mo
 set wildignore+=*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf
 
 set wildignore+=*.aux,*.out,*.toc " LaTeX intermediate files
+set wildignore+=*.so,*.out,*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
 set wildignore+=*.luac " Lua byte code
-set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
 set wildignore+=*.pyc " Python byte code
+set wildignore+=*.class" Python byte code
 set wildignore+=*.spl " compiled spelling word lists
-set wildignore+=*.sw? " Vim swap files
+set wildignore+=*/tmp/*,.DS_Store  " MacOSX/Linux
 
 " ,ig                        --显示/关闭对齐线
 " 0 or ^ or $                --跳至 行首 or 第一个非空字符 or 行尾
@@ -949,7 +950,7 @@ nmap <leader>rt :call RemoveTabs()<CR>
 vmap <leader>rt <ESC>:call RemoveTabs()<CR>
 
 " \rl
-nmap <leader>rl :so ~/.vimrc<CR>
+nmap <leader>rl :so ~/.vim/vimrc<CR>
 
 " \r<cr>              一键替换特殊字符 ^M
 " 相同功能 :set notextmode
@@ -982,6 +983,10 @@ imap <c-tab> <Esc>:tabn<CR>i
 :map <c-s-tab> :tabp<CR>
 imap <c-s-tab> <Esc>:tabp<CR>i
 
+" 关于缓冲区，可以用 bd 删除当前缓冲区
+" ls! 显示当前缓冲区列表，然后 :b2 选择缓冲区
+" 关闭所有缓冲，只保留当前 :w | %bd | e#
+
 " 下一个缓冲区
 :nmap <leader>n :bn<CR>
 :map <leader>n :bn<CR>
@@ -998,6 +1003,10 @@ imap <leader>p <Esc>:bp<CR>i
 :nmap <c-F2> :bp<CR>
 :map <c-F2> :bp<CR>
 imap <c-F2> <Esc>:bp<CR>i
+
+" 上一次打开的缓冲区, 用 Ctrl+6 也可以做到
+" nmap <leader>k :b#<CR>
+" 用 ctrlp 插件， <leader><space> 默认选中的就是上次打开的 buffer
 
 " \R         一键保存、编译、运行
 imap <leader>R <ESC>:call Compile_Run_Code()<CR>
@@ -1263,32 +1272,34 @@ nnoremap <leader>x :x<CR>
 
 " }
 
+" Study {
+"
+" 函数学习
+" function CloseBuffer()
+"   exe 'normal! :w | %bd | e#'
+" endfunction
+" nmap <Tab> :call CloseBuffer()<CR>
+" }
+
 " Locals {
 
 if filereadable(expand("~/.local/.vimrc_local"))
     source ~/.local/.vimrc_local
 endif
 
+
 if $MYENV == 'tmux_light'
     set background=light
-    colorscheme solarized
+    silent! colorscheme solarized
 elseif $MYENV == 'term_light'
-    colorscheme pt_light
+    silent! colorscheme pt_light
 else
     " set background=dark
     " colorscheme pt_black
 endif
 
-" 自动补全配置
-" 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
-" set completeopt=longest,menu
-" 试了一下，感觉操作不流畅
-
 " 光标的上下方至少保留显示的行数
 set scrolloff=5
-
-" 回车即选中当前项
-inoremap <expr> <CR>       pumvisible() ? "\<c-y>" : "\<cr>"
 
 " command! -nargs=* -complete=function Call exec 'call '.<f-args>
 " command! Q q
@@ -1310,6 +1321,7 @@ command! Bw call CleanClose(1,0)
 command! Bq call CleanClose(0,0)
 command! -bang Bw call CleanClose(1,1)
 command! -bang Bq call CleanClose(0,1)
+
 
 
 " }
