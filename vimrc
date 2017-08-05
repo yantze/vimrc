@@ -1,7 +1,6 @@
 " author: yantze
 " $VIM/vimrc.bundles " the package location
 
-" Section folded because of not often change, unfold with key za / space
 " General {
 
 " Enviroment {
@@ -624,6 +623,9 @@ set wrap linebreak nolist    " wrap，only wrap at a character in the breakat op
 " set tw=78                    "超过80个字符就折行(textwrap)
 " set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
 set display=lastline         " 不要显示@@@@@
+
+" 光标的上下方至少保留显示的行数
+set scrolloff=5
 
 
 " set ambiwidth=double         "如果全角字符不能识别一般用这个(自动用宽字符显示)
@@ -1298,19 +1300,6 @@ else
     " colorscheme pt_black
 endif
 
-" 光标的上下方至少保留显示的行数
-set scrolloff=5
-
-" command! -nargs=* -complete=function Call exec 'call '.<f-args>
-" command! Q q
-" command! -bang Q q<bang>
-" command! Qall qall
-" command! -bang Qall qall<bang>
-" command! W w
-" command! -nargs=1 -complete=file E e <args>
-" command! -bang -nargs=1 -complete=file E e<bang> <args>
-" command! -nargs=1 -complete=tag Tag tag <args>
-"
 " Save a file that requires sudoing even when
 " you opened it as a normal user.
 command! Sw w !sudo tee % > /dev/null
@@ -1322,6 +1311,13 @@ command! Bq call CleanClose(0,0)
 command! -bang Bw call CleanClose(1,1)
 command! -bang Bq call CleanClose(0,1)
 
+" command! -nargs=* -complete=function Call exec 'call '.<f-args>
+" command! -bang Q q<bang>
+" command! -bang Qall qall<bang>
+" command! W w
+" command! -nargs=1 -complete=file E e <args>
+" command! -bang -nargs=1 -complete=file E e<bang> <args>
+" command! -nargs=1 -complete=tag Tag tag <args>
 
 
 " }

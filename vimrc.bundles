@@ -4,7 +4,7 @@ Plugin 'gmarik/Vundle.vim'
 " { General
 
 " AutoComplete
-if v:version >= 800
+if v:version >= 750
     "ycm=clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
     " YCM {
         Plugin 'Valloric/YouCompleteMe'
