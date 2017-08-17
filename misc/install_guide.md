@@ -3,8 +3,7 @@
 ### Main
 ```
 # vimrc
-git clone http://github.com/yantze/vimrc ~/vimrc
-ln -s ~/vimrc .vim
+git clone http://github.com/yantze/vimrc ~/.vim
 
 # vimrc plugin manager
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
