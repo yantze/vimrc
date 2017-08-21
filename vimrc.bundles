@@ -326,6 +326,9 @@ Plugin 'gmarik/Vundle.vim'
         " 本文修改于：https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
     "}
 
+    " linting intergration require plugin 'scrooloose/syntastic' installed above
+    " npm install -g jshint
+
     Plugin 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
     " Plugin 'jelera/vim-javascript-syntax' " 可能与 pangloss 功能重复
     " Plugin 'lukaszb/vim-web-indent' " 包含了javascript.vim 和html.vim
@@ -336,16 +339,13 @@ Plugin 'gmarik/Vundle.vim'
     Plugin 'moll/vim-node'
     Plugin 'jamescarr/snipmate-nodejs' " snipmate extend node
 
-    Plugin 'maksimr/vim-jsbeautify' " based on .editorconfig
+    " Plugin 'maksimr/vim-jsbeautify' " based on .editorconfig
     " js-beautify 格式化网页代码
-    map <s-f> :call JsBeautify()<cr>
+    " map <s-f> :call JsBeautify()<cr>
 
-    " 如果上面的 jsbeautify 不理想使用下面的
+    " 简化版本的 js-beautify
     " esformatter Javascript indenting. Handles promise chains correctly while other indenters do not.
     " https://gist.github.com/nisaacson/6939960
-
-    " linting intergration require plugin 'scrooloose/syntastic' installed above
-    " npm install -g jshint
 
     " Plugin 'kchmck/vim-coffee-script'
     " Plugin 'tpope/vim-haml'
@@ -389,7 +389,6 @@ Plugin 'gmarik/Vundle.vim'
     " set iskeyword+=-
 
     " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-
     " Bundle 'JulesWang/css.vim'
     " Bundle 'cakebaker/scss-syntax.vim'
     " Bundle 'hail2u/vim-css3-syntax'
