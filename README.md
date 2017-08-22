@@ -1,8 +1,10 @@
 # VIMRC
 > 2017-06-15 更新了整体结构, 原来的结构在 `tag v0.1`
+> 2017-8-22 更新插件管理器为 Plug，所有配置均不变
 
+- [快速安装](https://github.com/yantze/vimrc/blob/master/misc/install-basic.sh)
 - [安装指南](https://github.com/yantze/vimrc/blob/master/misc/install_guide.md)
-- [简易手册](https://github.com/yantze/vimrc/blob/master/misc/VIMdoc.md)
+- [简易手册](https://github.com/yantze/vimrc/blob/master/misc/vim-doc.md)
 
 ### 翻页
 | Description   | Action |

@@ -9,4 +9,4 @@
 | ./thayer.itermcolor | 是 terminal.app 的颜色主题                                             |
 | VIM for PHP.pdf     | 是 php 的常用工具介绍                                                  |
 | vim-win-menu.reg    | 是修改windows 右键vim 的显示场景                                       |
-| VIMdoc.md           | 是我收集整理的 vim 手册                                                |
+| vim-doc.md           | 是我收集整理的 vim 手册                                                |

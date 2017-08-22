@@ -1601,4 +1601,4 @@ vim filename -V > savefilename
 - https://stackoverflow.com/questions/19902089/vim-regex-capture-groups
 - http://kwiki.github.io/tips/Vim.html
 
-modeline vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
+<!-- modeline vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 : -->
