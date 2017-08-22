@@ -103,24 +103,13 @@
     " }
 
     " Package manager{
-        " 添加vundle插件管理器
+        " 添加 Plug 插件管理器
         set nocompatible               " 设置不与之前版本兼容 be iMproved
-        filetype off                   " 检测文件类型 required!
-        " set no_plugin=1 to do not add-on plugin
-        " let g:no_plugin=1
+        " let g:no_plugin=1 " to do not add-on plugin
         if !exists("g:no_plugin")
-            if filereadable(expand("$VIM/bundle/Vundle.vim/README.md"))
-                set rtp+=$VIM/bundle/Vundle.vim  "添加vendle环境变量
-                source $VIM/vimrc.bundles
-            endif
+            source $VIM/vimrc.bundles
         endif
-        " you can put it in tmpfs:/dev/shm/.dotfiles/vimrc/vimfiles/bundle/Vundle.vim
-        " 安装新的插件 :PluginInstall
-        " 在命令行运行 vim +PluginInstall +qall
-        " 更新插件:PluginUpdate
-        " 清除不再使用的插件:PluginClean,
-        " 列出所有插件:PluginList
-        " 查找插件:PluginSearch
+        " 安装插件 :PlugInstall
     " }
 
 " }

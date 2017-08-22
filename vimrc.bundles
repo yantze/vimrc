@@ -166,7 +166,7 @@ call plug#begin('~/.vim/plugged')
     " }
 
     " automatically add the closing quote, bracket
-    Plug 'Raimondi/delimitMate' 
+    Plug 'Raimondi/delimitMate'
     " Plug 'Townk/vim-autoclose'
 " }
 
@@ -484,6 +484,8 @@ call plug#begin('~/.vim/plugged')
     " txt
     "对txt文件列目录 dep:taglist.vim
     Plug 'vim-scripts/TxtBrowser'
+
+    Plug 'emezeske/manpageview'
 
     "python
     " Plug 'fs111/pydoc.vim'
