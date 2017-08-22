@@ -36,12 +36,6 @@
     " Windows Compatible {
         if WINDOWS()
             " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
-            if has("statusline")
-                set statusline  =%<%f\ %h%m%r%=%{(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\")}
-                set statusline +=%{\"[\".&ff.\"]\"} "file format
-                set statusline +=%k
-                set statusline +=\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-            endif
         else
             " 兼容windows的环境变量$VIM
             let $VIM = $HOME."/.vim"
@@ -373,6 +367,80 @@ endfunction
 
 " Setting {
 
+syntax enable                " 打开语法高亮
+syntax on                    " 开启文件类型侦测
+filetype indent on           " 针对不同的文件类型采用不同的缩进格式
+filetype plugin on           " 针对不同的文件类型加载对应的插件
+filetype plugin indent on    " 启用自动补全
+set visualbell t_vb=         " 关闭visual bell/声音
+set t_Co=256                 " 设置文字可以显示多少种颜色
+" au GuiEnter * set t_vb=    " 关闭beep/屏闪
+" set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
+
+" 文件配置
+" set fileformats=unix                             " 设定换行符
+
+if has("multi_byte")
+    set formatoptions+=mM
+    if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+        set ambiwidth=double
+    endif
+endif
+
+set enc=utf-8                                    " 设置编码
+set fenc=utf-8                                   " 设置文件编码
+set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
+set shortmess+=filmnrxoOtT                       " Abbrev. of messages (avoids 'hit enter')
+set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
+" set virtualedit=onemore                          " Allow for cursor beyond last character
+" set bsdir=buffer                               " 设定文件浏览器目录为当前目录,default value
+" set autochdir
+
+set bsdir=buffer                                 " 设定文件浏览器目录为当前目录
+" 把这个快捷键放在这里主要是因为dos的vim对这个不支持，其它的系统支持
+imap <c-h> <ESC>I
+
+set backspace=2              " 设置退格键可用
+set autoindent               " 自动对齐
+set smartindent              " 智能自动缩进
+set ruler                    " 右下角显示光标位置的状态行
+set hidden                   " 允许在有未保存的修改时切换缓冲区
+set laststatus=2             " 开启状态栏信息
+set cmdheight=2              " 命令行的高度，默认为1，这里设为2
+set writebackup              " 设置无备份文件
+set autoread                 " 当文件在外部被修改时自动更新该文件
+set nobackup                 " 不生成备份文件
+set noswapfile               " 不生成交换文件
+set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
+set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
+set listchars=tab:\|\ ,trail:. "设置tab/尾部字符用什么填充
+set cursorline               " 突出显示当前行
+" set cursorcolumn             " 突出显示当前列
+set history=500              " keep 500 lines of command line history
+set mouse=a                  " 启用鼠标
+set wrap linebreak nolist    " wrap，only wrap at a character in the breakat option (by default, this includes " ^I!@*-+;:,./?" , linebreak 不在单词中间断行
+
+" set tw=78                    "超过80个字符就折行(textwrap)
+" set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
+set display=lastline         " 不要显示@@@@@
+
+" 光标的上下方至少保留显示的行数
+set scrolloff=5
+
+
+" set ambiwidth=double         "如果全角字符不能识别一般用这个(自动用宽字符显示)
+set fo+=mB                   "打开断行模块对亚洲语言支持
+set showmatch                " 显示括号配对情况
+" set lsp=0                    "设置行间距
+
+
+if v:version > 703
+    set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
+    set undodir=$VIM/\_undodir
+    set undolevels=1000 "maximum number of changes that can be undone"
+endif
+
+
 " GUI & WIN {
 " 设置着色模式和字体
 if WINDOWS()
@@ -566,79 +634,36 @@ set magic
 " vnoremap / /\v
 " }
 
-syntax enable                " 打开语法高亮
-syntax on                    " 开启文件类型侦测
-filetype indent on           " 针对不同的文件类型采用不同的缩进格式
-filetype plugin on           " 针对不同的文件类型加载对应的插件
-filetype plugin indent on    " 启用自动补全
-set visualbell t_vb=         " 关闭visual bell/声音
-set t_Co=256                 " 设置文字可以显示多少种颜色
-" au GuiEnter * set t_vb=    " 关闭beep/屏闪
-" set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
-
-" 文件配置
-" set fileformats=unix                             " 设定换行符
-
-if has("multi_byte")
-    set formatoptions+=mM
-    if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
-        set ambiwidth=double
-    endif
+" Statusline {
+if !&statusline
+    " https://shapeshed.com/vim-statuslines/
+    " http://vim.wikia.com/wiki/Writing_a_valid_statusline
+    " http://learnvimscriptthehardway.stevelosh.com/chapters/17.html
+    function! GitBranch()
+      return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    endfunction
+    function! StatuslineGit()
+      let l:branchname = GitBranch()
+      return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+    endfunction
+    set statusline=
+    set statusline+=%#PmenuSel#                 " change background color
+    " set statusline+=[%n]                        " buffer num
+    set statusline+=%{StatuslineGit()}
+    set statusline+=%#LineNr#                   " change background color
+    set statusline+=\ %f                        " file name
+    " set statusline+=\ %.20F                     " file path, length limit 20%
+    set statusline+=%m\                         " check modify status
+    set statusline+=%=                          " align right
+    set statusline+=%#CursorColumn#
+    set statusline+=\ %y
+    set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+    set statusline+=\[%{&fileformat}\]          " fileformat
+    set statusline+=\ %l/%L:%c
+    set statusline+=\ %p%%
+    set statusline+=\ 
 endif
-
-set enc=utf-8                                    " 设置编码
-set fenc=utf-8                                   " 设置文件编码
-set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
-set shortmess+=filmnrxoOtT                       " Abbrev. of messages (avoids 'hit enter')
-set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
-" set virtualedit=onemore                          " Allow for cursor beyond last character
-" set bsdir=buffer                               " 设定文件浏览器目录为当前目录,default value
-" set autochdir
-
-set bsdir=buffer                                 " 设定文件浏览器目录为当前目录
-" 把这个快捷键放在这里主要是因为dos的vim对这个不支持，其它的系统支持
-imap <c-h> <ESC>I
-
-
-set backspace=2              " 设置退格键可用
-set autoindent               " 自动对齐
-set smartindent              " 智能自动缩进
-set ruler                    " 右下角显示光标位置的状态行
-set hidden                   " 允许在有未保存的修改时切换缓冲区
-set laststatus=2             " 开启状态栏信息
-set cmdheight=2              " 命令行的高度，默认为1，这里设为2
-set writebackup              " 设置无备份文件
-set autoread                 " 当文件在外部被修改时自动更新该文件
-set nobackup                 " 不生成备份文件
-set noswapfile               " 不生成交换文件
-set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
-set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
-set listchars=tab:\|\ ,trail:. "设置tab/尾部字符用什么填充
-set cursorline               " 突出显示当前行
-" set cursorcolumn             " 突出显示当前列
-set history=500              " keep 500 lines of command line history
-set mouse=a                  " 启用鼠标
-set wrap linebreak nolist    " wrap，only wrap at a character in the breakat option (by default, this includes " ^I!@*-+;:,./?" , linebreak 不在单词中间断行
-
-" set tw=78                    "超过80个字符就折行(textwrap)
-" set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
-set display=lastline         " 不要显示@@@@@
-
-" 光标的上下方至少保留显示的行数
-set scrolloff=5
-
-
-" set ambiwidth=double         "如果全角字符不能识别一般用这个(自动用宽字符显示)
-set fo+=mB                   "打开断行模块对亚洲语言支持
-set showmatch                " 显示括号配对情况
-" set lsp=0                    "设置行间距
-
-
-if v:version > 703
-    set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
-    set undodir=$VIM/\_undodir
-    set undolevels=1000 "maximum number of changes that can be undone"
-endif
+" }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1281,6 +1306,16 @@ nnoremap <leader>x :x<CR>
 "   exe 'normal! :w | %bd | e#'
 " endfunction
 " nmap <Tab> :call CloseBuffer()<CR>
+"
+" 变量
+" 查看设置的值
+" echo &statusline
+" 查看设置的键与值
+" set statusline?
+"
+" 查看高亮代号
+" :highlight
+
 " }
 
 " Locals {

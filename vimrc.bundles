@@ -85,18 +85,14 @@ Plugin 'gmarik/Vundle.vim'
     " 比较全的 color scheme
     Plugin 'flazz/vim-colorschemes'
 
+    " new status-line
+    " Plugin 'itchyny/lightline.vim'
     " vim-airline > powerline > vim-powerline
     " Powerline {
         Plugin 'vim-airline/vim-airline'
         Plugin 'vim-airline/vim-airline-themes'
 
-
         let g:airline_powerline_fonts = 1
-
-        " 打开airline的扩展tab buffer exploer功能
-        " let g:airline#extensions#tabline#enabled = 1
-        " determine whether bufferline will overwrite customization variables
-        " let g:airline#extensions#bufferline#overwrite_variables = 1
 
         " About theme
         let g:airline_theme='solarized' " serene
@@ -105,6 +101,11 @@ Plugin 'gmarik/Vundle.vim'
         let g:solarized_termtrans=1 " 0 | 1
         let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
         let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
+
+        " 打开airline的扩展tab buffer exploer功能
+        " let g:airline#extensions#tabline#enabled = 1
+        " determine whether bufferline will overwrite customization variables
+        " let g:airline#extensions#bufferline#overwrite_variables = 1
 
         " AirLine彩色状态栏:badwolf, bubblegum, luna, raven, serene
         " serene需要修改的地方：
