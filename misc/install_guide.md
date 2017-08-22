@@ -9,13 +9,22 @@ git clone http://github.com/yantze/vimrc ~/.vim
 vim +PlugInstall
 
 # install tern - javascript jslint
-cd ~/.vim/bundle/tern_for_vim/
+cd ~/.vim/plugged/tern_for_vim/
 npm install 
 # .tern-config https://atom.io/packages/atom-ternjs
 
 # install YouCompleteMe
 cd ~/.vim/plugged/YouCompleteMe
 ./install.py --clang-completer --gocode-completer --tern-completer # 需要先装 clang ，gocode，tern
+
+# install vimpager
+# https://github.com/rkitover/vimpager
+cd ~/.vim/plugged/vimpager
+make install
+# 添加 pager 环境变量
+export PAGER=/usr/local/bin/vimpager
+alias less=$PAGER
+alias zless=$PAGER
 ```
 除非有什么问题，下面的配置可忽略。
 
@@ -31,6 +40,14 @@ vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes/serene.vim
 1. 获取 ctags.exe , misc/ctags58_src.zip 是程序的源代码和可执行文件打包。
 1. 或者访问 http://ctags.sourceforge.net 下载最新的 ctags，将 ctags.exe 复制到 \Vim\vim74 目录
 
+ctags config
+```
+ctags -R # 相对路径
+ctags -R /server/ # 绝对路径，可以在任何目录下查看
+# 在 ~/.vimrc 中添加
+set tags+=/server/php-src/tags # 或在 vim command 中运行
+# 完成后可以在源代码中跳转申明
+```
 
 ### YCM
 [warning]如果出现下面的错误或者如果你在vps上编译YCM,说明你的内存不够用
