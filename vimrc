@@ -104,12 +104,14 @@
 
     " Package manager{
         " 添加 Plug 插件管理器
+        " 安装插件 :PlugInstall
         set nocompatible               " 设置不与之前版本兼容 be iMproved
         " let g:no_plugin=1 " to do not add-on plugin
         if !exists("g:no_plugin")
-            source $VIM/vimrc.bundles
+            if filereadable(expand("$VIM/vimrc.bundles"))
+                source $VIM/vimrc.bundles
+            endif
         endif
-        " 安装插件 :PlugInstall
     " }
 
 " }
