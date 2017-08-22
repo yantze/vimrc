@@ -409,6 +409,9 @@ call plug#begin('~/.vim/plugged')
         Plug 'plasticboy/vim-markdown'
         " 设置md文件是否用自己的方式折叠
         let g:vim_markdown_folding_disabled = 1
+
+        " 与 instant 配合使用 https://github.com/yantze/instant-markdown-d
+        Plug 'suan/vim-instant-markdown'
     " }
 
     " highlighting for applescript
