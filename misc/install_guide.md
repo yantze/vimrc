@@ -6,8 +6,7 @@
 git clone http://github.com/yantze/vimrc ~/.vim
 
 # vimrc plugin manager
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +BundleInstall +qall
+vim +Plug
 
 # install tern - javascript jslint
 cd ~/.vim/bundle/tern_for_vim/

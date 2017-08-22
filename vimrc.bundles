@@ -1,12 +1,11 @@
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " { General
 
     " AutoComplete {
     if v:version >= 750
         " YCM = clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
-        Plugin 'Valloric/YouCompleteMe'
+        Plug 'Valloric/YouCompleteMe'
         " let g:ycm_add_preview_to_completeopt=0
         " let g:ycm_confirm_extra_conf=0
         " set completeopt-=preview
@@ -37,7 +36,7 @@ Plugin 'gmarik/Vundle.vim'
 
         " 语法查错
         " Syntastic
-        Plugin 'scrooloose/syntastic'
+        Plug 'scrooloose/syntastic'
         let g:syntastic_check_on_open        = 0
         let g:syntastic_enable_signs         = 1
         let g:syntastic_error_symbol         = '!!'
@@ -64,13 +63,13 @@ Plugin 'gmarik/Vundle.vim'
     " }
 
     " 代码补全 snippets
-    Plugin 'MarcWeber/vim-addon-mw-utils'
-    Plugin 'tomtom/tlib_vim'
-    Plugin 'garbas/vim-snipmate'
-    Plugin 'honza/vim-snippets' " garbas is inherit from honza
+    Plug 'MarcWeber/vim-addon-mw-utils'
+    Plug 'tomtom/tlib_vim'    " 依赖库，断言，不变量等特性
+    Plug 'garbas/vim-snipmate'
+    Plug 'honza/vim-snippets' " garbas is inherit from honza
 
     " snip 综合解决方案
-    Plugin 'SirVer/ultisnips'
+    Plug 'SirVer/ultisnips'
     " let g:snippets_dir="$VIM/vimfiles/resource/vim-snippets/" "添加新的片段
     " Trigger configuration. if comflict then change the <tab>
     " let g:UltiSnipsUsePythonVersion = 2
@@ -83,14 +82,14 @@ Plugin 'gmarik/Vundle.vim'
 " { Colorschemes
 
     " 比较全的 color scheme
-    Plugin 'flazz/vim-colorschemes'
+    Plug 'flazz/vim-colorschemes'
 
     " new status-line
-    " Plugin 'itchyny/lightline.vim'
+    " Plug 'itchyny/lightline.vim'
     " vim-airline > powerline > vim-powerline
     " Powerline {
-        Plugin 'vim-airline/vim-airline'
-        Plugin 'vim-airline/vim-airline-themes'
+        Plug 'vim-airline/vim-airline'
+        Plug 'vim-airline/vim-airline-themes'
 
         let g:airline_powerline_fonts = 1
 
@@ -118,7 +117,7 @@ Plugin 'gmarik/Vundle.vim'
 
     " 会出现缩进一条一条的颜色
     " indent-guide {
-        Plugin 'nathanaelkane/vim-indent-guides'
+        Plug 'nathanaelkane/vim-indent-guides'
         " Indent_guides       显示对齐线
         let g:indent_guides_enable_on_vim_startup = 1  " 默认关闭
         let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
@@ -131,18 +130,18 @@ Plugin 'gmarik/Vundle.vim'
 " { Editor
 
     " Press + to expand the visual selection and _ to shrink it.
-    Plugin 'terryma/vim-expand-region'
+    Plug 'terryma/vim-expand-region'
 
     " quoting/parenthesizing made simple, there have many shortkey
-    Plugin 'tpope/vim-surround'
+    Plug 'tpope/vim-surround'
 
     " 按等号或者其它符号对齐
-    Plugin 'godlygeek/tabular'
-    " Plugin 'junegunn/vim-easy-align'
+    Plug 'godlygeek/tabular'
+    " Plug 'junegunn/vim-easy-align'
     " http://www.wklken.me/posts/2015/06/07/vim-plugin-easyalign.html
 
     " multiple cursors
-    Plugin 'terryma/vim-multiple-cursors'
+    Plug 'terryma/vim-multiple-cursors'
     let g:multi_cursor_use_default_mapping=0
     " Default mapping
     let g:multi_cursor_next_key='<C-n>'
@@ -153,11 +152,11 @@ Plugin 'gmarik/Vundle.vim'
     " 快捷注释
     " :tComment - inherit the NERD_commenter shortkey {
         " comments.vim 用c-c/c-x做注释
-        " Plugin 'comments.vim'
+        " Plug 'comments.vim'
         " 用<leader>ci/cm做注释
-        " Plugin 'scrooloose/nerdcommenter'
+        " Plug 'scrooloose/nerdcommenter'
         " 这个更智能一些,我的配置里面快捷键inhert了nerdcommenter
-        Plugin 'tomtom/tcomment_vim'
+        Plug 'tomtom/tcomment_vim'
 
         map <leader>ci <Plug>TComment_<Leader>__
         map <leader>cm <Plug>TComment_<Leader>_b
@@ -167,18 +166,18 @@ Plugin 'gmarik/Vundle.vim'
     " }
 
     " automatically add the closing quote, bracket
-    Plugin 'Raimondi/delimitMate' 
-    " Bundle 'Townk/vim-autoclose'
+    Plug 'Raimondi/delimitMate' 
+    " Plug 'Townk/vim-autoclose'
 " }
 
 " { Browsing & Navigating code
 
     " :NERDTree - FileList {
         " 文件管理器
-        Plugin 'scrooloose/nerdtree'
+        Plug 'scrooloose/nerdtree'
         map <leader>fl :NERDTreeToggle<CR>
         " 内置的文件浏览器已经够了
-        " Bundle 'winmanager'
+        " Plug 'winmanager'
 
         " e    to open file and close the quickfix window
         " o    to open (same as enter)
@@ -196,9 +195,9 @@ Plugin 'gmarik/Vundle.vim'
     " }
 
     ":Tlist  - 调用TagList {
-        Bundle 'taglist.vim'
+        Plug 'vim-scripts/taglist.vim'
         " tagbar is like the taglist
-        Plugin 'majutsushi/tagbar'
+        Plug 'majutsushi/tagbar'
 
         let Tlist_Show_One_File        = 1             " 只显示当前文件的tags
         let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
@@ -207,7 +206,7 @@ Plugin 'gmarik/Vundle.vim'
     " }
 
     " :CtrlP - 快速打开文件 {
-        Plugin 'kien/ctrlp.vim'
+        Plug 'kien/ctrlp.vim'
         let g:ctrlp_map = '<c-p>'
         let g:ctrlp_cmd = 'CtrlP'
         let g:ctrlp_working_path_mode = 'ra'
@@ -223,7 +222,7 @@ Plugin 'gmarik/Vundle.vim'
     " }
 
     " Find & Search {
-        Plugin 'mileszs/ack.vim'
+        Plug 'mileszs/ack.vim'
         " original 'ack.vim' and Deprecated 'rking/ag.vim'
 
         " there use special tech, when you put ':ag ', will display ':Ag '
@@ -259,25 +258,25 @@ Plugin 'gmarik/Vundle.vim'
         if v:version > 703
             " 快速移动
             " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
-            Plugin 'Lokaltog/vim-easymotion'
+            Plug 'Lokaltog/vim-easymotion'
             map  / <Plug>(easymotion-sn)
             omap / <Plug>(easymotion-tn)
         endif
     " }
 
     " 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
-    " Plugin 'bufexplorer.zip'
+    " Plug 'bufexplorer.zip'
 
     " 智能打开浏览器
-    Plugin 'tyru/open-browser.vim'
+    Plug 'tyru/open-browser.vim'
 
 " }
 
 " { Web
 
     " zen emmet {
-        " Plugin 'ZenCoding.vim' " original zen coding
-        Plugin 'mattn/emmet-vim'
+        " Plug 'ZenCoding.vim' " original zen coding
+        Plug 'mattn/emmet-vim'
 
         "set zen coding
         " let g:user_zen_settings = {
@@ -327,20 +326,20 @@ Plugin 'gmarik/Vundle.vim'
         " 本文修改于：https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
     "}
 
-    " linting intergration require plugin 'scrooloose/syntastic' installed above
+    " linting intergration require Plug 'scrooloose/syntastic' installed above
     " npm install -g jshint
 
-    Plugin 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
-    " Plugin 'jelera/vim-javascript-syntax' " 可能与 pangloss 功能重复
-    " Plugin 'lukaszb/vim-web-indent' " 包含了javascript.vim 和html.vim
-    Plugin 'isRuslan/vim-es6'
+    Plug 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
+    " Plug 'jelera/vim-javascript-syntax' " 可能与 pangloss 功能重复
+    " Plug 'lukaszb/vim-web-indent' " 包含了javascript.vim 和html.vim
+    Plug 'isRuslan/vim-es6'
 
     " javascript 补全
-    Plugin 'marijnh/tern_for_vim' " install the tern server by `npm install` in `bundle/tern_for_vim`
-    Plugin 'moll/vim-node'
-    Plugin 'jamescarr/snipmate-nodejs' " snipmate extend node
+    Plug 'marijnh/tern_for_vim' " install the tern server by `npm install` in `bundle/tern_for_vim`
+    Plug 'moll/vim-node'
+    Plug 'jamescarr/snipmate-nodejs' " snipmate extend node
 
-    " Plugin 'maksimr/vim-jsbeautify' " based on .editorconfig
+    " Plug 'maksimr/vim-jsbeautify' " based on .editorconfig
     " js-beautify 格式化网页代码
     " map <s-f> :call JsBeautify()<cr>
 
@@ -348,20 +347,20 @@ Plugin 'gmarik/Vundle.vim'
     " esformatter Javascript indenting. Handles promise chains correctly while other indenters do not.
     " https://gist.github.com/nisaacson/6939960
 
-    " Plugin 'kchmck/vim-coffee-script'
-    " Plugin 'tpope/vim-haml'
-    Plugin 'digitaltoad/vim-jade'
+    " Plug 'kchmck/vim-coffee-script'
+    " Plug 'tpope/vim-haml'
+    Plug 'digitaltoad/vim-jade'
     " javascript libraries syntax
-    Plugin 'othree/javascript-libraries-syntax.vim'
+    Plug 'othree/javascript-libraries-syntax.vim'
     let g:used_javascript_libs = 'underscore,jquery,react,vue'
     " Support Libraries :
     " jQuery, underscore.js, lo-dash, Backbone.js, prelude.ls, AngularJS, AngularUI, AngularUI Routers
     " React, Flux, RequireJS, Sugar.js, Jasmine, Chai, Handlebars, Ramda, Vue, d3
 
-    " Plugin 'skammer/vim-css-color'
-    Plugin 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
+    " Plug 'skammer/vim-css-color'
+    Plug 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
     " 配置高亮括号,给原来的括号加上高亮
-    " Plugin 'kien/rainbow_parentheses.vim'
+    " Plug 'kien/rainbow_parentheses.vim'
     let g:rbpt_colorpairs = [
         \ ['brown',       'RoyalBlue3'],
         \ ['Darkblue',    'SeaGreen3'],
@@ -384,36 +383,36 @@ Plugin 'gmarik/Vundle.vim'
     let g:rbpt_loadcmd_toggle = 0
 
     " 在()、""、甚至HTML标签之间快速跳转；
-    Plugin 'matchit.zip'
+    Plug 'vim-scripts/matchit.zip'
 
     " support css word with -
     " set iskeyword+=-
 
-    " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-    " Bundle 'JulesWang/css.vim'
-    " Bundle 'cakebaker/scss-syntax.vim'
-    " Bundle 'hail2u/vim-css3-syntax'
-    " Bundle 'mattn/webapi-vim'
-    " Plugin 'ludovicchabant/vim-lawrencium'
-    " Plugin 'mhinz/vim-signify'
-    " Plugin 'tpope/vim-sleuth'
+    " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+    " Plug 'JulesWang/css.vim'
+    " Plug 'cakebaker/scss-syntax.vim'
+    " Plug 'hail2u/vim-css3-syntax'
+    " Plug 'mattn/webapi-vim'
+    " Plug 'ludovicchabant/vim-lawrencium'
+    " Plug 'mhinz/vim-signify'
+    " Plug 'tpope/vim-sleuth'
 
 " }
 
 " { Misc
 
     " weixin program
-    " Plugin 'chemzqm/wxapp.vim'
+    " Plug 'chemzqm/wxapp.vim'
 
     " vim-markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用
-        Plugin 'plasticboy/vim-markdown'
+        Plug 'plasticboy/vim-markdown'
         " 设置md文件是否用自己的方式折叠
         let g:vim_markdown_folding_disabled = 1
     " }
 
     " highlighting for applescript
-    Plugin 'dearrrfish/vim-applescript'
+    Plug 'dearrrfish/vim-applescript'
 
     " Open URI under cursor or search.--go brower
     nmap gb <Plug>(openbrowser-smart-search)
@@ -421,7 +420,7 @@ Plugin 'gmarik/Vundle.vim'
     vmap gb <Plug>(openbrowser-smart-search)
     " Open URI you also can use <leader>gb because of "textbrowser.vim"
 
-    Plugin 'tpope/vim-fugitive'
+    Plug 'tpope/vim-fugitive'
     " :Gdiff - Diffs file with current version in repository
     " :Gw - Saves and git adds
     " :Gco or :Gcommit - Commits
@@ -429,78 +428,78 @@ Plugin 'gmarik/Vundle.vim'
 
     " DBGP Debug
     " http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
-    " Plugin 'joonty/vdebug'
+    " Plug 'joonty/vdebug'
 
     " helps editing xml (and [x]html, sgml, xslt) files
-    Plugin 'othree/xml.vim'
-    " A filetype plugin for VIM to help edit XML files
-    " Plugin 'sukima/xmledit'
-    " Plugin 'tpope/vim-ragtag'
-    Plugin 'elzr/vim-json'
+    Plug 'othree/xml.vim'
+    " A filetype Plug for VIM to help edit XML files
+    " Plug 'sukima/xmledit'
+    " Plug 'tpope/vim-ragtag'
+    Plug 'elzr/vim-json'
 
 
     " 读取大文件
-    " Plugin 'LargeFile'
+    " Plug 'LargeFile'
 
     " Go
-    Plugin 'fatih/vim-go'
+    Plug 'fatih/vim-go'
 
-    " Plugin 'MarcWeber/vim-addon-manager-known-repositories'
+    " Plug 'MarcWeber/vim-addon-manager-known-repositories'
 
 
     " Ruby
-    " Plugin 'thoughtbot/vim-rspec'
-    " Plugin 'rspec.vim'
-    " Plugin 'Keithbsmiley/rspec.vim'
-    " Plugin 'tpope/vim-rails'
+    " Plug 'thoughtbot/vim-rspec'
+    " Plug 'rspec.vim'
+    " Plug 'Keithbsmiley/rspec.vim'
+    " Plug 'tpope/vim-rails'
     " ruby package manage
-    " Plugin 'tpope/vim-bundler'
-    " A vim plugin for highlighting and indenting JST/EJS syntax. Based on the eruby syntax from vim-ruby.
-    " Plugin 'briancollins/vim-jst'
+    " Plug 'tpope/vim-bundler'
+    " A vim Plug for highlighting and indenting JST/EJS syntax. Based on the eruby syntax from vim-ruby.
+    " Plug 'briancollins/vim-jst'
     " Slim is a template language for ruby or ROR whose goal is reduce the syntax to the essential parts without becoming cryptic.
-    " Plugin 'slim-template/vim-slim'
-    " Plugin 'vim-ruby/vim-ruby'
+    " Plug 'slim-template/vim-slim'
+    " Plug 'vim-ruby/vim-ruby'
 
     " PHP
     " php genner
-    Plugin 'phpvim'
-    " Plugin 'php.vim-html-enhanced'
+    Plug 'vim-scripts/phpvim'
+    " Plug 'php.vim-html-enhanced'
     " 增加对php的兼容
-    Plugin 'StanAngeloff/php.vim'
+    Plug 'StanAngeloff/php.vim'
     " 匹配
-    " Plugin 'shawncplus/phpcomplete.vim'
+    " Plug 'shawncplus/phpcomplete.vim'
     " 模板引擎
-    Plugin 'tobyS/vmustache'
+    Plug 'tobyS/vmustache'
     " php debuger
     " https://brookhong.github.io/2014/09/27/dbgpavim-cn.html
-    " Plugin 'brookhong/DBGPavim' "dbgpavim继承自DBGp-X-client'
+    " Plug 'brookhong/DBGPavim' "dbgpavim继承自DBGp-X-client'
 
     " phpdocument generate
     " pdv需要安装 "tobyS/vmustache模板引擎
-    " Plugin 'tobyS/pdv'
+    " Plug 'tobyS/pdv'
     " let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
     " nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
 
 
     " txt
     "对txt文件列目录 dep:taglist.vim
-    Plugin 'TxtBrowser'
+    Plug 'vim-scripts/TxtBrowser'
 
     "python
-    " Plugin 'fs111/pydoc.vim'
-    Plugin 'python.vim'
+    " Plug 'fs111/pydoc.vim'
+    Plug 'vim-scripts/python.vim'
     " 检查python的代码错误,编译需要'+python'
-    " Plugin 'pyflakes.vim'
+    " Plug 'pyflakes.vim'
 
     "Highlight
 
     " swift
-    " Plugin 'Keithbsmiley/swift.vim'
+    " Plug 'Keithbsmiley/swift.vim'
     " another swift
-    " Plugin 'toyamarinyon/vim-swift'
+    " Plug 'toyamarinyon/vim-swift'
 
 
 " }
 
-call vundle#end()
+call plug#end()
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
