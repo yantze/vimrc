@@ -489,6 +489,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-scripts/TxtBrowser'
 
     Plug 'emezeske/manpageview'
+    Plug 'vim-scripts/cecutil'
 
     "python
     " Plug 'fs111/pydoc.vim'
