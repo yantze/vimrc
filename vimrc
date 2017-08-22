@@ -420,15 +420,15 @@ set scrolloff=5
 
 
 " set ambiwidth=double         "如果全角字符不能识别一般用这个(自动用宽字符显示)
-set fo+=mB                   "打开断行模块对亚洲语言支持
-set showmatch                " 显示括号配对情况
+set fo+=mB                      "打开断行模块对亚洲语言支持
+set showmatch                   " 显示括号配对情况
 " set lsp=0                    "设置行间距
 
 
 if v:version > 703
-    set undofile                 " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
+    set undofile                " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
     set undodir=$VIM/\_undodir
-    set undolevels=1000 "maximum number of changes that can be undone"
+    set undolevels=1000         " maximum number of changes that can be undone"
 endif
 
 
@@ -835,7 +835,7 @@ endif
 
     " ==全局设置==
     "
-    autocmd BufEnter * lcd %:p:h  " 每打开一个文件进入当前文件目录
+    " autocmd BufEnter * lcd %:p:h  " 每打开一个文件进入当前文件目录
     " au BufWritePre /tmp/* setl undofile " 无效果
 
     " => Modify word boundary characters
