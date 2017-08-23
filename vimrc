@@ -420,7 +420,7 @@ set scrolloff=5
 
 
 " set ambiwidth=double         "如果全角字符不能识别一般用这个(自动用宽字符显示)
-set fo+=mB                      "打开断行模块对亚洲语言支持
+set fo+=mB                   "打开断行模块对亚洲语言支持
 set showmatch                   " 显示括号配对情况
 " set lsp=0                    "设置行间距
 
@@ -574,8 +574,8 @@ endfun
 " 相对行号 {
 if v:version > 703
     set relativenumber number
-    autocmd FocusLost * :set norelativenumber number
-    autocmd FocusGained * :set relativenumber
+    " autocmd FocusLost * :set norelativenumber number
+    " autocmd FocusGained * :set relativenumber
     " 插入模式下用绝对行号,普通模式下用相对
     autocmd InsertEnter * :set norelativenumber number
     autocmd InsertLeave * :set relativenumber
@@ -586,7 +586,7 @@ if v:version > 703
         set relativenumber number
       endif
     endfunc
-    nnoremap <leader><F2> :call NumberToggle()<cr>
+    nnoremap <F2> :call NumberToggle()<cr>
 
     " no num and relative
     " nnoremap <leader><F3> :set relativenumber!<CR>:set nu!<CR>
@@ -596,20 +596,11 @@ endif
 " }
 
 " 粘贴模式 {
+
 " 在插入模式下按 <F3> 进入粘贴模式,这时候粘贴复制过来的代码不会触发自动缩进
 set pastetoggle=<F3>
 " 离开插入模式时,关闭粘贴模式
 autocmd InsertLeave * set nopaste
-" 在插入模式使用粘贴会自动开启粘贴模式,不需要手动设置
-function! XTermPasteBegin()
-    set pastetoggle=<Esc>[201~
-    set paste
-    return ""
-endfunction
-inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
-
-nnoremap <F3> :set invpaste paste?<CR>
-imap <F3> <C-O>:set invpaste paste?<CR>
 
 " }"
 
@@ -652,7 +643,7 @@ if !&statusline
     set statusline+=\[%{&fileformat}\]          " fileformat
     set statusline+=\ %l/%L:%c
     set statusline+=\ %p%%
-    set statusline+=\ 
+    set statusline+=\
 endif
 " }
 
@@ -1319,6 +1310,7 @@ endif
 if $MYENV == 'tmux_light'
     set background=light
     silent! colorscheme solarized
+    highlight LineNr ctermbg=none ctermfg=grey
 elseif $MYENV == 'term_light'
     silent! colorscheme pt_light
 else
