@@ -618,7 +618,7 @@ if !&statusline
     set statusline+=\[%{&fileformat}\]          " fileformat
     set statusline+=\ %l/%L:%c
     set statusline+=\ %p%%
-    set statusline+=\
+    set statusline+=\                           " space at end
 endif
 " }
 
