@@ -144,31 +144,7 @@ function! s:DiffWithSaved()
     exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 
-" Clean close
-function! CleanClose(tosave,bang)
-    if a:bang == 1
-        let bng = "!"
-    else
-        let bng = ""
-    endif
-    if (a:tosave == 1)
-        w!
-    endif
-    let todelbufNr = bufnr("%")
-    let newbufNr = bufnr("#")
-    if ((newbufNr != -1) && (newbufNr != todelbufNr) && buflisted(newbufNr))
-        exe "b".newbufNr
-    else
-        exe "bnext".bng
-    endif
-
-    if (bufnr("%") == todelbufNr)
-        new
-    endif
-    exe "bd".bng.todelbufNr
-endfunction
-
-" Mydict, use *dict* in vim {
+" Mydict
 function! Mydict()
     let expl=system('dict ' . expand("<cword>"))
     windo if expand("%")=="dict.tmp" | q! | endif
@@ -182,7 +158,6 @@ function! Mydict()
     1
     set report=0 " recovery the 'report' setting
 endfunction
-" Mydict }
 
 " 编译并运行
 func! Compile_Run_Code()
@@ -847,17 +822,11 @@ endif
 " 自定义快捷键
 " =======
 
-" tabn/tabp 切换tab
-" tabnew 创建新窗口
-" :retab 对当前文档重新替换tab为空格
 " 用Ctrl+v Tab可以产生原生的Tab
-" <leader>Space 打开Goyo编写环境
 " :e $m<tab> 自动扩展到:e $MYVIMRC 然后打开vimrc
 "
 " 少用
 " ga 转换光标下的内容为多进制
-" :set notextmode  去掉^M这个符号
-" :set paste  这个可以解决在linux下面有些字母会被执行 nopaste pastetoggle
 " 碰到不能输入*号键，先按Ctrl+v，再输入想要输入的特殊符号
 " gCtrl+g 统计字数
 " Ctrl+x, Ctrl+f 补全当前要输入的路径
@@ -1078,6 +1047,19 @@ nnoremap <leader>q :qa<CR>
 
 " 保存并退出当前编辑文件
 nnoremap <leader>x :x<CR>
+
+" ## Command
+
+" Save a file that requires sudoing even
+command! Sw w !sudo tee % > /dev/null
+" Show difference between modified buffer and original file
+command! DiffSaved call s:DiffWithSaved()
+
+" tabn/tabp 切换tab
+" tabnew 创建新窗口
+" :retab 对当前文档重新替换tab为空格
+" :set notextmode  去掉^M这个符号
+" :set paste  这个可以解决在linux下面有些字母会被执行 nopaste pastetoggle
 
 " }
 
@@ -1316,28 +1298,8 @@ elseif $MYENV == 'term_light'
 else
     " set background=dark
     " colorscheme pt_black
+
 endif
-
-" Save a file that requires sudoing even when
-" you opened it as a normal user.
-command! Sw w !sudo tee % > /dev/null
-" Show difference between modified buffer and original file
-command! DiffSaved call s:DiffWithSaved()
-
-command! Bw call CleanClose(1,0)
-command! Bq call CleanClose(0,0)
-command! -bang Bw call CleanClose(1,1)
-command! -bang Bq call CleanClose(0,1)
-
-" command! -nargs=* -complete=function Call exec 'call '.<f-args>
-" command! -bang Q q<bang>
-" command! -bang Qall qall<bang>
-" command! W w
-" command! -nargs=1 -complete=file E e <args>
-" command! -bang -nargs=1 -complete=file E e<bang> <args>
-" command! -nargs=1 -complete=tag Tag tag <args>
-
-
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :

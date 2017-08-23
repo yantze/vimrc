@@ -491,7 +491,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'emezeske/manpageview'
     Plug 'vim-scripts/cecutil'
     Plug 'vim-scripts/info.vim'
-    Plug 'rkitover/vimpager'
+    " Plug 'rkitover/vimpager' " Use Vim as PAGER
 
     "python
     " Plug 'fs111/pydoc.vim'
