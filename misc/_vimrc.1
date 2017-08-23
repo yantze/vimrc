@@ -206,6 +206,7 @@ function! MyGrepWithPrecise()
     exec "vim /\\<" . word . "\\>/j *.c .*h"
 endfunction
 
+===== kan到这里 =====
 function! MyGrepWithNotPrecise()
     let word = expand("<cword>")
     exec "vim /" . word . "/j *.c .*h"

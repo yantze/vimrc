@@ -48,15 +48,18 @@
     " Adapter {
         " Adapte with putty because of putty only support the 7 character
         if $TERM == 'screen'
-            "from: http://vim.wikia.com/wiki/Get_Alt_key_to_work_in_terminal
-            set <m-j>=j
-            set <m-h>=h
-            set <m-k>=k
-            set <m-l>=l
-            "from: https://groups.google.com/forum/#!topic/vim_use/uKOmY-mHo_k
+            " http://vim.wikia.com/wiki/Get_Alt_key_to_work_in_terminal
+            " set <m-j>=j
+            " set <m-h>=h
+            " set <m-k>=k
+            " set <m-l>=l
+            "
+            " https://groups.google.com/forum/#!topic/vim_use/uKOmY-mHo_k
             " 导致 ESC 延迟反应
-            "below set <esc> wait the next key millionstime
-            set timeout timeoutlen=3000 ttimeoutlen=100
+            " below set <esc> wait the next key millionstime
+            " set timeout timeoutlen=3000 ttimeoutlen=100
+
+            " 这个让 alt work in putty 的方法影响了其它平台的使用，禁用
         endif
         " the ^[ is an Esc char that comes before the 'a'
         " In most default configs, ^[a may be typed by pressing first <C-v>, then <M-a>
