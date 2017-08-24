@@ -5,19 +5,19 @@
 # vimrc
 git clone https://github.com/yantze/vimrc ~/.vim
 
-# vimrc plugin manager
+# install plugin to ~/.vim/plugged
 vim +PlugInstall
 
-# install tern - javascript jslint
+# [optional] install tern - javascript jslint
 cd ~/.vim/plugged/tern_for_vim/
 npm install 
 # .tern-config https://atom.io/packages/atom-ternjs
 
-# install YouCompleteMe
+# [optional] install YouCompleteMe
 cd ~/.vim/plugged/YouCompleteMe
 ./install.py --clang-completer --gocode-completer --tern-completer # 需要先装 clang ，gocode，tern
 
-# install vimpager
+# [optional] install vimpager
 # https://github.com/rkitover/vimpager
 cd ~/.vim/plugged/vimpager
 make install
@@ -29,11 +29,11 @@ alias zless=$PAGER
 ### Windows 安装
 ```
 # 用**管理员模式**的批处理命令行进入到你的 vim 安装目录
-cd C:\Program Files\Vim\
+cd "C:\Program Files\Vim\"
 git clone https://github.com/yantze/vimrc vimfiles
 # 设置软链到上级目录
 mklink _vimrc vimfiles\vimrc
-# 安装插件包
+# 安装插件包到 vimfiles\plugged
 gvim +PlugInstall
 # 安装完成
 ```
