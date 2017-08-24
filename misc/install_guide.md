@@ -31,8 +31,11 @@ alias zless=$PAGER
 # 到你的 vim 安装目录
 cd C:\Program Files\Vim\
 git clone https://github.com/yantze/vimrc vimfiles
-
+mklink _vimrc vimfiles\vimrc
 ```
+接着启动 vim 或者 gvim ，应该会自动安装包文件
+
+<hr>
 
 除非有什么问题，下面的配置可忽略。
 

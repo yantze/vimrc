@@ -34,7 +34,7 @@
 
     " 统一变量
     if WINDOWS()
-        let $VIMHOME = $VIM."/vimfiles"
+        let $VIMHOME = $VIM."\vimfiles"
         " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
     else
         let $VIMHOME = $HOME."/.vim"
@@ -47,7 +47,6 @@
     
     " Package Manager
     " 安装插件 :PlugInstall
-    set nocompatible
     " let g:no_plugin=1 " to do not add-on plugin
     if !exists("g:no_plugin")
         if filereadable(expand("$VIMHOME/vimrc.bundles"))
