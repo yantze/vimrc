@@ -610,7 +610,7 @@ endif
     " 搜索模式为默认更先进的正则规则
     " nnoremap / /\v
     " vnoremap / /\v
-    
+
 " }
 
 " Statusline {
@@ -1278,9 +1278,6 @@ command! DiffSaved call s:DiffWithSaved()
         highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
     elseif $MYENV == 'term_light'
         silent! colorscheme pt_light
-    else
-        " set background=dark
-        " colorscheme pt_black
     endif
 
     if filereadable(expand("~/.local/.vimrc_local"))
