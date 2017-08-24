@@ -5,11 +5,23 @@
 
 " Enviroment {
 
+    " Base
     let mapleader=","
     " 在之前用 <leader> 会使用默认的'\'
     map ; :
 
-    " Platform Check: 
+    " 共享系统粘贴板
+    if has('clipboard')
+        if has('unnamedplus')  " When possible use + register for copy-paste
+            set clipboard=unnamed,unnamedplus
+        else
+            " On mac and Windows, use * register for copy-paste
+            " windows/mac 粘贴板一起用，不方便
+            set clipboard=unnamed
+        endif
+    endif
+
+    " Platform Check
     silent function! OSX()
         return system('uname')=~'Darwin'
     endfunction
@@ -20,13 +32,26 @@
         return  (has('win16') || has('win32') || has('win64'))
     endfunction
 
-    " Package Manager: Plug
+    " 统一变量
+    if WINDOWS()
+        let $VIMHOME = $VIM."/vimfiles"
+        " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
+    else
+        let $VIMHOME = $HOME."/.vim"
+        " 兼容windows的环境变量$VIM
+        let $VIM = $HOME."/.vim"
+        set shell=/bin/sh
+        " adapt gvim $VIMRC
+        let $VIMRC=$MYVIMRC
+    endif
+    
+    " Package Manager
     " 安装插件 :PlugInstall
     set nocompatible
     " let g:no_plugin=1 " to do not add-on plugin
     if !exists("g:no_plugin")
-        if filereadable(expand("$VIM/vimrc.bundles"))
-            source $VIM/vimrc.bundles
+        if filereadable(expand("$VIMHOME/vimrc.bundles"))
+            source $VIMHOME/vimrc.bundles
         endif
     endif
 
@@ -73,27 +98,6 @@
     "     set t_Sb=[4%dm
     "     set t_Sf=[3%dm
     " endif
-
-    " 共享系统粘贴板
-    if has('clipboard')
-        if has('unnamedplus')  " When possible use + register for copy-paste
-            set clipboard=unnamed,unnamedplus
-        else
-            " On mac and Windows, use * register for copy-paste
-            " windows/mac 粘贴板一起用，不方便
-            set clipboard=unnamed
-        endif
-    endif
-
-    if WINDOWS()
-        " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
-    else
-        " 兼容windows的环境变量$VIM
-        let $VIM = $HOME."/.vim"
-        set shell=/bin/sh
-        " adapt gvim $VIMRC
-        let $VIMRC=$MYVIMRC
-    endif
 
 " }
 
@@ -311,7 +315,6 @@
     endfunction
 
 " }
-
 
 " }
 
@@ -625,7 +628,7 @@ if !&statusline
     set statusline=
     set statusline+=%#PmenuSel#                 " change background color
     " set statusline+=[%n]                        " buffer num
-    set statusline+=%{StatuslineGit()}
+    " set statusline+=%{StatuslineGit()}
     set statusline+=%#LineNr#                   " change background color
     set statusline+=\ %f                        " file name
     " set statusline+=\ %.20F                     " file path, length limit 20%

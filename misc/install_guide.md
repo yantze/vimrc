@@ -1,9 +1,9 @@
 # 项目安装指南
 
-### Main
+### Linux & Mac 安装
 ```
 # vimrc
-git clone http://github.com/yantze/vimrc ~/.vim
+git clone https://github.com/yantze/vimrc ~/.vim
 
 # vimrc plugin manager
 vim +PlugInstall
@@ -26,6 +26,14 @@ export PAGER=/usr/local/bin/vimpager
 alias less=$PAGER
 alias zless=$PAGER
 ```
+### Windows 安装
+```
+# 到你的 vim 安装目录
+cd C:\Program Files\Vim\
+git clone https://github.com/yantze/vimrc vimfiles
+
+```
+
 除非有什么问题，下面的配置可忽略。
 
 
