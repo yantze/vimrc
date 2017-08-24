@@ -112,216 +112,216 @@
 
 " Functions {
 
-" there func is for internal function invoal
-" not relate the other plugin
+    " there func is for internal function invoal
+    " not relate the other plugin
 
-func! RemoveTabs()
-    if &shiftwidth == 2
-        exec "%s/	/  /g"
-    elseif &shiftwidth == 4
-        exec "%s/	/    /g"
-    elseif &shiftwidth == 6
-        exec "%s/	/      /g"
-    elseif &shiftwidth == 8
-        exec "%s/	/        /g"
-    else
-        exec "%s/	/    /g"
-    end
-endfunc
+    func! RemoveTabs()
+        if &shiftwidth == 2
+            exec "%s/	/  /g"
+        elseif &shiftwidth == 4
+            exec "%s/	/    /g"
+        elseif &shiftwidth == 6
+            exec "%s/	/      /g"
+        elseif &shiftwidth == 8
+            exec "%s/	/        /g"
+        else
+            exec "%s/	/    /g"
+        end
+    endfunc
 
-" Diff current unsaved file
-function! s:DiffWithSaved()
-    let filetype=&ft
-    diffthis
-    vnew | r # | normal! 1Gdd
-    diffthis
-    exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
-endfunction
+    " Diff current unsaved file
+    function! s:DiffWithSaved()
+        let filetype=&ft
+        diffthis
+        vnew | r # | normal! 1Gdd
+        diffthis
+        exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+    endfunction
 
-" Mydict
-function! Mydict()
-    let expl=system('dict ' . expand("<cword>"))
-    windo if expand("%")=="dict.tmp" | q! | endif
-    " botright vertical 33split dict.tmp
-    botright 12split dict.tmp
-    " botright cwindow
-    setlocal buftype=nofile bufhidden=hide noswapfile
-    set report=2 " ignore the following 'one line' substitution
-    set nonu
-    1s/^/\=expl/
-    1
-    set report=0 " recovery the 'report' setting
-endfunction
+    " Mydict
+    function! Mydict()
+        let expl=system('dict ' . expand("<cword>"))
+        windo if expand("%")=="dict.tmp" | q! | endif
+        " botright vertical 33split dict.tmp
+        botright 12split dict.tmp
+        " botright cwindow
+        setlocal buftype=nofile bufhidden=hide noswapfile
+        set report=2 " ignore the following 'one line' substitution
+        set nonu
+        1s/^/\=expl/
+        1
+        set report=0 " recovery the 'report' setting
+    endfunction
 
-" 编译并运行
-func! Compile_Run_Code()
-    exec "w"
-    if &filetype == "c"
-        if WINDOWS()
-            exec !gcc -Wall -std=c11 -o %:r %:t && %:r.exe"
-        else
-            exec "!clang -Wall -std=c11 -o %:r %:t && ./%:r"
-            " exec "!gcc -Wall -o %:r %:t && ./%:r"
+    " 编译并运行
+    func! Compile_Run_Code()
+        exec "w"
+        if &filetype == "c"
+            if WINDOWS()
+                exec !gcc -Wall -std=c11 -o %:r %:t && %:r.exe"
+            else
+                exec "!clang -Wall -std=c11 -o %:r %:t && ./%:r"
+                " exec "!gcc -Wall -o %:r %:t && ./%:r"
+            endif
+        elseif &filetype == "cpp"
+            if WINDOWS()
+                exec "!g++ -Wall -std=c++11 -o %:r %:t && %:r.exe"
+            else
+                " exec "!g++ -Wall -std=c++11 -o %:r %:t && ./%:r"
+                exec "!clang++ -Wall -std=c++11 `pkg-config --cflags --libs opencv`  -o %:r %:t && ./%:r"
+                " -ggdb " add gdb support
+            endif
+        elseif &filetype == "d"
+            if WINDOWS()
+                exec "!dmd -wi %:t && %:r.exe"
+            else
+                exec "!dmd -wi %:t && ./%:r"
+            endif
+        elseif &filetype == "go"
+            exec "!go run %:t"
+        elseif &filetype == "rust"
+            if WINDOWS()
+                exec "!rustc %:t && %:r.exe"
+            else
+                exec "!rustc %:t && ./%:r"
+            endif
+        elseif &filetype == "java"
+            exec "!javac %:t && java %:r"
+        elseif &filetype == "groovy"
+            exec "!groovy %:t"
+        elseif &filetype == "scala"
+            exec "!scala %:t"
+        elseif &filetype == "clojure"
+            exec "!clojure -i %:t"
+        elseif &filetype == "cs"
+                exec "!mcs %:t && mono %:r.exe"
+        elseif &filetype == "fsharp"
+            if WINDOWS()
+                exec "!fsc %:t && %:r.exe"
+            else
+                exec "!fsharpc %:t && ./%:r.exe"
+            endif
+        elseif &filetype == "scheme" || &filetype == "racket"
+            exec "!racket -fi %:t"
+        elseif &filetype == "lisp"
+            exec "!sbcl --load %:t"
+        elseif &filetype == "ocaml"
+            if WINDOWS()
+                exec "!ocamlc -o %:r.exe %:t && %:r.exe"
+            else
+                exec "!ocamlc -o %:r %:t && ./%:r"
+            endif
+        elseif &filetype == "haskell"
+            if WINDOWS()
+                exec "!ghc -o %:r %:t && %:r.exe"
+            else
+                exec "!ghc -o %:r %:t && ./%:r"
+            endif
+        elseif &filetype == "lua"
+            exec "!lua %:t"
+        elseif &filetype == "perl"
+            exec "!perl %:t"
+        elseif &filetype == "php"
+            exec "!php %:t"
+        elseif &filetype == "python"
+            exec "!python3 %:t"
+        elseif &filetype == "ruby"
+            exec "!ruby %:t"
+        elseif &filetype == "elixir"
+            exec "!elixir %:t"
+        elseif &filetype == "julia"
+            exec "!julia %:t"
+        elseif &filetype == "dart"
+            exec "!dart %:t"
+        elseif &filetype == "haxe"
+            exec "!haxe -main %:r --interp"
+        elseif &filetype == "r"
+            exec "!Rscript %:t"
+        elseif &filetype == "coffee"
+            exec "!coffee -c %:t && node %:r.js"
+        elseif &filetype == "ls"
+            exec "!lsc -c %:t && node %:r.js"
+        elseif &filetype == "typescript"
+            exec "!tsc %:t && node %:r.js"
+        elseif &filetype == "javascript"
+            exec "!node %:t"
+        elseif &filetype == "sh"
+            exec "!bash %:t"
+        elseif &filetype == "applescript"
+            exec "!osascript %:t"
         endif
-    elseif &filetype == "cpp"
-        if WINDOWS()
-            exec "!g++ -Wall -std=c++11 -o %:r %:t && %:r.exe"
-        else
-            " exec "!g++ -Wall -std=c++11 -o %:r %:t && ./%:r"
-            exec "!clang++ -Wall -std=c++11 `pkg-config --cflags --libs opencv`  -o %:r %:t && ./%:r"
-            " -ggdb " add gdb support
-        endif
-    elseif &filetype == "d"
-        if WINDOWS()
-            exec "!dmd -wi %:t && %:r.exe"
-        else
-            exec "!dmd -wi %:t && ./%:r"
-        endif
-    elseif &filetype == "go"
-        exec "!go run %:t"
-    elseif &filetype == "rust"
-        if WINDOWS()
-            exec "!rustc %:t && %:r.exe"
-        else
-            exec "!rustc %:t && ./%:r"
-        endif
-    elseif &filetype == "java"
-        exec "!javac %:t && java %:r"
-    elseif &filetype == "groovy"
-        exec "!groovy %:t"
-    elseif &filetype == "scala"
-        exec "!scala %:t"
-    elseif &filetype == "clojure"
-        exec "!clojure -i %:t"
-    elseif &filetype == "cs"
-            exec "!mcs %:t && mono %:r.exe"
-    elseif &filetype == "fsharp"
-        if WINDOWS()
-            exec "!fsc %:t && %:r.exe"
-        else
-            exec "!fsharpc %:t && ./%:r.exe"
-        endif
-    elseif &filetype == "scheme" || &filetype == "racket"
-        exec "!racket -fi %:t"
-    elseif &filetype == "lisp"
-        exec "!sbcl --load %:t"
-    elseif &filetype == "ocaml"
-        if WINDOWS()
-            exec "!ocamlc -o %:r.exe %:t && %:r.exe"
-        else
-            exec "!ocamlc -o %:r %:t && ./%:r"
-        endif
-    elseif &filetype == "haskell"
-        if WINDOWS()
-            exec "!ghc -o %:r %:t && %:r.exe"
-        else
-            exec "!ghc -o %:r %:t && ./%:r"
-        endif
-    elseif &filetype == "lua"
-        exec "!lua %:t"
-    elseif &filetype == "perl"
-        exec "!perl %:t"
-    elseif &filetype == "php"
-        exec "!php %:t"
-    elseif &filetype == "python"
-        exec "!python3 %:t"
-    elseif &filetype == "ruby"
-        exec "!ruby %:t"
-    elseif &filetype == "elixir"
-        exec "!elixir %:t"
-    elseif &filetype == "julia"
-        exec "!julia %:t"
-    elseif &filetype == "dart"
-        exec "!dart %:t"
-    elseif &filetype == "haxe"
-        exec "!haxe -main %:r --interp"
-    elseif &filetype == "r"
-        exec "!Rscript %:t"
-    elseif &filetype == "coffee"
-        exec "!coffee -c %:t && node %:r.js"
-    elseif &filetype == "ls"
-        exec "!lsc -c %:t && node %:r.js"
-    elseif &filetype == "typescript"
-        exec "!tsc %:t && node %:r.js"
-    elseif &filetype == "javascript"
-        exec "!node %:t"
-    elseif &filetype == "sh"
-        exec "!bash %:t"
-    elseif &filetype == "applescript"
-        exec "!osascript %:t"
-    endif
-endfunc
+    endfunc
 
-" 生成cscope和tags文件
-function! Do_CsTag()
-    let dir = getcwd()
-    if filereadable("tags")
-        if WINDOWS()
-            let tagsdeleted=delete(dir."\\"."tags")
-        else
-            let tagsdeleted=delete("./"."tags")
+    " 生成cscope和tags文件
+    function! Do_CsTag()
+        let dir = getcwd()
+        if filereadable("tags")
+            if WINDOWS()
+                let tagsdeleted=delete(dir."\\"."tags")
+            else
+                let tagsdeleted=delete("./"."tags")
+            endif
+            if(tagsdeleted!=0)
+                echohl WarningMsg | echo "Fail to do tags! I cannot delete the tags" | echohl None
+                return
+            endif
         endif
-        if(tagsdeleted!=0)
-            echohl WarningMsg | echo "Fail to do tags! I cannot delete the tags" | echohl None
-            return
+        if has("cscope")
+            silent! execute "cs kill -1"
         endif
-    endif
-    if has("cscope")
-        silent! execute "cs kill -1"
-    endif
-    if filereadable("cscope.files")
-        if WINDOWS()
-            let csfilesdeleted=delete(dir."\\"."cscope.files")
-        else
-            let csfilesdeleted=delete("./"."cscope.files")
+        if filereadable("cscope.files")
+            if WINDOWS()
+                let csfilesdeleted=delete(dir."\\"."cscope.files")
+            else
+                let csfilesdeleted=delete("./"."cscope.files")
+            endif
+            if(csfilesdeleted!=0)
+                echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.files" | echohl None
+                return
+            endif
         endif
-        if(csfilesdeleted!=0)
-            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.files" | echohl None
-            return
-        endif
-    endif
-    if filereadable("cscope.out")
-        if WINDOWS()
-            let csoutdeleted=delete(dir."\\"."cscope.out")
-        else
-            let csoutdeleted=delete("./"."cscope.out")
-        endif
-        if(csoutdeleted!=0)
-            echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.out" | echohl None
-            return
-        endif
-    endif
-    if(executable('ctags'))
-        "silent! execute "!ctags -R --c-types=+p --fields=+S *"
-        silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
-    endif
-    if(executable('cscope') && has("cscope") )
-        if WINDOWS()
-            silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
-        else
-            silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
-        endif
-        silent! execute "!cscope -b"
-        execute "normal :"
         if filereadable("cscope.out")
-            execute "cs add cscope.out"
+            if WINDOWS()
+                let csoutdeleted=delete(dir."\\"."cscope.out")
+            else
+                let csoutdeleted=delete("./"."cscope.out")
+            endif
+            if(csoutdeleted!=0)
+                echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.out" | echohl None
+                return
+            endif
         endif
-    endif
-endfunction
+        if(executable('ctags'))
+            "silent! execute "!ctags -R --c-types=+p --fields=+S *"
+            silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
+        endif
+        if(executable('cscope') && has("cscope") )
+            if WINDOWS()
+                silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
+            else
+                silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
+            endif
+            silent! execute "!cscope -b"
+            execute "normal :"
+            if filereadable("cscope.out")
+                execute "cs add cscope.out"
+            endif
+        endif
+    endfunction
 
-" Append modeline after last line in buffer.
-" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
-" files.
-function! AppendModeline()
-    let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
-                \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-    let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-    call append(line("$"), l:modeline)
-endfunction
+    " Append modeline after last line in buffer.
+    " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+    " files.
+    function! AppendModeline()
+        let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+                    \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+        let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+        call append(line("$"), l:modeline)
+    endfunction
 
-function! RemoveOldViewFiles()
-    exe 'find '.$VIM.'/view/* -mtime +90 -exec rm {} \;'
-endfunction
+    function! RemoveOldViewFiles()
+        exe 'find '.$VIM.'/view/* -mtime +90 -exec rm {} \;'
+    endfunction
 
 " }
 
@@ -496,7 +496,10 @@ else
         " 在 macvim 中，不支持
         " set nu!
     else
+        " silent! colorscheme solarized
         " set background=light
+        " highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
+        
         " g:solarized_termcolors= 16 | 256
         " g:solarized_termtrans = 0 | 1
         " g:solarized_degrade = 0 | 1
@@ -1258,13 +1261,13 @@ command! DiffSaved call s:DiffWithSaved()
     " endfunction
     " nmap <Tab> :call CloseBuffer()<CR>
     " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
-    "
+    
     " 变量
     " 查看设置的值
     " echo &statusline
     " 查看设置的键与值
     " set statusline?
-    "
+    
     " 查看高亮代号
     " :highlight
 
@@ -1272,16 +1275,8 @@ command! DiffSaved call s:DiffWithSaved()
 
 " Locals {
 
-    if $MYENV == 'tmux_light'
-        set background=light
-        silent! colorscheme solarized
-        highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
-    elseif $MYENV == 'term_light'
-        silent! colorscheme pt_light
-    endif
-
-    if filereadable(expand("~/.local/.vimrc_local"))
-        source ~/.local/.vimrc_local
+    if filereadable(expand("~/.vimrc_local"))
+        source ~/.vimrc_local
     endif
 
 " }
