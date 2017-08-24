@@ -5,108 +5,95 @@
 
 " Enviroment {
 
-" Base {
-        let mapleader=","
-        " 如果在这之前用<leader>，那么<leader>代表的是之前的leader"
-        map ; :
+    let mapleader=","
+    " 在之前用 <leader> 会使用默认的'\'
+    map ; :
 
-        " restore last postion in file to $VIM/view
-        " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
-        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-    " }
+    " Platform Check: 
+    silent function! OSX()
+        return system('uname')=~'Darwin'
+    endfunction
+    silent function! LINUX()
+        return has('unix') && !has('macunix') && !has('win32unix')
+    endfunction
+    silent function! WINDOWS()
+        return  (has('win16') || has('win32') || has('win64'))
+    endfunction
 
-    " Identify platform {
-        silent function! OSX()
-            return system('uname')=~'Darwin'
-        endfunction
-        silent function! LINUX()
-            return has('unix') && !has('macunix') && !has('win32unix')
-        endfunction
-        silent function! WINDOWS()
-            return  (has('win16') || has('win32') || has('win64'))
-        endfunction
-    " }
-
-    " Adapter {
-        " Adapte with putty because of putty only support the 7 character
-        if $TERM == 'screen'
-            " http://vim.wikia.com/wiki/Get_Alt_key_to_work_in_terminal
-            " set <m-j>=j
-            " set <m-h>=h
-            " set <m-k>=k
-            " set <m-l>=l
-            "
-            " https://groups.google.com/forum/#!topic/vim_use/uKOmY-mHo_k
-            " 导致 ESC 延迟反应
-            " below set <esc> wait the next key millionstime
-            " set timeout timeoutlen=3000 ttimeoutlen=100
-
-            " 这个让 alt work in putty 的方法影响了其它平台的使用，禁用
+    " Package Manager: Plug
+    " 安装插件 :PlugInstall
+    set nocompatible
+    " let g:no_plugin=1 " to do not add-on plugin
+    if !exists("g:no_plugin")
+        if filereadable(expand("$VIM/vimrc.bundles"))
+            source $VIM/vimrc.bundles
         endif
-        " the ^[ is an Esc char that comes before the 'a'
-        " In most default configs, ^[a may be typed by pressing first <C-v>, then <M-a>
+    endif
 
-        " http://vim.1045645.n5.nabble.com/Mapping-meta-key-within-tmux-td5716437.html
-        " Fix screen's key bindings.
-        " if &term == "screen"
-        "     " These work from my HP keyboard in PuTTY on Windows XP.
-        "     map <Esc>[D   <S-Left>
-        "     map <Esc>[C   <S-Right>
-        "     map <Esc>[11~ <F1>
-        "     map <Esc>[12~ <F2>
-        "     map <Esc>[13~ <F3>
-        "     map <Esc>[14~ <F4>
-        "     map <Esc>[15~ <F5>
-        "     map <Esc>[16~ <F6>
-        "     map <Esc>[17~ <F7>
-        "     map <Esc>[18~ <F8>
-        "     map <Esc>[19~ <F9>
-        "     map <Esc>[21~ <F10
-        "     map <Esc>[23~ <F11>
-        "     map <Esc>[24~ <F12>
-        " endif
+    " Adapte with putty because of putty only support the 7 character
+    if $TERM == 'screen'
+        " http://vim.wikia.com/wiki/Get_Alt_key_to_work_in_terminal
+        " set <m-j>=j
+        " set <m-h>=h
+        " set <m-k>=k
+        " set <m-l>=l
+        "
+        " https://groups.google.com/forum/#!topic/vim_use/uKOmY-mHo_k
+        " 导致 ESC 延迟反应
+        " below set <esc> wait the next key millionstime
+        " set timeout timeoutlen=3000 ttimeoutlen=100
 
-        " if &term=="xterm"
-        "     set t_Co=8
-        "     set t_Sb=[4%dm
-        "     set t_Sf=[3%dm
-        " endif
+        " 这个让 alt work in putty 的方法影响了其它平台的使用，禁用
+    endif
+    " the ^[ is an Esc char that comes before the 'a'
+    " In most default configs, ^[a may be typed by pressing first <C-v>, then <M-a>
 
-        " 共享系统粘贴板
-        if has('clipboard')
-            if has('unnamedplus')  " When possible use + register for copy-paste
-                set clipboard=unnamed,unnamedplus
-            else
-                " On mac and Windows, use * register for copy-paste
-                " windows/mac 粘贴板一起用，不方便
-                set clipboard=unnamed
-            endif
-        endif
+    " http://vim.1045645.n5.nabble.com/Mapping-meta-key-within-tmux-td5716437.html
+    " Fix screen's key bindings.
+    " if &term == "screen"
+    "     " These work from my HP keyboard in PuTTY on Windows XP.
+    "     map <Esc>[D   <S-Left>
+    "     map <Esc>[C   <S-Right>
+    "     map <Esc>[11~ <F1>
+    "     map <Esc>[12~ <F2>
+    "     map <Esc>[13~ <F3>
+    "     map <Esc>[14~ <F4>
+    "     map <Esc>[15~ <F5>
+    "     map <Esc>[16~ <F6>
+    "     map <Esc>[17~ <F7>
+    "     map <Esc>[18~ <F8>
+    "     map <Esc>[19~ <F9>
+    "     map <Esc>[21~ <F10
+    "     map <Esc>[23~ <F11>
+    "     map <Esc>[24~ <F12>
+    " endif
 
-        if WINDOWS()
-            " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
+    " if &term=="xterm"
+    "     set t_Co=8
+    "     set t_Sb=[4%dm
+    "     set t_Sf=[3%dm
+    " endif
+
+    " 共享系统粘贴板
+    if has('clipboard')
+        if has('unnamedplus')  " When possible use + register for copy-paste
+            set clipboard=unnamed,unnamedplus
         else
-            " 兼容windows的环境变量$VIM
-            let $VIM = $HOME."/.vim"
-            set shell=/bin/sh
-            " adapt gvim $VIMRC
-            let $VIMRC=$MYVIMRC
+            " On mac and Windows, use * register for copy-paste
+            " windows/mac 粘贴板一起用，不方便
+            set clipboard=unnamed
         endif
+    endif
 
-
-    " }
-
-    " Package manager{
-        " 添加 Plug 插件管理器
-        " 安装插件 :PlugInstall
-        set nocompatible               " 设置不与之前版本兼容 be iMproved
-        " let g:no_plugin=1 " to do not add-on plugin
-        if !exists("g:no_plugin")
-            if filereadable(expand("$VIM/vimrc.bundles"))
-                source $VIM/vimrc.bundles
-            endif
-        endif
-    " }
+    if WINDOWS()
+        " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
+    else
+        " 兼容windows的环境变量$VIM
+        let $VIM = $HOME."/.vim"
+        set shell=/bin/sh
+        " adapt gvim $VIMRC
+        let $VIMRC=$MYVIMRC
+    endif
 
 " }
 
@@ -325,6 +312,9 @@
 
 " }
 
+
+" }
+
 " Setting {
 
 " Base {
@@ -359,9 +349,6 @@
     set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
     " set virtualedit=onemore                          " Allow for cursor beyond last character
 
-    set nobackup                 " 不生成备份文件
-    set writebackup              " 设置无备份文件
-    set noswapfile               " 不生成交换文件
     set autoread                 " 当文件在外部被修改时自动更新该文件
 
     set backspace=2              " 设置退格键可用
@@ -419,8 +406,14 @@
         " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
     endif
 
+    set writebackup              " Make a backup before overwriting a file. The backup is removed after the file was successfully written, unless the 'backup' option is also on.
+    set nobackup                 " 不生成备份文件
+    set noswapfile               " 不生成交换文件
+    " restore last postion in file to $VIM/view
+    " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-    au BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
+
 
 
 " }
@@ -686,9 +679,250 @@ endif
 
 " }
 
+" Scene Setting {
+
+" ManPage {
+    " manpageview phpfunctionname.php
+    " 可以使用快捷键K查询
+    " 说明，比如你在centos里面装了man-pages，当你用K查询的时候，自动会弹出man 你光标下面的词
+    " manpageview 替代了插件pydoc.vim
+    " 查找当前的单词意思,quick close: ZZ/:q
+    nmap <silent><leader>K :call Mydict()<CR>
+    "
 " }
 
-" Shorcut {
+" Instant Preview Markdown {
+    let g:instant_markdown_autostart = 0
+    map <leader>rp :InstantMarkdownPreview<CR>
+" }
+
+" Python {
+    " Base Setting {
+        " python highlight
+        let python_highlight_all = 1
+        let b:python_version_2 = 1
+        let g:python_version_2 = 1
+
+        au BufRead *.wsgi setl filetype=python
+
+        au BufNewFile,BufRead *.py,*.pyw
+            \ set tabstop=4 |
+            \ set softtabstop=4 |
+            \ set shiftwidth=4 |
+            \ set textwidth=79 |
+            \ set expandtab |
+            \ set autoindent |
+            \ set fileformat=unix |
+
+        " Use UNIX (\n) line endings.
+        au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
+
+        " Display tabs at the beginning of a line in Python mode as bad.
+        " au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+        " Make trailing whitespace be flagged as bad.
+        " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+
+        " 支持Virtualenv虚拟环境
+
+        " 上面“转到定义”功能的一个问题，就是默认情况下Vim不知道virtualenv虚拟环境的情况，所以你必须在配置文件中添加下面的代码，使得Vim和YouCompleteMe能够发现你的虚拟环境：
+
+        " python with virtualenv support
+        " py << EOF
+        " import os
+        " import sys
+        " if 'VIRTUAL_ENV' in os.environ:
+        "   project_base_dir = os.environ['VIRTUAL_ENV']
+        "   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+        "   execfile(activate_this, dict(__file__=activate_this))
+        " EOF
+        " 这段代码会判断你目前是否在虚拟环境中编辑，然后切换到相应的虚拟环境，并设置好你的系统路径，确保YouCompleteMe能够找到相应的site packages文件夹。
+        " 上面的代码似乎已经被下面的插件智能解 决
+        " https://github.com/jmcantrell/vim-virtualenv
+        " 如果有一天一直使用 python  可以考虑把 python 放在单独的一个文件配置中, 参考这篇文章
+        " https://segmentfault.com/a/1190000003962806
+    " }
+" }
+
+" PHP {
+    " Base Setting {
+        let g:phpcomplete_relax_static_constraint = 1
+        let g:phpcomplete_complete_for_unknown_classes = 1
+        let g:phpcomplete_search_tags_for_variables = 1
+        let g:phpcomplete_mappings = {
+          \ 'jump_to_def': ',g',
+          \ }
+
+        "只有在是PHP文件时，才启用PHP补全
+        function! AddPHPFuncList()
+            set dictionary+=$HOME/.vim/vimfiles/resource/php-offical.dict
+            set complete-=k complete+=k
+        endfunction
+
+        " Map <leader>el to error_log value
+        " takes the whatever is under the cursor and wraps it in error_log( and
+        " print_r( with parameter true and a label
+        au FileType php nnoremap <leader>el ^vg_daerror_log( '<esc>pa=' . print_r( <esc>pa, true ) );<cr><esc>
+
+        au FileType php call AddPHPFuncList()
+        au FileType php setlocal omnifunc=syntaxcomplete#Complete
+        au BufNewFile,BufRead *.phtml set filetype=php
+
+        " set tags+= ~/.vim/vimfiles/resource/tags-php
+
+        " autocmd FileType php setlocal omnifunc=phpcomplete#CompleteTags
+        " 除了使用Tab这个补全的方式，还可以使用Ctrl+x，Ctrl+o来补全上面文件的内置函数
+
+        " function! RunPhpcs()
+            " let l:filename=@%
+            " let l:phpcs_output=system('phpcs --report=csv --standard=YMC '.l:filename)
+            " let l:phpcs_list=split(l:phpcs_output, "\n")
+            " unlet l:phpcs_list[0]
+            " cexpr l:phpcs_list
+            " cwindow
+            " endfunction
+
+            " set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
+        " command! Phpcs execute RunPhpcs()
+        " php debug
+        let g:vdebug_keymap = {
+        \    "run"               : "<F5>",
+        \    "set_breakpoint"    : "<F9>",
+        \    "run_to_cursor"     : "<F1>",
+        \    "get_context"       : "<F2>",
+        \    "detach"            : "<F7>",
+        \    "step_over"         : "<F10>",
+        \    "step_into"         : "<F11>",
+        \    "step_out"          : '<leader><F11>',
+        \    "close"             : '<leader><F5>',
+        \    "eval_under_cursor" : "<Leader>ec",
+        \    "eval_visual"       : "<Leader>ev",
+        \}
+        let g:vdebug_options = {
+        \    "port"               : 9000,
+        \    "server"             : 'localhost',
+        \    "timeout"            : 20,
+        \    "on_close"           : 'detach',
+        \    "break_on_open"      : 0,
+        \    "path_maps"          : {},
+        \    "debug_window_level" : 0,
+        \    "debug_file_level"   : 0,
+        \    "debug_file"         : "",
+        \    "watch_window_style" : 'expanded',
+        \    "marker_default"     : '*',
+        \    "marker_closed_tree" : '+',
+        \    "marker_open_tree"   : '-'
+        \}
+
+        " 要让vim支持php/js的错误查询，先安装syntastic插件
+        " 然后用php对应的版本pear install PHP_CodeSniffer-2.0.0a2
+        " shell测试：phpcs index.php
+        " phpcs，tab 4个空格，编码参考使用CodeIgniter风格
+        " let g:syntastic_phpcs_conf = "--tab-width=3 --standard=Zend"
+        " let g:syntastic_phpcs_conf = "--tab-width=4 --standard=CodeIgniter"
+        " 也可以在cli中执行下面的命令
+        " phpcs --config-set default_standard Zend
+        " 如果怕被phpcs提示的错误吓倒，可以把Zend改成none,这样就只会提示一些常见的错误
+        "
+        let g:phpqa_messdetector_ruleset = ''
+        let g:phpqa_messdetector_cmd = '/usr/bin/phpmd'
+        " 在打开文件的时候检查
+        let g:phpqa_messdetector_autorun = 0
+    " }
+" }
+
+" RUBY {
+    " 针对部分语言取消指定字符的单词属性
+    au FileType ruby     set iskeyword+=!
+    au FileType ruby     set iskeyword+=?
+
+    " 对部分语言设置单独的缩进
+    au FileType ruby,eruby set shiftwidth=2
+    au FileType ruby,eruby set tabstop=2
+
+    " auto completed
+    let g:rubycomplete_buffer_loading = 1
+    let g:rubycomplete_classes_in_global = 1
+    let g:rubycomplete_rails = 1
+    autocmd FileType ruby compiler ruby
+" }
+
+" Node {
+
+    " shortcut
+    " F         格式化当前页面 js,html,css. 可选中局部格式化
+
+    " au FileType javascript,coffee,slim,jade set shiftwidth=2
+    " au FileType javascript,offee,slim,jade set tabstop=2
+
+    " au BufRead,BufNewFile *.scss set filetype=scss
+    " au BufRead,BufNewFile *.sass set filetype=scss
+    " au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
+    " au BufRead,BufNewFile *.less set filetype=css
+    " au BufRead,BufNewFile *.coffee setl foldmethod=indent nofoldenable
+    " au BufRead,BufNewFile *.coffee setl shiftwidth=2 expandtab
+
+    au BufNewFile,BufRead *.js,*.html,*.css
+        \ set tabstop=4 |
+        \ set softtabstop=4 |
+        \ set shiftwidth=4
+
+    " ignore Node and JS stuff
+    set wildignore+=*/node_modules/*,*.min.js
+
+    hi link coffeeSpaceError NONE
+    hi link coffeeSemicolonError NONE
+    hi link coffeeReservedError NONE
+    map <leader>cf :CoffeeCompile watch vert<cr>
+
+" }
+
+" C/C++ {
+
+    " c/c++环境开发IDE
+    " c开发介绍：http://blog.csdn.net/bokee/article/details/6633193
+    " Ctags
+    " inoremap  <c-]> <c-x><c-]> "ctags 补全快捷键
+    " 用ctrl+]和Ctrl+t跳转定义和返回
+    nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
+    " nmap <leader>mt <ESC>:!ctags -R --languages=
+    " set tags+=~/gitdb/rails/tags
+    " 生成cscope
+    " nmap <leader>gc :!cscope -Rbq -f cscope/cs.out <CR><CR>:echo 'generate cscope done'<cr>
+    " cscope的使用
+    " <leader>f
+    " s: Find this C symbol
+    " g: Find this definition
+    " d: Find functions called by this function
+    " c: Find functions calling this function
+    " t: Find this text string
+    " e: Find this egrep pattern
+    " f: Find this file
+    " i: Find files #including this file
+    " 使用taglist <leader>tl
+    " 在. -> :: 等地方可以自动补全
+
+" }
+
+" Other {
+    " 对部分语言设置单独的缩进
+    au FileType scala,clojure,lua,dart,sh set shiftwidth=2
+    au FileType scala,clojure,lua,dart,sh set tabstop=2
+    " 针对部分语言取消指定字符的单词属性
+    au FileType clojure  set iskeyword-=.
+    au FileType clojure  set iskeyword-=>
+    au FileType perl,php set iskeyword-=$
+
+    au BufRead,BufNewFile *.applescript set filetype=applescript
+    au BufRead,BufNewFile *.scpt set filetype=applescript
+
+    " au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
+
+" }
+
+" }
+
+" Shortcut {
 
 " marker 使用
 " m 0~9 标记文件
@@ -1007,249 +1241,6 @@ command! DiffSaved call s:DiffWithSaved()
 
 " 去掉BOM
 " set nobomb; set fileencoding=utf8; w
-
-" }
-
-" Scene {
-
-" ManPage {
-    " manpageview phpfunctionname.php
-    " 可以使用快捷键K查询
-    " 说明，比如你在centos里面装了man-pages，当你用K查询的时候，自动会弹出man 你光标下面的词
-    " manpageview 替代了插件pydoc.vim
-    " 查找当前的单词意思,quick close: ZZ/:q
-    nmap <silent><leader>K :call Mydict()<CR>
-    "
-" }
-
-" Instant Preview Markdown {
-    let g:instant_markdown_autostart = 0
-    map <leader>rp :InstantMarkdownPreview<CR>
-" }
-
-" Python {
-    " Base Setting {
-        " python highlight
-        let python_highlight_all = 1
-        let b:python_version_2 = 1
-        let g:python_version_2 = 1
-
-        au BufRead *.wsgi setl filetype=python
-
-        au BufNewFile,BufRead *.py,*.pyw
-            \ set tabstop=4 |
-            \ set softtabstop=4 |
-            \ set shiftwidth=4 |
-            \ set textwidth=79 |
-            \ set expandtab |
-            \ set autoindent |
-            \ set fileformat=unix |
-
-        " Use UNIX (\n) line endings.
-        au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
-
-        " Display tabs at the beginning of a line in Python mode as bad.
-        " au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-        " Make trailing whitespace be flagged as bad.
-        " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
-
-        " 支持Virtualenv虚拟环境
-
-        " 上面“转到定义”功能的一个问题，就是默认情况下Vim不知道virtualenv虚拟环境的情况，所以你必须在配置文件中添加下面的代码，使得Vim和YouCompleteMe能够发现你的虚拟环境：
-
-        " python with virtualenv support
-        " py << EOF
-        " import os
-        " import sys
-        " if 'VIRTUAL_ENV' in os.environ:
-        "   project_base_dir = os.environ['VIRTUAL_ENV']
-        "   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-        "   execfile(activate_this, dict(__file__=activate_this))
-        " EOF
-        " 这段代码会判断你目前是否在虚拟环境中编辑，然后切换到相应的虚拟环境，并设置好你的系统路径，确保YouCompleteMe能够找到相应的site packages文件夹。
-        " 上面的代码似乎已经被下面的插件智能解 决
-        " https://github.com/jmcantrell/vim-virtualenv
-        " 如果有一天一直使用 python  可以考虑把 python 放在单独的一个文件配置中, 参考这篇文章
-        " https://segmentfault.com/a/1190000003962806
-    " }
-" }
-
-" PHP {
-    " Base Setting {
-        let g:phpcomplete_relax_static_constraint = 1
-        let g:phpcomplete_complete_for_unknown_classes = 1
-        let g:phpcomplete_search_tags_for_variables = 1
-        let g:phpcomplete_mappings = {
-          \ 'jump_to_def': ',g',
-          \ }
-
-        "只有在是PHP文件时，才启用PHP补全
-        function! AddPHPFuncList()
-            set dictionary+=$HOME/.vim/vimfiles/resource/php-offical.dict
-            set complete-=k complete+=k
-        endfunction
-
-        " Map <leader>el to error_log value
-        " takes the whatever is under the cursor and wraps it in error_log( and
-        " print_r( with parameter true and a label
-        au FileType php nnoremap <leader>el ^vg_daerror_log( '<esc>pa=' . print_r( <esc>pa, true ) );<cr><esc>
-
-        au FileType php call AddPHPFuncList()
-        au FileType php setlocal omnifunc=syntaxcomplete#Complete
-        au BufNewFile,BufRead *.phtml set filetype=php
-
-        " set tags+= ~/.vim/vimfiles/resource/tags-php
-
-        " autocmd FileType php setlocal omnifunc=phpcomplete#CompleteTags
-        " 除了使用Tab这个补全的方式，还可以使用Ctrl+x，Ctrl+o来补全上面文件的内置函数
-
-        " function! RunPhpcs()
-            " let l:filename=@%
-            " let l:phpcs_output=system('phpcs --report=csv --standard=YMC '.l:filename)
-            " let l:phpcs_list=split(l:phpcs_output, "\n")
-            " unlet l:phpcs_list[0]
-            " cexpr l:phpcs_list
-            " cwindow
-            " endfunction
-
-            " set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
-        " command! Phpcs execute RunPhpcs()
-        " php debug
-        let g:vdebug_keymap = {
-        \    "run"               : "<F5>",
-        \    "set_breakpoint"    : "<F9>",
-        \    "run_to_cursor"     : "<F1>",
-        \    "get_context"       : "<F2>",
-        \    "detach"            : "<F7>",
-        \    "step_over"         : "<F10>",
-        \    "step_into"         : "<F11>",
-        \    "step_out"          : '<leader><F11>',
-        \    "close"             : '<leader><F5>',
-        \    "eval_under_cursor" : "<Leader>ec",
-        \    "eval_visual"       : "<Leader>ev",
-        \}
-        let g:vdebug_options = {
-        \    "port"               : 9000,
-        \    "server"             : 'localhost',
-        \    "timeout"            : 20,
-        \    "on_close"           : 'detach',
-        \    "break_on_open"      : 0,
-        \    "path_maps"          : {},
-        \    "debug_window_level" : 0,
-        \    "debug_file_level"   : 0,
-        \    "debug_file"         : "",
-        \    "watch_window_style" : 'expanded',
-        \    "marker_default"     : '*',
-        \    "marker_closed_tree" : '+',
-        \    "marker_open_tree"   : '-'
-        \}
-
-        " 要让vim支持php/js的错误查询，先安装syntastic插件
-        " 然后用php对应的版本pear install PHP_CodeSniffer-2.0.0a2
-        " shell测试：phpcs index.php
-        " phpcs，tab 4个空格，编码参考使用CodeIgniter风格
-        " let g:syntastic_phpcs_conf = "--tab-width=3 --standard=Zend"
-        " let g:syntastic_phpcs_conf = "--tab-width=4 --standard=CodeIgniter"
-        " 也可以在cli中执行下面的命令
-        " phpcs --config-set default_standard Zend
-        " 如果怕被phpcs提示的错误吓倒，可以把Zend改成none,这样就只会提示一些常见的错误
-        "
-        let g:phpqa_messdetector_ruleset = ''
-        let g:phpqa_messdetector_cmd = '/usr/bin/phpmd'
-        " 在打开文件的时候检查
-        let g:phpqa_messdetector_autorun = 0
-    " }
-" }
-
-" RUBY {
-    " 针对部分语言取消指定字符的单词属性
-    au FileType ruby     set iskeyword+=!
-    au FileType ruby     set iskeyword+=?
-
-    " 对部分语言设置单独的缩进
-    au FileType ruby,eruby set shiftwidth=2
-    au FileType ruby,eruby set tabstop=2
-
-    " auto completed
-    let g:rubycomplete_buffer_loading = 1
-    let g:rubycomplete_classes_in_global = 1
-    let g:rubycomplete_rails = 1
-    autocmd FileType ruby compiler ruby
-" }
-
-" Node {
-
-    " shortcut
-    " F         格式化当前页面 js,html,css. 可选中局部格式化
-
-    " au FileType javascript,coffee,slim,jade set shiftwidth=2
-    " au FileType javascript,offee,slim,jade set tabstop=2
-
-    " au BufRead,BufNewFile *.scss set filetype=scss
-    " au BufRead,BufNewFile *.sass set filetype=scss
-    " au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
-    " au BufRead,BufNewFile *.less set filetype=css
-    " au BufRead,BufNewFile *.coffee setl foldmethod=indent nofoldenable
-    " au BufRead,BufNewFile *.coffee setl shiftwidth=2 expandtab
-
-    au BufNewFile,BufRead *.js,*.html,*.css
-        \ set tabstop=4 |
-        \ set softtabstop=4 |
-        \ set shiftwidth=4
-
-    " ignore Node and JS stuff
-    set wildignore+=*/node_modules/*,*.min.js
-
-    hi link coffeeSpaceError NONE
-    hi link coffeeSemicolonError NONE
-    hi link coffeeReservedError NONE
-    map <leader>cf :CoffeeCompile watch vert<cr>
-
-" }
-
-" C/C++ {
-
-    " c/c++环境开发IDE
-    " c开发介绍：http://blog.csdn.net/bokee/article/details/6633193
-    " Ctags
-    " inoremap  <c-]> <c-x><c-]> "ctags 补全快捷键
-    " 用ctrl+]和Ctrl+t跳转定义和返回
-    nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
-    " nmap <leader>mt <ESC>:!ctags -R --languages=
-    " set tags+=~/gitdb/rails/tags
-    " 生成cscope
-    " nmap <leader>gc :!cscope -Rbq -f cscope/cs.out <CR><CR>:echo 'generate cscope done'<cr>
-    " cscope的使用
-    " <leader>f
-    " s: Find this C symbol
-    " g: Find this definition
-    " d: Find functions called by this function
-    " c: Find functions calling this function
-    " t: Find this text string
-    " e: Find this egrep pattern
-    " f: Find this file
-    " i: Find files #including this file
-    " 使用taglist <leader>tl
-    " 在. -> :: 等地方可以自动补全
-
-" }
-
-" Other {
-    " 对部分语言设置单独的缩进
-    au FileType scala,clojure,lua,dart,sh set shiftwidth=2
-    au FileType scala,clojure,lua,dart,sh set tabstop=2
-    " 针对部分语言取消指定字符的单词属性
-    au FileType clojure  set iskeyword-=.
-    au FileType clojure  set iskeyword-=>
-    au FileType perl,php set iskeyword-=$
-
-    au BufRead,BufNewFile *.applescript set filetype=applescript
-    au BufRead,BufNewFile *.scpt set filetype=applescript
-
-    " au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
-
-" }
 
 " }
 
