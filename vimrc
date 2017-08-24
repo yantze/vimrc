@@ -306,7 +306,7 @@
     endfunction
 
     function! RemoveOldViewFiles()
-        exe 'find '.$VIM.'/view/* -mtime +90 -exec rm {} \;'
+        exe 'find '.$VIMHOME.'/view/* -mtime +90 -exec rm {} \;'
     endfunction
 
 " }
@@ -379,7 +379,10 @@
 
     if v:version > 703
         set undofile                " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
-        set undodir=$VIM/\_undodir
+        if empty(glob("$VIMHOME/_undodir"))
+            call mkdir(expand("$VIMHOME/_undodir"))
+        endif
+        set undodir=$VIMHOME/_undodir
         set undolevels=1000         " maximum number of changes that can be undone"
     endif
 
@@ -406,7 +409,7 @@
     set writebackup              " Make a backup before overwriting a file. The backup is removed after the file was successfully written, unless the 'backup' option is also on.
     set nobackup                 " 不生成备份文件
     set noswapfile               " 不生成交换文件
-    " restore last postion in file to $VIM/view
+    " restore last postion in file to $VIMHOME/view
     " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
