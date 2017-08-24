@@ -1,11 +1,11 @@
 " author: yantze
-" $VIM/vimrc.bundles " the package location
+" $VIMHOME/vimrc.bundles " the package location
 
 " General {
 
 " Enviroment {
 
-    " Base
+    " Basic
     let mapleader=","
     " 在之前用 <leader> 会使用默认的'\'
     map ; :
@@ -35,23 +35,19 @@
     " 统一变量
     if WINDOWS()
         let $VIMHOME = $VIM."\\vimfiles"
+        let $VIMRC = $MYVIMRC
         " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
     else
         let $VIMHOME = $HOME."/.vim"
-        " 兼容windows的环境变量$VIM
-        let $VIM = $HOME."/.vim"
+        let $VIMRC = $MYVIMRC
         set shell=/bin/sh
-        " adapt gvim $VIMRC
-        let $VIMRC=$MYVIMRC
     endif
-    
+
     " Package Manager
     " 安装插件 :PlugInstall
     " let g:no_plugin=1 " to do not add-on plugin
-    if !exists("g:no_plugin")
-        if filereadable(expand("$VIMHOME/vimrc.bundles"))
-            source $VIMHOME/vimrc.bundles
-        endif
+    if !exists("g:no_plugin") && !empty(glob("$VIMHOME/vimrc.bundles"))
+        source $VIMHOME/vimrc.bundles
     endif
 
     " Adapte with putty because of putty only support the 7 character
@@ -381,7 +377,6 @@
 
     " set lsp=0                    "设置行间距
 
-
     if v:version > 703
         set undofile                " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
         set undodir=$VIM/\_undodir
@@ -444,10 +439,10 @@ if WINDOWS()
         " colortheme list: molokai autumn blackboard asu1dark busybee tomorrow
         " colorscheme solarized  " deep blue
         " colorscheme morning    " white
+        " colorscheme desertEx
 
         " let g:zenburn_transparent = 1 " black
         let g:zenburn_high_Contrast = 1
-        " colorscheme desertEx
         silent! colorscheme zenburn      " grey, my fav
 
         " set font
@@ -494,7 +489,7 @@ else
         " silent! colorscheme solarized
         " set background=light
         " highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
-        
+
         " g:solarized_termcolors= 16 | 256
         " g:solarized_termtrans = 0 | 1
         " g:solarized_degrade = 0 | 1
@@ -1254,13 +1249,13 @@ command! DiffSaved call s:DiffWithSaved()
     " endfunction
     " nmap <Tab> :call CloseBuffer()<CR>
     " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
-    
+
     " 变量
     " 查看设置的值
     " echo &statusline
     " 查看设置的键与值
     " set statusline?
-    
+
     " 查看高亮代号
     " :highlight
 
