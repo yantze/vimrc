@@ -27,9 +27,11 @@ alias less=$PAGER
 alias zless=$PAGER
 ```
 ### Windows 安装
+先安装好 gvim 和 git
 ```
 # 用**管理员模式**的批处理命令行进入到你的 vim 安装目录
 cd "C:\Program Files\Vim\"
+# 删除原 vimfiles，这里面都是空的, 删除 _vimrc，这里面都是示范文件
 git clone https://github.com/yantze/vimrc vimfiles
 # 设置软链到上级目录
 mklink _vimrc vimfiles\vimrc
