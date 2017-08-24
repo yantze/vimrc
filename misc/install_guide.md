@@ -28,13 +28,15 @@ alias zless=$PAGER
 ```
 ### Windows 安装
 ```
-# 到你的 vim 安装目录
+# 用**管理员模式**的批处理命令行进入到你的 vim 安装目录
 cd C:\Program Files\Vim\
 git clone https://github.com/yantze/vimrc vimfiles
+# 设置软链到上级目录
 mklink _vimrc vimfiles\vimrc
+# 安装插件包
+gvim +PlugInstall
+# 安装完成
 ```
-接着启动 vim 或者 gvim ，应该会自动安装包文件
-
 <hr>
 
 除非有什么问题，下面的配置可忽略。

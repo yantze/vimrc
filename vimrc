@@ -34,7 +34,7 @@
 
     " 统一变量
     if WINDOWS()
-        let $VIMHOME = $VIM."\vimfiles"
+        let $VIMHOME = $VIM."\\vimfiles"
         " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
     else
         let $VIMHOME = $HOME."/.vim"
@@ -447,8 +447,8 @@ if WINDOWS()
 
         " let g:zenburn_transparent = 1 " black
         let g:zenburn_high_Contrast = 1
-        colorscheme zenburn      " grey, my fav
         " colorscheme desertEx
+        silent! colorscheme zenburn      " grey, my fav
 
         " set font
         set guifont=Consolas:h12
