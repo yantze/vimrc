@@ -4,21 +4,15 @@
 " General {
 
 " Enviroment {
+
 " Base {
         let mapleader=","
         " 如果在这之前用<leader>，那么<leader>代表的是之前的leader"
         map ; :
 
-        " restore last postion in file to vimfiles/view
+        " restore last postion in file to $VIM/view
         " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
         au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-        " 判断是否处于GUI界面
-        if has("gui_running")
-            let g:isGUI = 1
-        else
-            let g:isGUI = 0
-        endif
     " }
 
     " Identify platform {
@@ -31,18 +25,6 @@
         silent function! WINDOWS()
             return  (has('win16') || has('win32') || has('win64'))
         endfunction
-    " }
-
-    " Windows Compatible {
-        if WINDOWS()
-            " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
-        else
-            " 兼容windows的环境变量$VIM
-            let $VIM = $HOME."/.vim"
-            set shell=/bin/sh
-            " adapt gvim $VIMRC
-            let $VIMRC=$MYVIMRC
-        endif
     " }
 
     " Adapter {
@@ -89,7 +71,7 @@
         "     set t_Sb=[4%dm
         "     set t_Sf=[3%dm
         " endif
-        "
+
         " 共享系统粘贴板
         if has('clipboard')
             if has('unnamedplus')  " When possible use + register for copy-paste
@@ -101,6 +83,15 @@
             endif
         endif
 
+        if WINDOWS()
+            " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
+        else
+            " 兼容windows的环境变量$VIM
+            let $VIM = $HOME."/.vim"
+            set shell=/bin/sh
+            " adapt gvim $VIMRC
+            let $VIMRC=$MYVIMRC
+        endif
 
 
     " }
@@ -336,85 +327,109 @@ endfunction
 
 " Setting {
 
-syntax enable                " 打开语法高亮
-syntax on                    " 开启文件类型侦测
-filetype indent on           " 针对不同的文件类型采用不同的缩进格式
-filetype plugin on           " 针对不同的文件类型加载对应的插件
-filetype plugin indent on    " 启用自动补全
-set visualbell t_vb=         " 关闭visual bell/声音
-set t_Co=256                 " 设置文字可以显示多少种颜色
-" au GuiEnter * set t_vb=    " 关闭beep/屏闪
-" set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
+" Base {
 
-" 文件配置
-" set fileformats=unix                             " 设定换行符
+    syntax enable                " 打开语法高亮
+    syntax on                    " 开启文件类型侦测
+    filetype indent on           " 针对不同的文件类型采用不同的缩进格式
+    filetype plugin on           " 针对不同的文件类型加载对应的插件
+    filetype plugin indent on    " 启用自动补全
+    set visualbell t_vb=         " 关闭visual bell/声音
+    set t_Co=256                 " 设置文字可以显示多少种颜色
+    " au GuiEnter * set t_vb=    " 关闭beep/屏闪
+    " set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
-if has("multi_byte")
-    set formatoptions+=mM
-    if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
-        set ambiwidth=double
+    " 文件配置
+    " set fileformats=unix                             " 设定换行符
+
+    if has("multi_byte")
+        set formatoptions+=mM
+        if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+            set ambiwidth=double
+        endif
     endif
-endif
 
-set enc=utf-8                                    " 设置编码
-set fenc=utf-8                                   " 设置文件编码
-set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
-set shortmess+=filmnrxoOtT                       " Abbrev. of messages (avoids 'hit enter')
-set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
-" set virtualedit=onemore                          " Allow for cursor beyond last character
-" set bsdir=buffer                               " 设定文件浏览器目录为当前目录,default value
-" set autochdir
+    " set ambiwidth=double         " 如果全角字符不能识别一般用这个(自动用宽字符显示)
+    set fo+=mB                   " 打开断行模块对亚洲语言支持, fo = formatoptions
 
-set bsdir=buffer                                 " 设定文件浏览器目录为当前目录
-" 把这个快捷键放在这里主要是因为dos的vim对这个不支持，其它的系统支持
-imap <c-h> <ESC>I
+    set enc=utf-8                                    " 设置编码
+    set fenc=utf-8                                   " 设置文件编码
+    set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
+    set shortmess+=filmnrxoOtT                       " Abbrev. of messages (avoids 'hit enter')
+    set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
+    " set virtualedit=onemore                          " Allow for cursor beyond last character
 
-set backspace=2              " 设置退格键可用
-set autoindent               " 自动对齐
-set smartindent              " 智能自动缩进
-set ruler                    " 右下角显示光标位置的状态行
-set hidden                   " 允许在有未保存的修改时切换缓冲区
-set laststatus=2             " 开启状态栏信息
-set cmdheight=2              " 命令行的高度，默认为1，这里设为2
-set writebackup              " 设置无备份文件
-set autoread                 " 当文件在外部被修改时自动更新该文件
-set nobackup                 " 不生成备份文件
-set noswapfile               " 不生成交换文件
-set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
-set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
-set listchars=tab:\|\ ,trail:. "设置tab/尾部字符用什么填充
-set cursorline               " 突出显示当前行
-" set cursorcolumn             " 突出显示当前列
-set history=500              " keep 500 lines of command line history
-set mouse=a                  " 启用鼠标
-set wrap linebreak nolist    " wrap，only wrap at a character in the breakat option (by default, this includes " ^I!@*-+;:,./?" , linebreak 不在单词中间断行
+    set nobackup                 " 不生成备份文件
+    set writebackup              " 设置无备份文件
+    set noswapfile               " 不生成交换文件
+    set autoread                 " 当文件在外部被修改时自动更新该文件
 
-" set tw=78                    "超过80个字符就折行(textwrap)
-" set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
-set display=lastline         " 不要显示@@@@@
+    set backspace=2              " 设置退格键可用
+    set autoindent               " 自动对齐
+    set smartindent              " 智能自动缩进
+    set ruler                    " 右下角显示光标位置的状态行
+    set hidden                   " 允许在有未保存的修改时切换缓冲区
+    set laststatus=2             " 开启状态栏信息
+    set cmdheight=2              " 命令行的高度，默认为1，这里设为2
+    set bsdir=buffer             " 设定文件浏览器目录为当前目录
+    set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
+    set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
+    " set cursorcolumn             " 突出显示当前列
+    set history=500              " keep 500 lines of command line history
+    set mouse=a                  " 启用鼠标
+    set wrap linebreak nolist    " wrap，only wrap at a character in the breakat option (by default, this includes " ^I!@*-+;:,./?" , linebreak 不在单词中间断行
 
-" 光标的上下方至少保留显示的行数
-set scrolloff=5
+    set cursorline               " 突出显示当前行
+    " set tw=78                    "超过80个字符就折行(textwrap)
+    " set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
+    set display=lastline         " 不要显示@@@@@
+    set listchars=tab:\|\ ,trail:. "设置tab/尾部字符用什么填充
 
+    " 光标的上下方至少保留显示的行数
+    set scrolloff=5
 
-" set ambiwidth=double         "如果全角字符不能识别一般用这个(自动用宽字符显示)
-set fo+=mB                   "打开断行模块对亚洲语言支持
-set showmatch                   " 显示括号配对情况
-" set lsp=0                    "设置行间距
+    set showmatch                   " 显示括号配对情况
+
+    " set lsp=0                    "设置行间距
 
 
-if v:version > 703
-    set undofile                " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
-    set undodir=$VIM/\_undodir
-    set undolevels=1000         " maximum number of changes that can be undone"
-endif
+    if v:version > 703
+        set undofile                " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
+        set undodir=$VIM/\_undodir
+        set undolevels=1000         " maximum number of changes that can be undone"
+    endif
 
+    " dos 的 vim 要前置这个快捷键
+    imap <c-h> <ESC>I
+
+    " => Modify word boundary characters
+    " insert schema, ctrl+w and other keys likes emacs
+    set iskeyword+=- " remove - as a word boundary
+    set iskeyword+=$
+
+
+
+    if !exists("g:no_plugin")
+        autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
+        autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
+        " autocmd BufWinEnter *.* silent loadview  " 恢复状态
+        " autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
+        " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
+        " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
+        " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
+    endif
+
+
+    au BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
+
+
+" }
 
 " GUI & WIN {
 " 设置着色模式和字体
 if WINDOWS()
     " 使用GUI界面时的设置
-    if g:isGUI
+    if has("gui_running")
         " 启动gvim时窗口的大小
         " set lines=42 columns=170
         " 启动时自动最大化窗口
@@ -461,7 +476,7 @@ if WINDOWS()
 
     endif
 else
-    if g:isGUI
+    if has("gui_running")
         if has("gui_gtk2")
             " set guifont=DejaVu\ Sans\ Mono\ 14
         elseif has("gui_macvim")
@@ -499,32 +514,35 @@ endif
 " }
 
 " 代码折叠 {
-set foldenable
-" 折叠方法
-" manual    手工折叠
-" indent    使用缩进表示折叠
-" expr      使用表达式定义折叠
-" syntax    使用语法定义折叠
-" diff      对没有更改的文本进行折叠
-" marker    使用标记进行折叠, 默认标记是 {{{ 和 }}}, 可以自定义为 `set foldmarker={,}`
-set foldmethod=indent
-set foldlevel=99
-" 代码折叠自定义快捷键 <leader>zz
-nnoremap <space> za             " 用空格来切换折叠状态
-let g:FoldMethod = 0
-map <leader>zz :call ToggleFold()<cr>
-fun! ToggleFold()
-    if g:FoldMethod == 0
-        exe "normal! zM"
-        let g:FoldMethod = 1
-    else
-        exe "normal! zR"
-        let g:FoldMethod = 0
-    endif
-endfun
+
+    set foldenable
+    " 折叠方法
+    " manual    手工折叠
+    " indent    使用缩进表示折叠
+    " expr      使用表达式定义折叠
+    " syntax    使用语法定义折叠
+    " diff      对没有更改的文本进行折叠
+    " marker    使用标记进行折叠, 默认标记是 {{{ 和 }}}, 可以自定义为 `set foldmarker={,}`
+    set foldmethod=indent
+    set foldlevel=99
+    " 代码折叠自定义快捷键 <leader>zz
+    nnoremap <space> za             " 用空格来切换折叠状态
+    let g:FoldMethod = 0
+    map <leader>zz :call ToggleFold()<cr>
+    fun! ToggleFold()
+        if g:FoldMethod == 0
+            exe "normal! zM"
+            let g:FoldMethod = 1
+        else
+            exe "normal! zR"
+            let g:FoldMethod = 0
+        endif
+    endfun
+
 " }
 
 " 缩进配置 {
+
     set smartindent
     " 自动缩进
     set autoindent
@@ -545,11 +563,10 @@ endfun
     " 详细的tab设置：http://blog.chinaunix.net/uid-24774106-id-3396220.html
     set smarttab                 "在行首按TAB将加入sw个空格，否则加入ts个空格;按Backspace可以删除4个空格
 
-
-
 " }
 
 " 相对行号 {
+
 if v:version > 703
     set relativenumber number
     " autocmd FocusLost * :set norelativenumber number
@@ -575,27 +592,30 @@ endif
 
 " 粘贴模式 {
 
-" 在插入模式下按 <F3> 进入粘贴模式,这时候粘贴复制过来的代码不会触发自动缩进
-set pastetoggle=<F3>
-" 离开插入模式时,关闭粘贴模式
-autocmd InsertLeave * set nopaste
+    " 在插入模式下按 <F3> 进入粘贴模式,这时候粘贴复制过来的代码不会触发自动缩进
+    set pastetoggle=<F3>
+    " 离开插入模式时,关闭粘贴模式
+    autocmd InsertLeave * set nopaste
 
 " }"
 
 " Search {
-set incsearch                " 开启实时搜索功能,查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词
-set hlsearch                 " 开启高亮显示结果
-set nowrapscan               " 搜索到文件两端时不重新搜索
-set ic                       " 忽略大小写查找
-" 搜索正则匹配规则改变 见帮助 :h magic
-set magic
-" 搜索模式为默认更先进的正则规则
-" nnoremap / /\v
-" vnoremap / /\v
+
+    set incsearch                " 开启实时搜索功能,查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词
+    set hlsearch                 " 开启高亮显示结果
+    set nowrapscan               " 搜索到文件两端时不重新搜索
+    set ic                       " 忽略大小写查找
+    " 搜索正则匹配规则改变 见帮助 :h magic
+    set magic
+    " 搜索模式为默认更先进的正则规则
+    " nnoremap / /\v
+    " vnoremap / /\v
+    
 " }
 
 " Statusline {
 if !&statusline
+
     " https://shapeshed.com/vim-statuslines/
     " http://vim.wikia.com/wiki/Writing_a_valid_statusline
     " http://learnvimscriptthehardway.stevelosh.com/chapters/17.html
@@ -622,42 +642,61 @@ if !&statusline
     set statusline+=\ %l/%L:%c
     set statusline+=\ %p%%
     set statusline+=\                           " space at end
+
 endif
 " }
 
+" => Wild Ignore {
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Wild settings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " 忽略这些扩展文件
 
-" Disable output and VCS files
-set wildignore+=*.rbc,*.rbo,*.gem,.git,.svn
+    " Disable output and VCS files
+    set wildignore+=*.rbc,*.rbo,*.gem,.git,.svn
 
-" Disable image files
-set wildignore+=*.psd,*.png,*.jpg,*.gif,*.jpeg
+    " Disable image files
+    set wildignore+=*.psd,*.png,*.jpg,*.gif,*.jpeg
 
-" Disable archive files
-set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+    " Disable archive files
+    set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 
-" Ignore bundler and sass cache
-set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+    " Ignore bundler and sass cache
+    set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 
-" Disable temp and backup files
-set wildignore+=*.sw?,*~,._*,*.un~
+    " Disable temp and backup files
+    set wildignore+=*.sw?,*~,._*,*.un~
 
-" WP Language files
-set wildignore+=*.pot,*.po,*.mo
+    " WP Language files
+    set wildignore+=*.pot,*.po,*.mo
 
-" Fonts and such
-set wildignore+=*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf
+    " Fonts and such
+    set wildignore+=*.eot,*.eol,*.ttf,*.otf,*.afm,*.ffil,*.fon,*.pfm,*.pfb,*.woff,*.svg,*.std,*.pro,*.xsf
 
-set wildignore+=*.aux,*.out,*.toc " LaTeX intermediate files
-set wildignore+=*.so,*.out,*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
-set wildignore+=*.luac " Lua byte code
-set wildignore+=*.pyc " Python byte code
-set wildignore+=*.class" Python byte code
-set wildignore+=*.spl " compiled spelling word lists
-set wildignore+=*/tmp/*,.DS_Store  " MacOSX/Linux
+    set wildignore+=*.aux,*.out,*.toc " LaTeX intermediate files
+    set wildignore+=*.so,*.out,*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
+    set wildignore+=*.luac " Lua byte code
+    set wildignore+=*.pyc " Python byte code
+    set wildignore+=*.class" Python byte code
+    set wildignore+=*.spl " compiled spelling word lists
+    set wildignore+=*/tmp/*,.DS_Store  " MacOSX/Linux
+
+" }
+
+" }
+
+" }
+
+" Shorcut {
+
+" marker 使用
+" m 0~9 标记文件
+" ' 0~9 随时打开文件
+
+" tips: 从vim暂时的切换到Console
+" 暂停vim方式:Ctrl+z, jobs, fg
+" 使用vim的sh命令启动新console :sh
+" 使用!bash启动一个console
+" 直接执行:!命令
+
 
 " ,ig                        --显示/关闭对齐线
 " 0 or ^ or $                --跳至 行首 or 第一个非空字符 or 行尾
@@ -707,119 +746,6 @@ set wildignore+=*/tmp/*,.DS_Store  " MacOSX/Linux
 " Ctrl + X                   --将当前光标所在数字自减1        [仅普通模式可用]
 " m字符       and '字符      --标记位置 and 跳转到标记位置
 " q字符 xxx q and @字符      --录制宏   and 执行宏
-
-" 对部分语言设置单独的缩进
-au FileType scala,clojure,lua,dart,sh set shiftwidth=2
-au FileType scala,clojure,lua,dart,sh set tabstop=2
-" 针对部分语言取消指定字符的单词属性
-au FileType clojure  set iskeyword-=.
-au FileType clojure  set iskeyword-=>
-au FileType perl,php set iskeyword-=$
-
-" 去掉BOM
-" set nobomb; set fileencoding=utf8; w
-
-" Emmet.vim
-" div>p#foo$*3>a
-" https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-
-"{
-
-if !exists("g:no_plugin")
-    autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
-    autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
-    " autocmd BufWinEnter *.* silent loadview  " 恢复状态
-    " autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
-    " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
-    " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
-    " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
-endif
-" nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
-
-
-
-
-"
-"
-"marker 使用
-" m 0~9 标记文件
-" ' 0~9 随时打开文件
-
-" tips: 从vim暂时的切换到Console
-" 暂停vim方式:Ctrl+z, jobs, fg
-" 使用vim的sh命令启动新console :sh
-" 使用!bash启动一个console
-" 直接执行:!命令
-
-    "auto completed
-    " Disable AutoComplPop.
-    let g:acp_enableAtStartup = 0
-
-    " }
-
-    " ==创建 Tags===
-    "
-    map <F12> :call Do_CsTag()<CR>
-    nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-    nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-    nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-    nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-    nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR>
-    nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR>
-    nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-
-    " c/c++环境开发IDE
-    " c开发介绍：http://blog.csdn.net/bokee/article/details/6633193
-    " Ctags
-    "inoremap  <c-]> <c-x><c-]> "ctags 补全快捷键
-    " 用ctrl+]和Ctrl+t跳转定义和返回
-    nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
-    " nmap <leader>mt <ESC>:!ctags -R --languages=
-    " set tags+=~/gitdb/rails/tags
-    " 生成cscope
-    " nmap <leader>gc :!cscope -Rbq -f cscope/cs.out <CR><CR>:echo 'generate cscope done'<cr>
-    " cscope的使用
-    " <leader>f
-    " s: Find this C symbol
-    " g: Find this definition
-    " d: Find functions called by this function
-    " c: Find functions calling this function
-    " t: Find this text string
-    " e: Find this egrep pattern
-    " f: Find this file
-    " i: Find files #including this file
-    " 使用taglist <leader>tl
-    " 在. -> :: 等地方可以自动补全
-
-
-    " ==类型检测和设置==
-    "
-    " au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
-
-    au BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
-
-    au BufRead,BufNewFile *.applescript set filetype=applescript
-    au BufRead,BufNewFile *.scpt set filetype=applescript
-
-    " ==全局设置==
-    "
-    " autocmd BufEnter * lcd %:p:h  " 每打开一个文件进入当前文件目录
-    " au BufWritePre /tmp/* setl undofile " 无效果
-
-    " => Modify word boundary characters
-    " insert schema, ctrl+w and other keys likes emacs
-    " remove - as a word boundary (i.e. making a keyword character)
-    set iskeyword+=-
-    " remove $ as a word boundary (i.e. making a keyword character)
-    set iskeyword+=$
-
-
-" }
-
-" }
-
-" Shorcut {
 
 " =======
 " 自定义快捷键
@@ -1051,6 +977,18 @@ nnoremap <leader>q :qa<CR>
 " 保存并退出当前编辑文件
 nnoremap <leader>x :x<CR>
 
+" ==创建 Tags===
+"
+map <F12> :call Do_CsTag()<CR>
+nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR>
+nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR>
+nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+
 " ## Command
 
 " Save a file that requires sudoing even
@@ -1063,6 +1001,9 @@ command! DiffSaved call s:DiffWithSaved()
 " :retab 对当前文档重新替换tab为空格
 " :set notextmode  去掉^M这个符号
 " :set paste  这个可以解决在linux下面有些字母会被执行 nopaste pastetoggle
+
+" 去掉BOM
+" set nobomb; set fileencoding=utf8; w
 
 " }
 
@@ -1264,45 +1205,88 @@ command! DiffSaved call s:DiffWithSaved()
 
 " }
 
+" C/C++ {
+
+    " c/c++环境开发IDE
+    " c开发介绍：http://blog.csdn.net/bokee/article/details/6633193
+    " Ctags
+    " inoremap  <c-]> <c-x><c-]> "ctags 补全快捷键
+    " 用ctrl+]和Ctrl+t跳转定义和返回
+    nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
+    " nmap <leader>mt <ESC>:!ctags -R --languages=
+    " set tags+=~/gitdb/rails/tags
+    " 生成cscope
+    " nmap <leader>gc :!cscope -Rbq -f cscope/cs.out <CR><CR>:echo 'generate cscope done'<cr>
+    " cscope的使用
+    " <leader>f
+    " s: Find this C symbol
+    " g: Find this definition
+    " d: Find functions called by this function
+    " c: Find functions calling this function
+    " t: Find this text string
+    " e: Find this egrep pattern
+    " f: Find this file
+    " i: Find files #including this file
+    " 使用taglist <leader>tl
+    " 在. -> :: 等地方可以自动补全
+
+" }
+
+" Other {
+    " 对部分语言设置单独的缩进
+    au FileType scala,clojure,lua,dart,sh set shiftwidth=2
+    au FileType scala,clojure,lua,dart,sh set tabstop=2
+    " 针对部分语言取消指定字符的单词属性
+    au FileType clojure  set iskeyword-=.
+    au FileType clojure  set iskeyword-=>
+    au FileType perl,php set iskeyword-=$
+
+    au BufRead,BufNewFile *.applescript set filetype=applescript
+    au BufRead,BufNewFile *.scpt set filetype=applescript
+
+    " au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
+
+" }
+
 " }
 
 " Study {
-"
-" 函数学习
-" function CloseBuffer()
-"   exe 'normal! :w | %bd | e#'
-" endfunction
-" nmap <Tab> :call CloseBuffer()<CR>
-"
-" 变量
-" 查看设置的值
-" echo &statusline
-" 查看设置的键与值
-" set statusline?
-"
-" 查看高亮代号
-" :highlight
+
+    " 函数学习
+    " function CloseBuffer()
+    "   exe 'normal! :w | %bd | e#'
+    " endfunction
+    " nmap <Tab> :call CloseBuffer()<CR>
+    " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
+    "
+    " 变量
+    " 查看设置的值
+    " echo &statusline
+    " 查看设置的键与值
+    " set statusline?
+    "
+    " 查看高亮代号
+    " :highlight
 
 " }
 
 " Locals {
 
-if filereadable(expand("~/.local/.vimrc_local"))
-    source ~/.local/.vimrc_local
-endif
+    if $MYENV == 'tmux_light'
+        set background=light
+        silent! colorscheme solarized
+        highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
+    elseif $MYENV == 'term_light'
+        silent! colorscheme pt_light
+    else
+        " set background=dark
+        " colorscheme pt_black
+    endif
 
+    if filereadable(expand("~/.local/.vimrc_local"))
+        source ~/.local/.vimrc_local
+    endif
 
-if $MYENV == 'tmux_light'
-    set background=light
-    silent! colorscheme solarized
-    highlight LineNr ctermbg=none ctermfg=grey
-elseif $MYENV == 'term_light'
-    silent! colorscheme pt_light
-else
-    " set background=dark
-    " colorscheme pt_black
-
-endif
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :

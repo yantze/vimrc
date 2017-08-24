@@ -311,6 +311,7 @@ call plug#begin('~/.vim/plugged')
         " `7`、多项相同的元素，使用星号（`*`）：`ul>li*5`
         " `8`、带有序号的元素，使用美元符（`$`），从`1`开始自动递增：`div>p#id$*5`
         " `9`、如果需要指定序号的位数，只须多写几个美元符（`$`）即可：`div>p#id$$$*5`
+        " div>p#foo$*3>a
         " ```
         "
         " 常用缩写
@@ -322,8 +323,12 @@ call plug#begin('~/.vim/plugged')
         " link  `link`标签
         " a  链接标签
         " ```
-        " 更多用法可以查看":help emmet"
-        " 本文修改于：https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
+        " 更多用法可以查看 ":help emmet"
+        " 或者 `gf` https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
+        "
+        " ref:
+        " 本文修改于： https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
+
     "}
 
     " linting intergration require Plug 'scrooloose/syntastic' installed above
