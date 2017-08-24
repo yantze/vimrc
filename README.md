@@ -11,6 +11,14 @@ git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
 - [安装指南](https://github.com/yantze/vimrc/blob/master/misc/install_guide.md)
 - [简易手册](https://github.com/yantze/vimrc/blob/master/misc/vim-doc.md)
 
+## 截屏
+> 皆在终端展示，对于 macvim、gvim、neovim 等未做适配，但一般无插件模式都是支持的
+
+- 目前使用的主题 solarized light
+![screenshot mac solarized light](misc/screenshot-mac.png)
+- 也可以使用黑色的主题，使用 [pt_black](https://github.com/yantze/pt_black)
+![screenshot mac pm2 dark](misc/screenshot-mac-pm2-dark.png)
+
 ### 常用命令(无需插件)
 可运行无插件模式，速度极快，`alias v='vim --cmd "let g:no_plugin=1"'`
 
@@ -94,5 +102,5 @@ git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
 - [vim-snippets](https://github.com/honza/vim-snippets) , 常见snippets 都有，根据文件类型和语法补全，同时可以在 `~/.vim/snippets` 中自行添加
 
 ### Thanks
-[ruchee's vimrc](https://github.com/ruchee/vimrc) 
+[ruchee's vimrc](https://github.com/ruchee/vimrc)
 
