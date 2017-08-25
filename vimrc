@@ -386,9 +386,6 @@
         set undolevels=1000         " maximum number of changes that can be undone"
     endif
 
-    " dos 的 vim 要前置这个快捷键
-    imap <c-h> <ESC>I
-
     " => Modify word boundary characters
     " insert schema, ctrl+w and other keys likes emacs
     set iskeyword+=- " remove - as a word boundary
@@ -456,7 +453,7 @@ if WINDOWS()
         " set guifont=Source\ Code\ Pro:h13
 
     else
-        colorscheme CodeFactoryv3
+        silent! colorscheme CodeFactoryv3
         " colorscheme ir_black
         " 兼容windows下cmd的gb2312
         " set enc=cp936
@@ -1030,8 +1027,8 @@ endif
 " map F :%s/{/{\r/g <CR> :%s/}/}\r/g <CR>  :%s/;/;\r/g <CR> gg=G
 
 
-" Ctrl + H            光标移当前行行首/已经搬到兼容区
-" imap <c-h> <ESC>I
+" Ctrl + H            光标移当前行行首
+imap <c-h> <ESC>I
 
 " Ctrl + J            光标移下一行行首
 imap <c-j> <ESC><Down>I
