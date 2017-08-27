@@ -24,6 +24,9 @@ git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
 
 | Action                  | Description                                                                     |
 | ---                     | ---                                                                             |
+| ,rsl                    | 用 $SHELL 执行当前选定行, run select line                                       |
+| ,rso                    | 用 $SHELL 执行当前选定行, 并把输出替换选定内容                                  |
+| :Sw                     | 当需要root权限保存时，不用重新打开                                              |
 | 10G                     | 数字10和大写的G，跳到第十行                                                     |
 | zz                      | 把当前行移到屏幕中间                                                            |
 | `f<char>`               | 查找当前行的字符                                                                |
@@ -51,7 +54,6 @@ git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
 | ,rb                     | 一键去除所有尾部空白 trailing                                                   |
 | ,rt                     | 一键替换全部Tab为空格                                                           |
 | ,r<enter>               | 一键替换所有尾部 ^M, `:set notextmode` 也可以实现                               |
-| :Sw                     | 当需要root权限保存时，不用重新打开                                              |
 | F3                      | 粘贴内容缩进错误，切换为 nopaste 模式 `:set pastetoggle`                        |
 | :set fenc=utf8          | 设置文件编码                                                                    |
 | :set display=uhex       | 查看^@这种不可显示的字符，自动转换这些字符为hex进制。也可以ga查看当前光标的进制 |

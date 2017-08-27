@@ -16,7 +16,6 @@
             set clipboard=unnamed,unnamedplus
         else
             " On mac and Windows, use * register for copy-paste
-            " windows/mac 粘贴板一起用，不方便
             set clipboard=unnamed
         endif
     endif
@@ -51,7 +50,7 @@
     endif
 
     " Adapte with putty because of putty only support the 7 character
-    if $TERM == 'screen'
+    " if $TERM == 'screen'
         " http://vim.wikia.com/wiki/Get_Alt_key_to_work_in_terminal
         " set <m-j>=j
         " set <m-h>=h
@@ -64,7 +63,7 @@
         " set timeout timeoutlen=3000 ttimeoutlen=100
 
         " 这个让 alt work in putty 的方法影响了其它平台的使用，禁用
-    endif
+    " endif
     " the ^[ is an Esc char that comes before the 'a'
     " In most default configs, ^[a may be typed by pressing first <C-v>, then <M-a>
 
@@ -315,7 +314,7 @@
 
 " Setting {
 
-" Base {
+" Basic {
 
     syntax enable                " 打开语法高亮
     syntax on                    " 开启文件类型侦测
@@ -327,28 +326,6 @@
     " au GuiEnter * set t_vb=    " 关闭beep/屏闪
     " set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
-    " 文件配置
-    " set fileformats=unix                             " 设定换行符
-
-    if has("multi_byte")
-        set formatoptions+=mM
-        if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
-            set ambiwidth=double
-        endif
-    endif
-
-    " set ambiwidth=double         " 如果全角字符不能识别一般用这个(自动用宽字符显示)
-    set fo+=mB                   " 打开断行模块对亚洲语言支持, fo = formatoptions
-
-    set enc=utf-8                                    " 设置编码
-    set fenc=utf-8                                   " 设置文件编码
-    set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
-    set shortmess+=filmnrxoOtT                       " Abbrev. of messages (avoids 'hit enter')
-    set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
-    " set virtualedit=onemore                          " Allow for cursor beyond last character
-
-    set autoread                 " 当文件在外部被修改时自动更新该文件
-
     set backspace=2              " 设置退格键可用
     set autoindent               " 自动对齐
     set smartindent              " 智能自动缩进
@@ -358,11 +335,9 @@
     set cmdheight=2              " 命令行的高度，默认为1，这里设为2
     set bsdir=buffer             " 设定文件浏览器目录为当前目录
     set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
-    set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
     " set cursorcolumn             " 突出显示当前列
     set history=500              " keep 500 lines of command line history
     set mouse=a                  " 启用鼠标
-    set wrap linebreak nolist    " wrap，only wrap at a character in the breakat option (by default, this includes " ^I!@*-+;:,./?" , linebreak 不在单词中间断行
 
     set cursorline               " 突出显示当前行
     " set tw=78                    "超过80个字符就折行(textwrap)
@@ -377,6 +352,43 @@
 
     " set lsp=0                    "设置行间距
 
+    " => Modify word boundary characters
+    " insert schema, ctrl+w and other keys likes emacs
+    set iskeyword+=- " remove - as a word boundary
+    set iskeyword+=$
+
+
+" }
+
+" 文件配置 {
+    if has("multi_byte")
+        set fo+=mB " formatoptions 打开断行模块对亚洲语言支持
+        " if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)'
+        "     set ambiwidth=double " 自动用宽字符显示(如果全角字符不能识别)
+        " endif
+    endif
+
+    " set fileformats=unix                           " 设定换行符
+    set wrap
+    set linebreak                                    " 自动断行, 用 breakat 控制
+    set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
+
+    set enc=utf-8                                    " 设置编码
+    set fenc=utf-8                                   " 设置文件编码
+    set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
+    set shortmess+=filmnrxoOtT                       " Abbrev. of messages (avoids 'hit enter')
+    set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
+    " set virtualedit=onemore                          " Allow for cursor beyond last character
+
+    set autoread                 " 当文件在外部被修改时自动更新该文件
+    set writebackup              " Make a backup before overwriting a file. The backup is removed after the file was successfully written, unless the 'backup' option is also on.
+    set nobackup                 " 不生成备份文件
+    set noswapfile               " 不生成交换文件
+    " restore last postion in file to $VIMHOME/view
+    " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
     if v:version > 703
         set undofile                " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
         if empty(glob("$VIMHOME/_undodir"))
@@ -385,12 +397,6 @@
         set undodir=$VIMHOME/_undodir
         set undolevels=1000         " maximum number of changes that can be undone"
     endif
-
-    " => Modify word boundary characters
-    " insert schema, ctrl+w and other keys likes emacs
-    set iskeyword+=- " remove - as a word boundary
-    set iskeyword+=$
-
 
 
     if !exists("g:no_plugin")
@@ -402,17 +408,6 @@
         " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
         " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
     endif
-
-    set writebackup              " Make a backup before overwriting a file. The backup is removed after the file was successfully written, unless the 'backup' option is also on.
-    set nobackup                 " 不生成备份文件
-    set noswapfile               " 不生成交换文件
-    " restore last postion in file to $VIMHOME/view
-    " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-
-
-
 " }
 
 " GUI & WIN {
@@ -1258,6 +1253,8 @@ command! DiffSaved call s:DiffWithSaved()
 
     " 查看高亮代号
     " :highlight
+    "
+    " :exe "normal! " . (winwidth(0)-3) . "aa\<Esc>2a\<C-V>u3042")
 
 " }
 

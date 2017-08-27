@@ -63,6 +63,10 @@ ctags -R /server/ # 绝对路径，可以在任何目录下查看
 set tags+=/server/php-src/tags # 或在 vim command 中运行
 # 完成后可以在源代码中跳转申明
 ```
+cscope
+```
+待续
+```
 
 ### YCM
 [warning]如果出现下面的错误或者如果你在vps上编译YCM,说明你的内存不够用
