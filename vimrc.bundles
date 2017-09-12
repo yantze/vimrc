@@ -117,7 +117,9 @@ call plug#begin("$VIMHOME/plugged")
         let g:airline_powerline_fonts = 1
 
         " About theme
-        let g:airline_theme='solarized' " serene
+        if !exists("g:no_ext_plugin")
+            let g:airline_theme='solarized' " serene
+        endif
         " Solarized 主题
         let g:solarized_termcolors=16 " 16 | 256
         let g:solarized_termtrans=1 " 0 | 1
