@@ -41,7 +41,7 @@
     else
         let $VIMHOME = $HOME."/.vim"
         let $VIMRC = $MYVIMRC
-        set shell=/bin/sh
+        " set shell=/bin/sh
     endif
 
     " Package Manager

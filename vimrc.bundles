@@ -235,7 +235,9 @@ call plug#begin("$VIMHOME/plugged")
 
     ":Tlist  - 调用TagList {
         " 需安装 ctags
-        Plug 'vim-scripts/taglist.vim'
+        if !exists("g:no_ext_plugin")
+            Plug 'vim-scripts/taglist.vim'
+        endif
         " tagbar is like the taglist
         Plug 'majutsushi/tagbar'
 
