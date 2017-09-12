@@ -1,5 +1,7 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
+" let g:no_plugin = 1
+" let g:no_ext_plugin = 1
 
 " General {
 
@@ -463,12 +465,14 @@ if WINDOWS()
 else
     if has("gui_running")
         if has("gui_gtk2")
-            " set guifont=DejaVu\ Sans\ Mono\ 14
+            set guioptions=egitcaA  " 与Windows类似"
+            set guifont=Monaco\ 14
         elseif has("gui_macvim")
-            " set guifont=DejaVu_Sans_Mono:h14
             set guifont=Monaco\ for\ Powerline:h12
             set guifontwide=HiraginoSansGB-W3:h12
             " set guifontwide=Go\ Mono\ for\ Powerline:h12
+            set guioptions-=r        " 隐藏右侧滚动条
+            set guioptions-=L        " 隐藏左侧滚动条
         end
 
         " set guifont=Monaco\ 13
@@ -1233,6 +1237,10 @@ command! DiffSaved call s:DiffWithSaved()
 
 " 去掉BOM
 " set nobomb; set fileencoding=utf8; w
+
+" vim sessions
+" :mks ~/.vim/sessions/foo.vim
+" :source ~/.vim/session/foo.vim
 
 " }
 

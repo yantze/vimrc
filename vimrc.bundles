@@ -5,7 +5,10 @@ call plug#begin("$VIMHOME/plugged")
     " AutoComplete {
     if v:version >= 750
         " YCM = clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
-        Plug 'Valloric/YouCompleteMe'
+
+        if !exists("g:no_ext_plugin")
+            Plug 'Valloric/YouCompleteMe'
+        endif
         " let g:ycm_add_preview_to_completeopt=0
         " let g:ycm_confirm_extra_conf=0
         " set completeopt-=preview
@@ -34,9 +37,18 @@ call plug#begin("$VIMHOME/plugged")
         " nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
         nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-        " 语法查错
+        " 自动补全配置 - 选中一项，要回车选中当前项
+        " 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+        " method 1: set completeopt=longest,menu
+        " method 2: inoremap <expr> <CR>       pumvisible() ? "\<c-y>" : "\<cr>"
+    endif
+    " }
+
+    " 语法查错 {
         " Syntastic
-        Plug 'scrooloose/syntastic'
+        if !exists("g:no_ext_plugin")
+            Plug 'scrooloose/syntastic'
+        endif
         let g:syntastic_check_on_open        = 0
         let g:syntastic_enable_signs         = 1
         let g:syntastic_error_symbol         = '!!'
@@ -52,14 +64,23 @@ call plug#begin("$VIMHOME/plugged")
         let g:syntastic_cpp_checker          = "clang++"
         let g:syntastic_cpp_compiler_options = "-std=c++11"
 
-        let g:syntastic_mode_map = { 'mode': 'active',
-        \ 'passive_filetypes': ['elixir', 'javascript'] }
+        let g:syntastic_javascript_checkers = ['eslint']
+        " let g:syntastic_javascript_eslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
 
-        " 自动补全配置 - 选中一项，要回车选中当前项
-        " 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
-        " method 1: set completeopt=longest,menu
-        " method 2: inoremap <expr> <CR>       pumvisible() ? "\<c-y>" : "\<cr>"
-    endif
+        " 在 :w 时是否语法检查
+        " let g:syntastic_mode_map = { 'mode': 'active',
+        " \ 'passive_filetypes': ['elixir', 'javascript'] }
+
+        " Install
+        " :SyntasticInfo 检查当前 checker 的信息
+        " :SyntasticCheck 语法检查
+        
+        " with js
+        " 安装全局
+        " npm i -g eslint-config-standard eslint-plugin-standard eslint-plugin-node eslint-plugin-import eslint-plugin-promise eslint
+        " 初始当前项目
+        " eslint --init
+        " 编辑 js 文件时，:w 自动显示错误，也可以手动 :SyntasticCheck
     " }
 
     " 代码补全 snippets
@@ -69,7 +90,9 @@ call plug#begin("$VIMHOME/plugged")
     Plug 'honza/vim-snippets' " garbas is inherit from honza
 
     " snip 综合解决方案
-    Plug 'SirVer/ultisnips'
+    if !exists("g:no_ext_plugin")
+        Plug 'SirVer/ultisnips'
+    endif
     " let g:snippets_dir="$VIM/vimfiles/resource/vim-snippets/" "添加新的片段
     " Trigger configuration. if comflict then change the <tab>
     " let g:UltiSnipsUsePythonVersion = 2
@@ -168,6 +191,22 @@ call plug#begin("$VIMHOME/plugged")
     " automatically add the closing quote, bracket
     Plug 'Raimondi/delimitMate'
     " Plug 'Townk/vim-autoclose'
+
+    " 调用外部命令格式化代码
+    Plug 'Chiel92/vim-autoformat'
+    let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
+    let g:formatters_javascript = ['eslint']
+    " 将标准输入写到临时文件eslint-temp-xxx.js
+    " 调用 eslint --fix 来修复它
+    " 将 eslint-temp-xxx.js 输出到标准输出。
+    " 截掉文件尾的换行（\n）
+    " 删掉临时文件
+    " Trick 解释
+    " 临时文件放在当前目录而非/tmp。否则 eslint 会根据 /tmp/eslint-temp-xxx.js 路径来读取配置文件。
+    " 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
+    " 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
+    " http://harttle.com/2017/03/12/vim-eslint.html
+
 " }
 
 " { Browsing & Navigating code
@@ -331,6 +370,8 @@ call plug#begin("$VIMHOME/plugged")
         " 本文修改于： https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
 
     "}
+
+    Plug 'heavenshell/vim-jsdoc'
 
     " linting intergration require Plug 'scrooloose/syntastic' installed above
     " npm install -g jshint
@@ -516,4 +557,4 @@ call plug#begin("$VIMHOME/plugged")
 " }
 
 call plug#end()
-" vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=0 foldenable foldlevelstart=99 :
+" vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
