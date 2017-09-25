@@ -125,20 +125,6 @@
         exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
     endfunction
 
-    " Mydict
-    function! Mydict()
-        let expl=system('dict ' . expand("<cword>"))
-        windo if expand("%")=="dict.tmp" | q! | endif
-        " botright vertical 33split dict.tmp
-        botright 12split dict.tmp
-        " botright cwindow
-        setlocal buftype=nofile bufhidden=hide noswapfile
-        set report=2 " ignore the following 'one line' substitution
-        set nonu
-        1s/^/\=expl/
-        1
-        set report=0 " recovery the 'report' setting
-    endfunction
 
     " 编译并运行
     func! Compile_Run_Code()
@@ -339,7 +325,7 @@
     set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
     " set cursorcolumn             " 突出显示当前列
     set history=500              " keep 500 lines of command line history
-    set mouse=a                  " 启用鼠标
+    silent! set mouse=a                  " 启用鼠标
 
     set cursorline               " 突出显示当前行
     " set tw=78                    "超过80个字符就折行(textwrap)
@@ -682,8 +668,6 @@ endif
     " 可以使用快捷键K查询
     " 说明，比如你在centos里面装了man-pages，当你用K查询的时候，自动会弹出man 你光标下面的词
     " manpageview 替代了插件pydoc.vim
-    " 查找当前的单词意思,quick close: ZZ/:q
-    nmap <silent><leader>K :call Mydict()<CR>
     "
 " }
 
