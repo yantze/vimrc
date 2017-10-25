@@ -321,11 +321,13 @@
     set hidden                   " 允许在有未保存的修改时切换缓冲区
     set laststatus=2             " 开启状态栏信息
     set cmdheight=2              " 命令行的高度，默认为1，这里设为2
-    set bsdir=buffer             " 设定文件浏览器目录为当前目录
+    " set bsdir=buffer             " 设定文件浏览器目录为当前目录
+    " set autochdir " sometimes can not work
+    autocmd BufEnter * silent! lcd %:p:h
     set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
     " set cursorcolumn             " 突出显示当前列
     set history=500              " keep 500 lines of command line history
-    silent! set mouse=a                  " 启用鼠标
+    silent! set mouse=a          " 启用鼠标
 
     set cursorline               " 突出显示当前行
     " set tw=78                    "超过80个字符就折行(textwrap)
