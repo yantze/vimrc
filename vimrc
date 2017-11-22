@@ -1258,6 +1258,9 @@ command! DiffSaved call s:DiffWithSaved()
         source ~/.vimrc_local
     endif
 
+    silent! colorscheme solarized
+    set background=light
+
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
