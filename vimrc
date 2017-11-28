@@ -1,7 +1,7 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
 " let g:no_plugin = 1
-" let g:no_ext_plugin = 1
+" let g:no_compile_plugin = 1
 
 " General {
 
@@ -1260,6 +1260,9 @@ command! DiffSaved call s:DiffWithSaved()
     silent! colorscheme solarized
     set background=light
 
+
+    silent! colorscheme solarized
+    set background=light
 
 " }
 
