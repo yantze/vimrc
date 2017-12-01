@@ -1257,6 +1257,9 @@ command! DiffSaved call s:DiffWithSaved()
     if filereadable(expand("~/.vimrc_local"))
         source ~/.vimrc_local
     endif
+    silent! colorscheme solarized
+    set background=light
+
 
     silent! colorscheme solarized
     set background=light
