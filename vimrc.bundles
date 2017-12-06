@@ -447,6 +447,7 @@ call plug#begin("$VIMHOME/plugged")
     " Plug 'ludovicchabant/vim-lawrencium'
     " Plug 'mhinz/vim-signify'
     " Plug 'tpope/vim-sleuth'
+    Plug 'posva/vim-vue'
 
 " }
 

@@ -103,6 +103,12 @@ git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
 - [UltraSnip](https://github.com/SirVer/ultisnips), 类自动补全，可以让多处同名的动更新，对 python 支持较好,快捷键与 YCM 已经合并，不需要修改
 - [vim-snippets](https://github.com/honza/vim-snippets) , 常见snippets 都有，根据文件类型和语法补全，同时可以在 `~/.vim/snippets` 中自行添加
 
+### 衍生 vim
+macvim
+```
+mvim 可以支持 gview、gvim、gvimdiff、mvim、mvimdiff、mview 等命令
+```
+
 ### Thanks
 [ruchee's vimrc](https://github.com/ruchee/vimrc)
 
