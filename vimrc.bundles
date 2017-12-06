@@ -497,7 +497,9 @@ call plug#begin("$VIMHOME/plugged")
     " Plug 'LargeFile'
 
     " Go
-    Plug 'fatih/vim-go'
+    if !exists("g:no_compile_plugin")
+        Plug 'fatih/vim-go'
+    endif
 
     " Plug 'MarcWeber/vim-addon-manager-known-repositories'
 
