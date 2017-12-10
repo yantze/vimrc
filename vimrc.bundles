@@ -15,7 +15,7 @@ call plug#begin("$VIMHOME/plugged")
         "competeble with UltraSnips
         let g:ycm_key_list_select_completion   = []
         let g:ycm_key_list_previous_completion = []
-        let g:ycm_global_ycm_extra_conf        = $VIM . '/rc/ycm_extra_conf.py'
+        let g:ycm_global_ycm_extra_conf        = $VIMHOME . '/rc/ycm_extra_conf.py'
 
         " 下里的filetype主要是和上面的syntastic对应，用于使用clang编译的情况
         let g:ycm_extra_conf_vim_data = ['&filetype', 'g:syntastic_c_compiler_options', 'g:syntastic_cpp_compiler_options']
@@ -453,7 +453,7 @@ call plug#begin("$VIMHOME/plugged")
 " { Misc
 
     " weixin program
-    " Plug 'chemzqm/wxapp.vim'
+    Plug 'chemzqm/wxapp.vim'
 
     " vim-markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用

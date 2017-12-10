@@ -116,6 +116,21 @@
         end
     endfunc
 
+    func! Tab2()
+        set tabstop=2
+        set shiftwidth=2
+        set softtabstop=2
+    endfunc
+
+    func! Tab4()
+        " tab 键宽度为4空格
+        set tabstop=4
+        " 每一次缩进对应的空格数
+        set shiftwidth=4
+        " 按退格键可以一次删掉4个空格
+        set softtabstop=4
+    endfunc
+
     " Diff current unsaved file
     function! s:DiffWithSaved()
         let filetype=&ft
