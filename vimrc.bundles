@@ -6,7 +6,7 @@ call plug#begin("$VIMHOME/plugged")
     if v:version >= 750
         " YCM = clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
 
-        if !exists("g:no_ext_plugin")
+        if !exists("g:no_compile_plugin")
             Plug 'Valloric/YouCompleteMe'
         endif
         " let g:ycm_add_preview_to_completeopt=0
@@ -46,7 +46,7 @@ call plug#begin("$VIMHOME/plugged")
 
     " 语法查错 {
         " Syntastic
-        if !exists("g:no_ext_plugin")
+        if !exists("g:no_compile_plugin")
             Plug 'scrooloose/syntastic'
         endif
         let g:syntastic_check_on_open        = 0
@@ -90,7 +90,7 @@ call plug#begin("$VIMHOME/plugged")
     Plug 'honza/vim-snippets' " garbas is inherit from honza
 
     " snip 综合解决方案
-    if !exists("g:no_ext_plugin")
+    if !exists("g:no_compile_plugin")
         Plug 'SirVer/ultisnips'
     endif
     " let g:snippets_dir="$VIM/vimfiles/resource/vim-snippets/" "添加新的片段
@@ -117,7 +117,7 @@ call plug#begin("$VIMHOME/plugged")
         let g:airline_powerline_fonts = 1
 
         " About theme
-        if !exists("g:no_ext_plugin")
+        if !exists("g:no_compile_plugin")
             let g:airline_theme='solarized' " serene
         endif
         " Solarized 主题
@@ -237,7 +237,7 @@ call plug#begin("$VIMHOME/plugged")
 
     ":Tlist  - 调用TagList {
         " 需安装 ctags
-        if !exists("g:no_ext_plugin")
+        if !exists("g:no_compile_plugin")
             Plug 'vim-scripts/taglist.vim'
         endif
         " tagbar is like the taglist
@@ -447,6 +447,7 @@ call plug#begin("$VIMHOME/plugged")
     " Plug 'ludovicchabant/vim-lawrencium'
     " Plug 'mhinz/vim-signify'
     " Plug 'tpope/vim-sleuth'
+    Plug 'posva/vim-vue'
 
 " }
 
@@ -496,7 +497,9 @@ call plug#begin("$VIMHOME/plugged")
     " Plug 'LargeFile'
 
     " Go
-    Plug 'fatih/vim-go'
+    if !exists("g:no_compile_plugin")
+        Plug 'fatih/vim-go'
+    endif
 
     " Plug 'MarcWeber/vim-addon-manager-known-repositories'
 
