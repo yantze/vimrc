@@ -9,6 +9,7 @@ git clone https://github.com/yantze/vimrc ~/.vim
 vim +PlugInstall
 
 # [optional] install tern - javascript jslint
+npm install -g tern
 cd ~/.vim/plugged/tern_for_vim/
 npm install 
 # .tern-config https://atom.io/packages/atom-ternjs
