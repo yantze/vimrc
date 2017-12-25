@@ -232,7 +232,7 @@
         elseif &filetype == "typescript"
             exec "!tsc %:t && node %:r.js"
         elseif &filetype == "javascript"
-            exec "!node %:t"
+            exec "!node --experimental-modules  %:t"
         elseif &filetype == "sh"
             exec "!bash %:t"
         elseif &filetype == "applescript"
@@ -405,8 +405,8 @@
 
 
     if !exists("g:no_plugin")
-        autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
-        autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
+        " autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
+        " autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
         " autocmd BufWinEnter *.* silent loadview  " 恢复状态
         " autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
         " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
