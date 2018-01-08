@@ -310,7 +310,6 @@
     function! RemoveOldViewFiles()
         exe 'find '.$VIMHOME.'/view/* -mtime +90 -exec rm {} \;'
     endfunction
-
 " }
 
 " }
@@ -1275,10 +1274,15 @@ command! DiffSaved call s:DiffWithSaved()
     silent! colorscheme solarized
     set background=light
 
+    let g:vrc_curl_opts = {
+    \ '--connect-timeout' : 10,
+    \ '-#': '',
+    \ '-i': '',
+    \ '--max-time': 60,
+    \ '-k': '',
+    \}
 
-    silent! colorscheme solarized
-    set background=light
-
+    command! UploadFile w !tee /tmp/% > /dev/null && curl -X POST -F file=@/tmp/% http://qingrizhi.com:8011
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
