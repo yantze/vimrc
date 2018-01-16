@@ -447,6 +447,8 @@ call plug#begin("$VIMHOME/plugged")
 
 " { Misc
 
+    Plug 'diepm/vim-rest-console'
+
     " weixin program
     Plug 'chemzqm/wxapp.vim'
 

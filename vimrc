@@ -310,7 +310,6 @@
     function! RemoveOldViewFiles()
         exe 'find '.$VIMHOME.'/view/* -mtime +90 -exec rm {} \;'
     endfunction
-
 " }
 
 " }
@@ -389,30 +388,30 @@
     set writebackup              " Make a backup before overwriting a file. The backup is removed after the file was successfully written, unless the 'backup' option is also on.
     set nobackup                 " 不生成备份文件
     set noswapfile               " 不生成交换文件
+
     " restore last postion in file to $VIMHOME/view
     " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
     if v:version > 703
-        set undofile                " 重新打开文件可恢复上次关闭的撤销记录,默认filename.un~, only use for `vim --version` have +persistent_undo feature
+        set undofile " 持续保留操作记录,默认filename.un~, valid feature for `vim --version` have +persistent_undo
         if empty(glob("$VIMHOME/_undodir"))
             call mkdir(expand("$VIMHOME/_undodir"))
         endif
         set undodir=$VIMHOME/_undodir
-        set undolevels=1000         " maximum number of changes that can be undone"
+        set undolevels=1000  " maximum number of changes that can be undone"
     endif
 
 
-    if !exists("g:no_plugin")
+    " if !exists("g:no_plugin")
+        " 由于不同版本的 vim 导致 mkview 出现越来越多问题，弃用
         " autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
         " autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
-        " autocmd BufWinEnter *.* silent loadview  " 恢复状态
-        " autocmd BufWinLeave *.* mkview! " 保存文件的折叠状态
         " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
         " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
         " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
-    endif
+    " endif
 " }
 
 " GUI & WIN {
@@ -1275,10 +1274,15 @@ command! DiffSaved call s:DiffWithSaved()
     silent! colorscheme solarized
     set background=light
 
+    let g:vrc_curl_opts = {
+    \ '--connect-timeout' : 10,
+    \ '-#': '',
+    \ '-i': '',
+    \ '--max-time': 60,
+    \ '-k': '',
+    \}
 
-    silent! colorscheme solarized
-    set background=light
-
+    command! UploadFile w !tee /tmp/% > /dev/null && curl -X POST -F file=@/tmp/% http://qingrizhi.com:8011
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
