@@ -1592,6 +1592,9 @@ awk '{print $2}' time.txt | sed '/[0-9].*:/d' | awk '{sum+=$1} END {print sum}'
 
 "检测vim在干什么
 vim filename -V > savefilename
+
+" 不用手动按 Enter 或者 Space"
+vim -V9myVim.log api.js
 ```
 
 <!--}}}-->
