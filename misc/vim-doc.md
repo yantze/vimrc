@@ -1436,7 +1436,7 @@ the last modification
 ```
 <!-- }}} -->
 
-### 未整理 {{{ 
+### 未整理 {{{
 
 gv 选中之前选中过的内容 g~{motion} 切换{motion}跨越的文本的大小写 g~~ 切换当前行的大小写 gU{motion} 切换为大写 gu{motion} 切换为小写
 
@@ -1596,6 +1596,8 @@ vim filename -V > savefilename
 " 不用手动按 Enter 或者 Space"
 vim -V9myVim.log api.js
 ```
+另外一种方法：
+https://stackoverflow.com/questions/3025615/is-there-a-vim-runtime-log
 
 <!--}}}-->
 
