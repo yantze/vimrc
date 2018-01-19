@@ -12,7 +12,7 @@ git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
 - [简易手册](./misc/vim-doc.md)
 
 ## 截屏
-> 皆在终端展示，对于 macvim、gvim、neovim 等未做适配，但一般无插件模式都是支持的
+> 皆在终端展示，对于 macvim、gvim 等已做适配
 
 - 目前使用的主题 solarized light
 ![screenshot mac solarized light](./misc/screenshot-mac.png)
