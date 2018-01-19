@@ -102,6 +102,11 @@
     " there func is for internal function invoal
     " not relate the other plugin
 
+    func! CopyToCloud()
+        exec "w !tee | xcopy"
+        " https://github.com/yantze/dotfiles/blob/master/usrbin/xcopy
+    endfunc
+
     func! RemoveTabs()
         if &shiftwidth == 2
             exec "%s/	/  /g"
@@ -1210,6 +1215,14 @@ nnoremap <leader>q :qa<CR>
 
 " 保存并退出当前编辑文件
 nnoremap <leader>x :x<CR>
+
+" set tab 2
+nnoremap <leader>t2 :call Tab2()<CR>
+" set tab 4
+nnoremap <leader>t4 :call Tab4()<CR>
+
+" 使用 xcopy 拷贝数据到自己的云粘贴板
+nnoremap <leader>C :call CopyToCloud()<CR>
 
 " ==创建 Tags===
 "
