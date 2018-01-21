@@ -8,12 +8,6 @@ git clone https://github.com/yantze/vimrc ~/.vim
 # install plugin to ~/.vim/plugged
 vim +PlugInstall
 
-# [optional] install tern - javascript jslint
-npm install -g tern
-cd ~/.vim/plugged/tern_for_vim/
-npm install 
-# .tern-config https://atom.io/packages/atom-ternjs
-
 # [optional] install YouCompleteMe
 cd ~/.vim/plugged/YouCompleteMe
 ./install.py --clang-completer --gocode-completer --tern-completer # 需要先装 clang ，gocode，tern

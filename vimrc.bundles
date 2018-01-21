@@ -51,10 +51,11 @@ call plug#begin("$VIMHOME/plugged")
         endif
         let g:syntastic_check_on_open        = 0
         let g:syntastic_enable_signs         = 1
-        let g:syntastic_error_symbol         = '!!'
-        let g:syntastic_style_error_symbol   = '!¡'
-        let g:syntastic_warning_symbol       = '??'
-        let g:syntastic_style_warning_symbol = '?¿'
+
+        let g:syntastic_error_symbol = "✗"
+        let g:syntastic_warning_symbol = "⚠"
+        let g:syntastic_style_error_symbol = '!'
+        let g:syntastic_style_warning_symbol = '?'
 
         let c_no_curly_error = 1
 
@@ -74,8 +75,8 @@ call plug#begin("$VIMHOME/plugged")
         " Install
         " :SyntasticInfo 检查当前 checker 的信息
         " :SyntasticCheck 语法检查
-        
-        " with js
+
+        " With js
         " 安装全局
         " npm i -g eslint-config-standard eslint-plugin-standard eslint-plugin-node eslint-plugin-import eslint-plugin-promise eslint
         " 初始当前项目
@@ -83,23 +84,24 @@ call plug#begin("$VIMHOME/plugged")
         " 编辑 js 文件时，:w 自动显示错误，也可以手动 :SyntasticCheck
     " }
 
-    " 代码补全 snippets
-    Plug 'MarcWeber/vim-addon-mw-utils'
-    Plug 'tomtom/tlib_vim'    " 依赖库，断言，不变量等特性
-    Plug 'garbas/vim-snipmate'
-    Plug 'honza/vim-snippets' " garbas is inherit from honza
+    " Others {
+        " 代码补全 snippets
+        Plug 'MarcWeber/vim-addon-mw-utils'
+        Plug 'tomtom/tlib_vim'    " 依赖库，断言，不变量等特性
+        Plug 'garbas/vim-snipmate'
+        Plug 'honza/vim-snippets' " garbas is inherit from honza
 
-    " snip 综合解决方案
-    if !exists("g:no_compile_plugin")
-        Plug 'SirVer/ultisnips'
-    endif
-    " let g:snippets_dir="$VIM/vimfiles/resource/vim-snippets/" "添加新的片段
-    " Trigger configuration. if comflict then change the <tab>
-    " let g:UltiSnipsUsePythonVersion = 2
-    " let g:UltiSnipsExpandTrigger="<tab>"
-    " let g:UltiSnipsJumpForwardTrigger="<c-j>"
-    " let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
+        " snip 综合解决方案
+        if !exists("g:no_compile_plugin")
+            Plug 'SirVer/ultisnips'
+        endif
+        " let g:snippets_dir="$VIM/vimfiles/resource/vim-snippets/" "添加新的片段
+        " Trigger configuration. if comflict then change the <tab>
+        " let g:UltiSnipsUsePythonVersion = 2
+        " let g:UltiSnipsExpandTrigger="<tab>"
+        " let g:UltiSnipsJumpForwardTrigger="<c-j>"
+        " let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+    " }
 " }
 
 " { Colorschemes
@@ -386,7 +388,6 @@ call plug#begin("$VIMHOME/plugged")
     Plug 'isRuslan/vim-es6'
 
     " javascript 补全
-    Plug 'marijnh/tern_for_vim' " install the tern server by `npm install` in `bundle/tern_for_vim`
     Plug 'moll/vim-node'
     Plug 'jamescarr/snipmate-nodejs' " snipmate extend node
 
@@ -397,16 +398,6 @@ call plug#begin("$VIMHOME/plugged")
     " 简化版本的 js-beautify
     " esformatter Javascript indenting. Handles promise chains correctly while other indenters do not.
     " https://gist.github.com/nisaacson/6939960
-
-    " Plug 'kchmck/vim-coffee-script'
-    " Plug 'tpope/vim-haml'
-    Plug 'digitaltoad/vim-jade'
-    " javascript libraries syntax
-    Plug 'othree/javascript-libraries-syntax.vim'
-    let g:used_javascript_libs = 'underscore,jquery,react,vue'
-    " Support Libraries :
-    " jQuery, underscore.js, lo-dash, Backbone.js, prelude.ls, AngularJS, AngularUI, AngularUI Routers
-    " React, Flux, RequireJS, Sugar.js, Jasmine, Chai, Handlebars, Ramda, Vue, d3
 
     " Plug 'skammer/vim-css-color'
     Plug 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
@@ -439,6 +430,9 @@ call plug#begin("$VIMHOME/plugged")
     " support css word with -
     " set iskeyword+=-
 
+    " Plug 'kchmck/vim-coffee-script'
+    " Plug 'tpope/vim-haml'
+    " Plug 'digitaltoad/vim-jade'
     " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
     " Plug 'JulesWang/css.vim'
     " Plug 'cakebaker/scss-syntax.vim'
