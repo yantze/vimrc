@@ -1274,15 +1274,12 @@ command! DiffSaved call s:DiffWithSaved()
     silent! colorscheme solarized
     set background=light
 
-    let g:vrc_curl_opts = {
-    \ '--connect-timeout' : 10,
-    \ '-#': '',
-    \ '-i': '',
-    \ '--max-time': 60,
-    \ '-k': '',
-    \}
-
-    command! UploadFile w !tee /tmp/% > /dev/null && curl -X POST -F file=@/tmp/% http://qingrizhi.com:8011
+    if get(g:, 'colors_name', 'default') == 'default'
+        if &background == 'light'
+            hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
+            hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
+        endif
+    endif
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
