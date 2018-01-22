@@ -103,9 +103,30 @@
     " not relate the other plugin
 
     func! CopyToCloud()
-        exec "w !tee | xcopy"
+        exec ":w !tee | xcopy"
         " https://github.com/yantze/dotfiles/blob/master/usrbin/xcopy
     endfunc
+
+    func! CopySelectedToCloud()
+        exec ":'<,'>:w !tee | xcopy"
+    endfunc
+
+    func! PasteFromCloud()
+    endfunc
+
+    func! s:get_visual_selection()
+        " https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
+        let [line_start, column_start] = getpos("'<")[1:2]
+        let [line_end, column_end] = getpos("'>")[1:2]
+        let lines = getline(line_start, line_end)
+        if len(lines) == 0
+            return ''
+        endif
+        let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+        let lines[0] = lines[0][column_start - 1:]
+        return join(lines, "\n")
+    endfunc
+
 
     func! RemoveTabs()
         if &shiftwidth == 2
@@ -1223,7 +1244,7 @@ nnoremap <leader>t4 :call Tab4()<CR>
 
 " 使用 xcopy 拷贝数据到自己的云粘贴板
 nnoremap <leader>C :call CopyToCloud()<CR>
-
+vmap <leader>C :call CopySelectedToCloud() <CR>
 " ==创建 Tags===
 "
 map <F12> :call Do_CsTag()<CR>
