@@ -111,6 +111,10 @@
         exec ":'<,'>:w !tee | xcopy"
     endfunc
 
+    func! RunSelected()
+        exec ":s/\%V\(.*\)/{{__ "\1"}}/"
+    endfunc
+
     func! PasteFromCloud()
     endfunc
 
@@ -545,7 +549,7 @@ endif
     " diff      对没有更改的文本进行折叠
     " marker    使用标记进行折叠, 默认标记是 {{{ 和 }}}, 可以自定义为 `set foldmarker={,}`
     set foldmethod=indent
-    set foldlevel=99
+    set foldlevel=2
     " 代码折叠自定义快捷键 <leader>zz
     nnoremap <space> za             " 用空格来切换折叠状态
     let g:FoldMethod = 0
@@ -1238,7 +1242,7 @@ nnoremap <leader>q :qa<CR>
 nnoremap <leader>x :x<CR>
 
 " set tab 2
-nnoremap <leader>t2 :call Tab2()<CR>
+nnoremap <leader>tt :call Tab2()<CR>
 " set tab 4
 nnoremap <leader>t4 :call Tab4()<CR>
 
