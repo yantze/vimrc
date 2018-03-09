@@ -146,6 +146,11 @@
         end
     endfunc
 
+    func! RemoveQuotas()
+        silent! exec "%s/[“”]/\"/g"
+        silent! exec "%s/[‘’]/\'/g"
+    endfunc
+
     func! Tab2()
         set tabstop=2
         set shiftwidth=2
@@ -549,7 +554,7 @@ endif
     " diff      对没有更改的文本进行折叠
     " marker    使用标记进行折叠, 默认标记是 {{{ 和 }}}, 可以自定义为 `set foldmarker={,}`
     set foldmethod=indent
-    set foldlevel=2
+    set foldlevel=99
     " 代码折叠自定义快捷键 <leader>zz
     nnoremap <space> za             " 用空格来切换折叠状态
     let g:FoldMethod = 0
@@ -1305,20 +1310,35 @@ command! DiffSaved call s:DiffWithSaved()
 
 " }
 
-" Locals {
-
-    if filereadable(expand("~/.vimrc_local"))
-        source ~/.vimrc_local
-    endif
+" Theme {
     silent! colorscheme solarized
-    set background=light
 
+    " light mode {
+    set background=light
+    " }
+
+    " dark mode {
+    " set background=dark
+    " let g:airline_theme='serene' " aireline dark theme
+    " }
+
+
+    " pure vim {
     if get(g:, 'colors_name', 'default') == 'default'
         if &background == 'light'
             hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
             hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
         endif
     endif
+    " }
+" }
+
+" Locals {
+
+    if filereadable(expand("~/.vimrc_local"))
+        source ~/.vimrc_local
+    endif
+
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
