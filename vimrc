@@ -1,7 +1,7 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
 " let g:no_plugin = 1
-" let g:no_compile_plugin = 1
+let g:no_compile_plugin = 1
 
 " General {
 
@@ -1307,8 +1307,12 @@ command! DiffSaved call s:DiffWithSaved()
     " :highlight
     "
     " :exe "normal! " . (winwidth(0)-3) . "aa\<Esc>2a\<C-V>u3042")
+    " 
+    " repeat 字符串
+    " exec 'map <F2> :silent! let g:g="'.repeat('foobar ',200).'"<cr>'
 
 " }
+
 
 " Theme {
     silent! colorscheme solarized
@@ -1334,10 +1338,14 @@ command! DiffSaved call s:DiffWithSaved()
 " }
 
 " Locals {
+    let g:snips_author = 'yantze'
+    let g:snips_email  = 'ivastiny@gmail.com'
+    let g:snips_info   = 'https://vastiny.com'
 
     if filereadable(expand("~/.vimrc_local"))
         source ~/.vimrc_local
     endif
+
 
 " }
 

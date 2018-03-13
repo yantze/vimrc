@@ -6,17 +6,17 @@ snippet -       分隔注释
 	// -------------------------------${0}
 # 全局相关
 snippet u       使用特性
-	"use ${1}";${0}
+	"use ${1}"${0}
 snippet us      严格模式
-	"use strict";${0}
+	"use strict"${0}
 snippet rq      导入包
-	require('${1}');${0}
+	require('${1}')${0}
 snippet vrq     导入包到变量
-	var ${1} = require('${2}');${0}
+	var ${1} = require('${2}')${0}
 snippet im      导入模块 [ES6新增]
-	import ${1};${0}
+	import ${1}${0}
 snippet imf     从 .. 导入模块 [ES6新增]
-	import ${1} from ${2};${0}
+	import ${1} from ${2}${0}
 snippet ex      导出变量
 	exports.${0}
 snippet mex     覆盖导出
@@ -62,7 +62,7 @@ snippet do      do .. while
 	do {
 	    ${0}
 	}
-	while (${1});
+	while (${1})
 snippet sw      switch
 	switch (${1}) {
 	    ${0}
@@ -75,7 +75,7 @@ snippet def     default
 	    ${0}
 # 异常处理
 snippet thr     抛出异常
-	throw ${0};
+	throw ${0}
 snippet cat     捕获异常
 	catch (${1}) {
 	    ${0}
@@ -86,17 +86,17 @@ snippet fin     善后处理
 	}
 # 单个关键字
 snippet co      继续
-	continue;${0}
+	continue${0}
 snippet br      中断
-	break;${0}
+	break${0}
 snippet re      返回
-	return ${0};
+	return ${0}
 snippet yi      转移执行 [ES6新增]
-	yield ${0};
+	yield ${0}
 snippet con     常量 [ES6新增]
-	const ${0};
+	const ${0}
 snippet de      删除
-	delete ${0};
+	delete ${0}
 snippet ev      执行代码
 	eval(${0})
 snippet ct      构造器
@@ -126,19 +126,19 @@ snippet his     历史记录对象
 snippet pie     可列举性
 	propertyIsEnumerable(${0})
 snippet p       文本打印
-	document.writeln(${0});
+	document.writeln(${0})
 snippet al      弹出框
-	alert(${0});
+	alert(${0})
 snippet len     获取字符串长度
 	length${0}
 snippet l       创建块级作用域 [ES6新增]
-	let ${0};
+	let ${0}
 snippet l.      let多行模式
 	let (${1}) {
 	    ${0}
 	}
 snippet v       var
-	var ${0};
+	var ${0}
 snippet n       new
 	new ${0}
 snippet t       this
@@ -148,11 +148,11 @@ snippet r       正则 / .. /
 snippet <       { .. }
 	{ ${0} }
 snippet ?       三元运算符
-	${1} ? ${2} : ${0};
+	${1} ? ${2} : ${0}
 snippet .       模拟块级作用域 [匿名函数立即调用]
 	(function () {
 	    ${0}
-	})();
+	})()
 # 常用函数
 snippet ts      转换为字符串
 	toString(${1})${0}
