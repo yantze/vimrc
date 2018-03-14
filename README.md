@@ -8,6 +8,14 @@
 ```
 git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
 ```
+
+- NeoVim 安装
+```
+git clone http://github.com/yantze/vimrc ~/.vim
+ln -s ~/.vim ~/.config/nvim
+nvim +PlugInstall
+```
+
 - [安装指南](./misc/install_guide.md)
 - [简易手册](./misc/vim-doc.md)
 
