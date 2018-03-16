@@ -7,7 +7,8 @@ call plug#begin("$VIMHOME/plugged")
         " YCM = clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
 
         if !exists("g:no_compile_plugin")
-            Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
+            Plug 'Valloric/YouCompleteMe', { 'do': 'XX=clang++ CC=clang python3 install.py --clang-completer' }
+            " --gocode-completer
         endif
         " let g:ycm_add_preview_to_completeopt=0
         " let g:ycm_confirm_extra_conf=0

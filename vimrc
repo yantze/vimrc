@@ -1313,7 +1313,6 @@ command! DiffSaved call s:DiffWithSaved()
 
 " }
 
-
 " Theme {
     silent! colorscheme solarized
 
@@ -1341,6 +1340,9 @@ command! DiffSaved call s:DiffWithSaved()
     let g:snips_author = 'yantze'
     let g:snips_email  = 'ivastiny@gmail.com'
     let g:snips_info   = 'https://vastiny.com'
+
+    " For neovim python support
+    let g:python3_host_prog = '/Users/yantze/.pyenv/shims/python3'
 
     if filereadable(expand("~/.vimrc_local"))
         source ~/.vimrc_local
