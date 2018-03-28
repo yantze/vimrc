@@ -87,24 +87,32 @@ call plug#begin("$VIMHOME/plugged")
 
     " Others {
         " 代码补全 snippets
-        " Plug 'MarcWeber/vim-addon-mw-utils'
-        " Plug 'tomtom/tlib_vim'    " 依赖库，断言，不变量等特性
-        " Plug 'garbas/vim-snipmate'
-        " Plug 'honza/vim-snippets' " garbas is inherit from honza
-        " neosnippets
-
-        " snip 综合解决方案
-        if !exists("g:no_compile_plugin")
-            Plug 'SirVer/ultisnips'
-        endif
-        let g:snippets_dir="$VIM/snippets" " 添加新的片段
-        " let g:UltiSnipsUsePythonVersion = 2
-        " Trigger configuration. if comflict then change the <tab>
-        let g:UltiSnipsExpandTrigger="<tab>"
-        let g:UltiSnipsJumpForwardTrigger="<c-j>"
-        let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-        Plug 'Shougo/neocomplete'
+        Plug 'SirVer/ultisnips'
+        let g:snippets_dir="$VIM/snippets/"
+        " Plug 'Shougo/neocomplete'
+        " Plug 'Shougo/neosnippet'
+        " " Plug 'Shougo/neosnippet-snippets'
+        "
+        " " https://github.com/Shougo/neosnippet.vim/issues/215#issuecomment-35847891
+        " let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
+        "
+        " " Tell Neosnippet about the other snippets
+        " let g:neosnippet#snippets_directory='~/.vim/snippets'
+        "
+        " " SuperTab like snippets behavior.
+        " if exists("g:no_compile_plugin")
+        "     imap <expr><TAB>
+        "     \ pumvisible() ? "\<C-n>" :
+        "     \ neosnippet#expandable_or_jumpable() ?
+        "     \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+        "     smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        "     \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+        " endif
+        "
+        " " For conceal markers.
+        " if has('conceal')
+        "     set conceallevel=2 concealcursor=niv
+        " endif
     " }
 " }
 
