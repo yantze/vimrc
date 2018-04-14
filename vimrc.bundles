@@ -87,6 +87,7 @@ call plug#begin("$VIMHOME/plugged")
 
     " Others {
         " 代码补全 snippets
+        Plug 'honza/vim-snippets'
         Plug 'SirVer/ultisnips'
         let g:snippets_dir="$VIM/snippets/"
         " Plug 'Shougo/neocomplete'

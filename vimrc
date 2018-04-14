@@ -1348,7 +1348,7 @@ command! DiffSaved call s:DiffWithSaved()
         source ~/.vimrc_local
     endif
 
-
+    " syn match Comment "^.*{$" conceal cchar=x
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
