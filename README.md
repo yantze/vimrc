@@ -16,6 +16,14 @@ ln -s ~/.vim ~/.config/nvim
 nvim +PlugInstall
 ```
 
+- Windows 安装
+```
+git clone http://github.com/yantze/vimrc ~/.vim
+mklink "C:\Program Files (x86)\Vim\_vimrc" ~/.vim/vimrc
+mklink /J "C:\Program Files (x86)\Vim\vimfiles" ~/.vim
+gvim +PlugInstall
+```
+
 - [安装指南](./misc/install_guide.md)
 - [简易手册](./misc/vim-doc.md)
 

@@ -16,6 +16,7 @@ cd ~/.vim/plugged/YouCompleteMe
 # https://github.com/rkitover/vimpager
 cd ~/.vim/plugged/vimpager
 make install
+
 # 添加 pager 环境变量
 export PAGER=/usr/local/bin/vimpager
 alias less=$PAGER
@@ -26,12 +27,16 @@ alias zless=$PAGER
 ```
 # 用**管理员模式**的批处理命令行进入到你的 vim 安装目录
 cd "C:\Program Files\Vim\"
+
 # 删除原 vimfiles，这里面都是空的, 删除 _vimrc，这里面都是示范文件
 git clone https://github.com/yantze/vimrc vimfiles
+
 # 设置软链到上级目录
 mklink _vimrc vimfiles\vimrc
+
 # 安装插件包到 vimfiles\plugged
 gvim +PlugInstall
+
 # 安装完成
 ```
 <hr>
