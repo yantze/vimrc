@@ -361,7 +361,7 @@ let g:no_compile_plugin = 1
     filetype plugin indent on    " 启用自动补全
     set visualbell t_vb=         " 关闭visual bell/声音
     set t_Co=256                 " 设置文字可以显示多少种颜色
-    " au GuiEnter * set t_vb=    " 关闭beep/屏闪
+    au GuiEnter * set t_vb=    " 关闭beep/屏闪
     " set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
     set backspace=2              " 设置退格键可用
@@ -481,7 +481,10 @@ if WINDOWS()
         silent! colorscheme zenburn      " grey, my fav
 
         " set font
-        set guifont=Consolas:h12
+        " set guifont=Consolas:h12
+        " https://gist.github.com/kevinis/c788f85a654b2d7581d8
+        set guifont=Monaco\ for\ Powerline:h12:cANSI
+        set renderoptions=type:directx,renmode:5
         " set guifont=Monaco:h11
         " set guifont=Source\ Code\ Pro\ Regular:h15
         " set guifont=YaHei\ Consolas\ Hybrid:h13
@@ -1348,7 +1351,40 @@ command! DiffSaved call s:DiffWithSaved()
         source ~/.vimrc_local
     endif
 
-    " syn match Comment "^.*{$" conceal cchar=x
+    function! FomartTable()
+        let in = getreg("\"")
+        echo in
+    endfunction
+ 
+    function! SetColorColumn()
+        let col_num = virtcol(".")
+        let cc_list = split(&cc, ',')
+        if count(cc_list, string(col_num)) <= 0
+            " cc(colorcolumn)选项需要vim7.3以上版本才支持.
+            execute "set cc+=".col_num
+        else
+            execute "set cc-=".col_num
+        endif
+    endfunction
+    map <silent> <leader>tch :call SetColorColumn()<CR>
+    map <silent> <leader>tci :call FomartTable()<CR>
 " }
 
+" 给选中行添加数字
+function! SetCurLineNum()
+    let g:nal_cur_line_num = line("v")
+endfunction
+
+function! AddLineNum()
+    let num1 = line("v")
+    let num2 = num1 - g:nal_cur_line_num + 1
+    let num2 = " " . num2
+    "echo num2
+    return num2
+endfunction
+vmap <silent> <leader>anu o<esc>:call setcurlinenum()<cr>gv:s/^/\=addLineNum()." "/<cr>
+
+
+
+" syn match Comment "^.*{$" conceal cchar=x
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
