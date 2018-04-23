@@ -35,7 +35,7 @@ let g:no_compile_plugin = 1
 
     " 统一变量
     if WINDOWS()
-        let $VIMHOME = $VIM."\\vimfiles"
+        let $VIMHOME = $HOME."\\vimfiles" " C:\Users\User\vimfiles
         let $VIMRC = $MYVIMRC
         " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
     else
@@ -482,7 +482,7 @@ if WINDOWS()
 
         " set font
         " https://github.com/runsisi/consolas-font-for-powerline
-        set guifont=Consolas\ NF:h11:cANSI,Consolas:h11,Inconsolata:h12,Courier\ New:h11
+        set guifont=Powerline\ Consolas:h11:cANSI,Consolas\ NF:h11:cANSI,Consolas:h11,Inconsolata:h12
         " https://gist.github.com/kevinis/c788f85a654b2d7581d8
         " set guifont=Monaco\ for\ Powerline:h12:cANSI
         set renderoptions=type:directx,renmode:5
