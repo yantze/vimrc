@@ -18,9 +18,7 @@ nvim +PlugInstall
 
 - Windows 安装
 ```
-git clone http://github.com/yantze/vimrc ~/.vim
-mklink "C:\Program Files (x86)\Vim\_vimrc" ~/.vim/vimrc
-mklink /J "C:\Program Files (x86)\Vim\vimfiles" ~/.vim
+git clone http://github.com/yantze/vimrc C:\Users\Uesr\vimfiles
 gvim +PlugInstall
 ```
 

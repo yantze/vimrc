@@ -481,15 +481,15 @@ if WINDOWS()
         silent! colorscheme zenburn      " grey, my fav
 
         " set font
-        " set guifont=Consolas:h12
+        " https://github.com/runsisi/consolas-font-for-powerline
+        set guifont=Consolas\ NF:h11:cANSI,Consolas:h11,Inconsolata:h12,Courier\ New:h11
         " https://gist.github.com/kevinis/c788f85a654b2d7581d8
-        set guifont=Monaco\ for\ Powerline:h12:cANSI
+        " set guifont=Monaco\ for\ Powerline:h12:cANSI
         set renderoptions=type:directx,renmode:5
         " set guifont=Monaco:h11
         " set guifont=Source\ Code\ Pro\ Regular:h15
         " set guifont=YaHei\ Consolas\ Hybrid:h13
         " set guifont=Source\ Code\ Pro:h13
-
     else
         silent! colorscheme CodeFactoryv3
         " colorscheme ir_black
