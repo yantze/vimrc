@@ -1382,7 +1382,7 @@ function! AddLineNum()
     "echo num2
     return num2
 endfunction
-vmap <silent> <leader>anu o<esc>:call setcurlinenum()<cr>gv:s/^/\=addLineNum()." "/<cr>
+vmap <silent> <leader>anu o<esc>:call SetCurlineNum()<cr>gv:s/^/\=addLineNum()." "/<cr>
 
 
 

@@ -1,1 +1,3 @@
-vimrc
+set runtimepath+=~/.vim,~/.vim/after
+set packpath+=~/.vim
+source ~/.vim/vimrc
