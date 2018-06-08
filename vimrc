@@ -1,7 +1,8 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
+let g:color_dark = 0
 " let g:no_plugin = 1
-let g:no_compile_plugin = 1
+" let g:no_compile_plugin = 1
 
 " General {
 
@@ -520,16 +521,30 @@ else
         " set guifontwide=HiraginoSansGB-W3:h15
         " set guifont=YaHei\ Consolas\ Hybrid:h13
         set background=light
-        colorscheme solarized
+        silent! colorscheme solarized
         set lines=38 columns=140
 
         " 在 macvim 中，不支持
         " set nu!
     else
-        " silent! colorscheme solarized
-        " set background=light
-        " highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
+        silent! colorscheme solarized
+        let g:solarized_termcolors=256
+        let g:solarized_visibility="normal"
+        let g:solarized_bold = 1
 
+        if g:color_dark == 1
+            set background=dark
+            let g:airline_theme='serene' " aireline dark theme
+        else
+            set background=light
+        endif
+        highlight LineNr ctermbg=none ctermfg=none " 设置行号背景为 none
+        if &background == 'light'
+            hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
+            hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
+        endif
+
+        " highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
         " g:solarized_termcolors= 16 | 256
         " g:solarized_termtrans = 0 | 1
         " g:solarized_degrade = 0 | 1
@@ -540,7 +555,7 @@ else
         " g:solarized_visibility= “normal”| “high” or “low”
 
         " colortheme list: ir_black grb256 BusyBee pt_black solarized xoria256
-        silent! colorscheme pt_black
+        " silent! colorscheme pt_black
     endif
 endif
 
@@ -953,6 +968,8 @@ endif
 
     " au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
 
+    " gg=G format for xml
+    au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 " }
 
 " }
@@ -1314,14 +1331,12 @@ command! DiffSaved call s:DiffWithSaved()
     " repeat 字符串
     " exec 'map <F2> :silent! let g:g="'.repeat('foobar ',200).'"<cr>'
 
+    " 显示当前定义的变量直接输入:
+    " :let
+
 " }
 
 " Theme {
-    silent! colorscheme solarized
-
-    " light mode {
-    set background=light
-    " }
 
     " dark mode {
     " set background=dark
