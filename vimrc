@@ -384,7 +384,6 @@ let g:color_dark = 0
     " set tw=78                    "超过80个字符就折行(textwrap)
     " set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
     set display=lastline         " 不要显示@@@@@
-    set listchars=tab:\|\ ,trail:. "设置tab/尾部字符用什么填充
 
     " 光标的上下方至少保留显示的行数
     set scrolloff=5
@@ -398,7 +397,6 @@ let g:color_dark = 0
     set iskeyword+=- " remove - as a word boundary
     set iskeyword+=$
 
-
 " }
 
 " 文件配置 {
@@ -409,11 +407,43 @@ let g:color_dark = 0
         " endif
     endif
 
+
+    " 相对行号 {
+
+    if v:version > 703
+        set relativenumber number
+        " 插入模式下用绝对行号,普通模式下用相对
+        augroup numbertoggle
+            autocmd!
+            autocmd BufEnter,FocusGained,InsertLeave * set relativenumber nonumber
+            autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber number
+        augroup END
+
+        function! NumberToggle()
+        if(&relativenumber == 1)
+            set norelativenumber nonumber
+        else
+            set relativenumber number
+        endif
+        endfunc
+        nnoremap <F2> :call NumberToggle()<cr>
+
+        " no num and relative
+        " nnoremap <leader><F3> :set relativenumber!<CR>:set nu!<CR>
+        " imap <leader><F3>     :set relativenumber!<CR>:set nu!<CR>
+    endif
+
+    " }
+
+
+    set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
+    set showbreak=↪\
+    set listchars=tab:→\ ,extends:›,precedes:‹,nbsp:␣,trail:·
+    " set listchars=tab:\|\ ,trail:. " 设置tab/尾部字符用什么填充
+
     " set fileformats=unix                           " 设定换行符
     set wrap
     set linebreak                                    " 自动断行, 用 breakat 控制
-    set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
-
     set enc=utf-8                                    " 设置编码
     set fenc=utf-8                                   " 设置文件编码
     set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
@@ -610,31 +640,6 @@ endif
     set cindent
     " 详细的tab设置：http://blog.chinaunix.net/uid-24774106-id-3396220.html
     set smarttab                 "在行首按TAB将加入sw个空格，否则加入ts个空格;按Backspace可以删除4个空格
-
-" }
-
-" 相对行号 {
-
-if v:version > 703
-    set relativenumber number
-    " autocmd FocusLost * :set norelativenumber number
-    " autocmd FocusGained * :set relativenumber
-    " 插入模式下用绝对行号,普通模式下用相对
-    autocmd InsertEnter * :set norelativenumber number
-    autocmd InsertLeave * :set relativenumber
-    function! NumberToggle()
-      if(&relativenumber == 1)
-        set norelativenumber nonumber
-      else
-        set relativenumber number
-      endif
-    endfunc
-    nnoremap <F2> :call NumberToggle()<cr>
-
-    " no num and relative
-    " nnoremap <leader><F3> :set relativenumber!<CR>:set nu!<CR>
-    " imap <leader><F3>     :set relativenumber!<CR>:set nu!<CR>
-endif
 
 " }
 

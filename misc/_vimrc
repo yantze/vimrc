@@ -12,38 +12,38 @@ let mapleader=","
 "end
 
 if v:progname =~? "evie"
-	finish
+    finish
 endif
 
 
 if has("win32")
     if has("gui_running")
-	"设定 windows 下 gvim 启动时最大化
-	"autocmd GUIEnter * simalt ~
-	set lines=45
-	set columns=128
-	winpos  10  0
-	if exists("&cursorline")
-	    set cursorline  "Highlight current
-	endif
+    "设定 windows 下 gvim 启动时最大化
+    "autocmd GUIEnter * simalt ~
+    set lines=45
+    set columns=128
+    winpos  10  0
+    if exists("&cursorline")
+        set cursorline  "Highlight current
+    endif
     else
-	set lines=30
-	set columns=86
-	winpos  80  10
+    set lines=30
+    set columns=86
+    winpos  80  10
     endif
 else
     if has("gui_running")
-	set lines=45
-	set columns=143
-	winpos  180  0
-	if exists("&cursorline")
-	    set cursorline
-	endif
+    set lines=45
+    set columns=143
+    winpos  180  0
+    if exists("&cursorline")
+        set cursorline
+    endif
     else
-	set lines=31
-	set columns=93
-	    set cursorline
-	winpos  0  352
+    set lines=31
+    set columns=93
+        set cursorline
+    winpos  0  352
     endif
 endif
 
@@ -291,7 +291,7 @@ set backupcopy=yes              "设置备份时的行为为覆盖
 set bsdir=last                  "设定文件浏览器目录为当前目录
 set cindent                     "设置为 C 语言风格的缩进模式
 set cmdheight=1                 "设定命令行的行数为 1
-set foldmethod=marker		"按缩进进行折叠
+set foldmethod=marker        "按缩进进行折叠
 set formatoptions+=tcqroMm      "使得注释换行时自动加上前导的空格和星号
 set guioptions-=L
 set guioptions-=r               "去除右边滚动条
@@ -569,7 +569,7 @@ hi link MBEVisibleChanged Title
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "let g:winManagerWindowLayout="BufExplorer|TagList"
 let g:winManagerWindowLayout='FileExplorer|BufExplorer'
-let g:persistentBehaviour=0		"只剩一个窗口时, 退出vim.
+let g:persistentBehaviour=0        "只剩一个窗口时, 退出vim.
 let g:winManagerWidth=26
 let g:defaultExplorer=1
 "nmap <silent> <leader>fir :FirstExplorerWindow<cr>
@@ -682,45 +682,45 @@ nmap <silent> <leader>dox :Dox<cr><esc>mzkddk2lvf/r=xf<space>Dr*0%hmxl
 \<C-E>%lr*hj<C-E>`xjr<space>`xjllvf/hr=f<space>Dhr*`za<C-W>:<Tab>
 
 "=============================================================================
-" winmove.vim	settings
+" winmove.vim    settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:wm_move_x = 85
 let g:wm_move_y = 20
 
 "=============================================================================
-" a.vim	settings
+" a.vim    settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <silent> <leader>ihh :IH<cr>
 nmap <silent> <leader>ihs :IHS<cr>
 nmap <silent> <leader>ihv :IHV<cr>
-"	a.vim主要命令如下:
-"		:A switches to the header file corresponding to the current file being edited (or vise versa)
-"		:AS splits and switches
-"		:AV vertical splits and switches
-"		:AT new tab and switches
-"		:AN cycles through matches
-"		:IH switches to file under cursor
-"		:IHS splits and switches
-"		:IHV vertical splits and switches
-"		:IHT new tab and switches
-"		:IHN cycles through matches
-"		<Leader>ih switches to file under cursor
-"		<Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
-"		<Leader>ihn cycles through matches
+"    a.vim主要命令如下:
+"        :A switches to the header file corresponding to the current file being edited (or vise versa)
+"        :AS splits and switches
+"        :AV vertical splits and switches
+"        :AT new tab and switches
+"        :AN cycles through matches
+"        :IH switches to file under cursor
+"        :IHS splits and switches
+"        :IHV vertical splits and switches
+"        :IHT new tab and switches
+"        :IHN cycles through matches
+"        <Leader>ih switches to file under cursor
+"        <Leader>is switches to the alternate file of file under cursor (e.g. on  <foo.h> switches to foo.cpp)
+"        <Leader>ihn cycles through matches
 
 "=============================================================================
 " VisualMark.vim插件
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VisualMark.vim插件主要命令如下:
-		" 1.  For gvim, use "Ctrl + F2" to toggle a visual mark.
-		"     For both vim and gvim, use "mm" to toggle a visual mark.
-		" 2.  Use "F2" to navigate through the visual marks forward in the file.
-		" 3.  Use "Shift + F2" to navigate backwards.
+        " 1.  For gvim, use "Ctrl + F2" to toggle a visual mark.
+        "     For both vim and gvim, use "mm" to toggle a visual mark.
+        " 2.  Use "F2" to navigate through the visual marks forward in the file.
+        " 3.  Use "Shift + F2" to navigate backwards.
 " 对应VisualMark中的设置如下:
-	"  map <unique> <c-F2> <Plug>Vm_toggle_sign
-	"  map <silent> <unique> mm <Plug>Vm_toggle_sign
-	"  map <unique> <F2> <Plug>Vm_goto_next_sign
-	"  map <unique> <s-F2> <Plug>Vm_goto_prev_sign
+    "  map <unique> <c-F2> <Plug>Vm_toggle_sign
+    "  map <silent> <unique> mm <Plug>Vm_toggle_sign
+    "  map <unique> <F2> <Plug>Vm_goto_next_sign
+    "  map <unique> <s-F2> <Plug>Vm_goto_prev_sign
 
 "=============================================================================
 " Mark.vim插件
@@ -732,13 +732,13 @@ nmap <silent> <leader>ihv :IHV<cr>
 "regular expression. 用于搜索.
     "nmap <unique> <silent> <leader>c <Plug>MarkClear " clear this mark (i.e.
 "the mark under the cursor), or clear all highlighted marks .
-	"nnoremap <silent> <leader>* :call <sid>SearchCurrentMark()<cr>
-	"nnoremap <silent> <leader># :call <sid>SearchCurrentMark("b")<cr>
-	"nnoremap <silent> <leader>/ :call <sid>SearchAnyMark()<cr>
-	"nnoremap <silent> <leader>? :call <sid>SearchAnyMark("b")<cr>
-	"nnoremap <silent> * :if !<sid>SearchNext()<bar>execute "norm! *"<bar>endif<cr>
-	"nnoremap <silent> # :if !<sid>SearchNext("b")<bar>execute "norm! #"<bar>endif<cr>
-	"command! -nargs=? Mark call s:DoMark(<f-args>)
+    "nnoremap <silent> <leader>* :call <sid>SearchCurrentMark()<cr>
+    "nnoremap <silent> <leader># :call <sid>SearchCurrentMark("b")<cr>
+    "nnoremap <silent> <leader>/ :call <sid>SearchAnyMark()<cr>
+    "nnoremap <silent> <leader>? :call <sid>SearchAnyMark("b")<cr>
+    "nnoremap <silent> * :if !<sid>SearchNext()<bar>execute "norm! *"<bar>endif<cr>
+    "nnoremap <silent> # :if !<sid>SearchNext("b")<bar>execute "norm! #"<bar>endif<cr>
+    "command! -nargs=? Mark call s:DoMark(<f-args>)
 
 "=============================================================================
 " code_complete.vim插件
@@ -866,7 +866,7 @@ let NERDTreeWinSize=33
 " let NERDTreeShowLineNumbers=1
 let NERDTreeShowBookmarks=1
 let NERDTreeQuitOnOpen=1    " 1: 打开文件后, 关闭NERDTrre窗口
-let NERDTreeChDirMode=2		" 2:  自动更新PWD
+let NERDTreeChDirMode=2        " 2:  自动更新PWD
 " let NERDTreeHighlightCursorline=1     " 高亮NERDTrre窗口的当前行
 " nmap <silent> <leader>tmk :Bookmark expand("<cword>")<cr>  "
 
@@ -947,14 +947,14 @@ map <silent> <leader>jlc :cs show<cr>
 "以空格打头, 后跟关键字"figure"的行定义为"文本图",该行将被列在taglist窗口中.
 "以空格打头, 后跟关键字"table"的行定义为"文本表",该行将被列在taglist窗口中.
 map <silent> <leader>bft :set ft=txt<cr>
-"<Leader>g / TxtBrowserUrl		"打开URL
-"<Leader>f / TxtBrowserWord		"查单词
-"<Leader>s / TxtBrowserSearch	"search word under cursor
+"<Leader>g / TxtBrowserUrl        "打开URL
+"<Leader>f / TxtBrowserWord        "查单词
+"<Leader>s / TxtBrowserSearch    "search word under cursor
 map <silent> <leader>bgu :TxtBrowserUrl<cr><cr>
 map <silent> <leader>bgw :TxtBrowserWord<cr><cr>
 map <silent> <leader>bgs :TxtBrowserSearch<cr><cr>
 let tlist_txt_settings = 'txt;c:content;f:figures;t:tables'
-let TxtBrowser_Dict_Url='http://dict.cn/text'	"英文词典
+let TxtBrowser_Dict_Url='http://dict.cn/text'    "英文词典
 let Txtbrowser_Search_Engine='http://www.baidu.com/s?wd=text&oq=text&f=3&rsp=2'
 au BufRead,BufNewFile *.txt     setlocal ft=txt "syntax hlg txt for txt.vim
 au BufRead,BufNewFile *log      setlocal ft=txt "syntax hlg log for txt.vim
@@ -1035,8 +1035,8 @@ endif
 " DrawIt.vba.gz
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " :help DrawIt
-    " ,di	  to start DrawIt and
-    " ,ds	  to stop  DrawIt.
+    " ,di      to start DrawIt and
+    " ,ds      to stop  DrawIt.
     "<left>       move and draw left
     "<right>      move and draw right, inserting lines/space as needed
     "<up>         move and draw up, inserting lines/space as needed
@@ -1259,7 +1259,7 @@ map <silent> <leader>d2s mz:%s/，/, /ge<cr>:%s/。/. /ge<cr>:%s/；/; /ge<cr>
 \:%s/×/x/ge<cr>:%s/″/"/ge<cr>:%s/］/]/ge<cr>:%s/［/[/ge<cr>
 \`z
 ":%s/″/"/ge<cr>
-map <silent> <leader>s2t :%s/	/    /g<cr>
+map <silent> <leader>s2t :%s/    /    /g<cr>
 map <silent> <leader>pwd :pwd<cr>
 map <silent> <leader>ys mz:r!cat /tmp/screen-exchange<cr>
 map <silent> <leader>yy mz:r!cat /tmp/pwd2vim.tmp<cr>0v$hd`zi@<esc>Pjdd`zf@x
@@ -1289,7 +1289,7 @@ noremap <silent> <leader>sk <C-W>k
 noremap <silent> <leader>sj <C-W>j
 noremap <silent> <leader>sl <C-W>l
 map <silent> <leader>nww :split<cr>
-noremap <C-Q>		:close<cr>
+noremap <C-Q>        :close<cr>
 " 当只剩下一个窗口时, 不能关闭
 map <silent> <leader>clo :close<cr>
 "only retain one splip window
@@ -1372,30 +1372,30 @@ vnoremap <S-Del> "+x
 vnoremap <C-C> "+y
 vnoremap <C-Insert> "+y
 " CTRL-V and SHIFT-Insert are Paste
-map <C-V>		"+gP
-map <S-Insert>		"+gP
-cmap <C-V>		<C-R>+
-cmap <S-Insert>		<C-R>+
+map <C-V>        "+gP
+map <S-Insert>        "+gP
+cmap <C-V>        <C-R>+
+cmap <S-Insert>        <C-R>+
 " Pasting blockwise and linewise selections is not possible in Insert and
 " Visual mode without the +virtualedit feature.  They are pasted as if they
 " were characterwise instead.
 " Uses the paste.vim autoload script.
 exe 'inoremap <script> <C-V>' paste#paste_cmd['i']
 exe 'vnoremap <script> <C-V>' paste#paste_cmd['v']
-imap <S-Insert>		<C-V>
-vmap <S-Insert>		<C-V>
+imap <S-Insert>        <C-V>
+vmap <S-Insert>        <C-V>
 " Modify <C-E> to <A-e>
-noremap <A-e>		<C-E>
-noremap <A-y>		<C-Y>
+noremap <A-e>        <C-E>
+noremap <A-y>        <C-Y>
 " Quickly move between consecutive lines
-noremap <A-j>		<C-E><C-E><C-E>
-noremap <A-k>		<C-Y><C-Y><C-Y>
+noremap <A-j>        <C-E><C-E><C-E>
+noremap <A-k>        <C-Y><C-Y><C-Y>
 " Use CTRL-E to do what CTRL-V used to do "选中块
-noremap <C-E>		<C-V>
+noremap <C-E>        <C-V>
 " Use CTRL-S for saving, also in Insert mode
-noremap <C-S>		:update<CR>
-vnoremap <C-S>		<C-C>:update<CR>
-inoremap <C-S>		<C-O>:update<CR>
+noremap <C-S>        :update<CR>
+vnoremap <C-S>        <C-C>:update<CR>
+inoremap <C-S>        <C-O>:update<CR>
 " For CTRL-V to work autoselect must be off.
 " On Unix we have two selections, autoselect can be used.
 if !has("unix")
@@ -1448,62 +1448,62 @@ onoremap <C-F4> <C-C><C-W>c
 "#############################################################################
 " notes
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"*Q_fo*		Folding
+"*Q_fo*        Folding
 "Q_re
 "i_CTRL-R
 "-----------------------------------------------------------------------------
-"|:dig|	   :dig[raphs]		show current list of digraphs
-"|i_CTRL-K|	CTRL-K {char1} {char2}
+"|:dig|       :dig[raphs]        show current list of digraphs
+"|i_CTRL-K|    CTRL-K {char1} {char2}
 "-----------------------------------------------------------------------------
-"|:r!|	   :r! {command}   insert the standard output of {command} below the cursor
+"|:r!|       :r! {command}   insert the standard output of {command} below the cursor
 "-----------------------------------------------------------------------------
-"|quote|	  "{char}	use register {char} for the next delete, yank, or put
+"|quote|      "{char}    use register {char} for the next delete, yank, or put
 "-----------------------------------------------------------------------------
 "   "ay     "ap
 "-----------------------------------------------------------------------------
-"|:ce|	  :[range]ce[nter] [width]      center the lines in [range]
-"|:le|	  :[range]le[ft] [indent]       left-align the lines in [range] (with [indent])
-"|:ri|	  :[range]ri[ght] [width]       right-align the lines in [range]
+"|:ce|      :[range]ce[nter] [width]      center the lines in [range]
+"|:le|      :[range]le[ft] [indent]       left-align the lines in [range] (with [indent])
+"|:ri|      :[range]ri[ght] [width]       right-align the lines in [range]
 "-----------------------------------------------------------------------------
-"|&|	      &		Repeat previous ":s" on current line without options
+"|&|          &        Repeat previous ":s" on current line without options
 "-----------------------------------------------------------------------------
 "Q_to
-"|v_a'|	   N  a'	Select "a single quoted string"
-"|v_i'|	   N  i'	Select "inner single quoted string"
-"|v_aquote| N  a"	Select "a double quoted string"
-"|v_iquote| N  i"	Select "inner double quoted string"
-"|v_a`|	   N  a`	Select "a backward quoted string"
-"|v_i`|	   N  i`	Select "inner backward quoted string"
+"|v_a'|       N  a'    Select "a single quoted string"
+"|v_i'|       N  i'    Select "inner single quoted string"
+"|v_aquote| N  a"    Select "a double quoted string"
+"|v_iquote| N  i"    Select "inner double quoted string"
+"|v_a`|       N  a`    Select "a backward quoted string"
+"|v_i`|       N  i`    Select "inner backward quoted string"
 "-----------------------------------------------------------------------------
-"|ga|		   ga		show ascii value of character under cursor in decimal, hex, and octal
-"|g8|		   g8		for utf-8 encoding: show byte sequence for character under cursor in hex.
+"|ga|           ga        show ascii value of character under cursor in decimal, hex, and octal
+"|g8|           g8        for utf-8 encoding: show byte sequence for character under cursor in hex.
 "-----------------------------------------------------------------------------
-"|ZZ|	     ZZ			Same as ":x".
-"|ZQ|	     ZQ			Same as ":q!".
-"|:stop|	  :st[op][!]		Suspend VIM or start new shell.  If 'aw' option
-"|CTRL-Z|     CTRL-Z		Same as ":stop"
+"|ZZ|         ZZ            Same as ":x".
+"|ZQ|         ZQ            Same as ":q!".
+"|:stop|      :st[op][!]        Suspend VIM or start new shell.  If 'aw' option
+"|CTRL-Z|     CTRL-Z        Same as ":stop"
 "-----------------------------------------------------------------------------
-    "|CTRL-W_]|	CTRL-W ]		Split window and jump to tag under cursor
-"|CTRL-W_f|	CTRL-W f		Split window and edit file name under the cursor
-"|CTRL-W_^|	CTRL-W ^		Split window and edit alternate file
-"|CTRL-W_n|	CTRL-W n  or  :new	Create new empty window
-"|CTRL-W_q|	CTRL-W q  or  :q[uit]	Quit editing and close window
-"|CTRL-W_c|	CTRL-W c  or  :cl[ose]	Make buffer hidden and close window
-"|CTRL-W_o|	CTRL-W o  or  :on[ly]	Make current window only one on the screen
-"|CTRL-W_j|	CTRL-W j		Move cursor to window below
-"|CTRL-W_k|	CTRL-W k		Move cursor to window above
-"|CTRL-W_CTRL-W|	CTRL-W CTRL-W		Move cursor to window below (wrap)
-"|CTRL-W_W|	CTRL-W W		Move cursor to window above (wrap)
-    "|CTRL-W_t|	CTRL-W t		Move cursor to top window
-    "|CTRL-W_b|	CTRL-W b		Move cursor to bottom window
-    "|CTRL-W_p|	CTRL-W p		Move cursor to previous active window
-"|CTRL-W_r|	CTRL-W r		Rotate windows downwards
-"|CTRL-W_R|	CTRL-W R		Rotate windows upwards
-"|CTRL-W_x|	CTRL-W x		Exchange current window with next one
-"|CTRL-W_=|	CTRL-W =		Make all windows equal height
-"|CTRL-W_-|	CTRL-W -		Decrease current window height
-"|CTRL-W_+|	CTRL-W +		Increase current window height
-"|CTRL-W__|	CTRL-W _		Set current window height (default:
+    "|CTRL-W_]|    CTRL-W ]        Split window and jump to tag under cursor
+"|CTRL-W_f|    CTRL-W f        Split window and edit file name under the cursor
+"|CTRL-W_^|    CTRL-W ^        Split window and edit alternate file
+"|CTRL-W_n|    CTRL-W n  or  :new    Create new empty window
+"|CTRL-W_q|    CTRL-W q  or  :q[uit]    Quit editing and close window
+"|CTRL-W_c|    CTRL-W c  or  :cl[ose]    Make buffer hidden and close window
+"|CTRL-W_o|    CTRL-W o  or  :on[ly]    Make current window only one on the screen
+"|CTRL-W_j|    CTRL-W j        Move cursor to window below
+"|CTRL-W_k|    CTRL-W k        Move cursor to window above
+"|CTRL-W_CTRL-W|    CTRL-W CTRL-W        Move cursor to window below (wrap)
+"|CTRL-W_W|    CTRL-W W        Move cursor to window above (wrap)
+    "|CTRL-W_t|    CTRL-W t        Move cursor to top window
+    "|CTRL-W_b|    CTRL-W b        Move cursor to bottom window
+    "|CTRL-W_p|    CTRL-W p        Move cursor to previous active window
+"|CTRL-W_r|    CTRL-W r        Rotate windows downwards
+"|CTRL-W_R|    CTRL-W R        Rotate windows upwards
+"|CTRL-W_x|    CTRL-W x        Exchange current window with next one
+"|CTRL-W_=|    CTRL-W =        Make all windows equal height
+"|CTRL-W_-|    CTRL-W -        Decrease current window height
+"|CTRL-W_+|    CTRL-W +        Increase current window height
+"|CTRL-W__|    CTRL-W _        Set current window height (default:
 "-----------------------------------------------------------------------------
 "C-W    C-U     C-E     C-U
 "-----------------------------------------------------------------------------
@@ -1523,10 +1523,10 @@ onoremap <C-F4> <C-C><C-W>c
 " gggUG gggug  对应一个文件
 "-----------------------------------------------------------------------------
 "实现用vim自动输入一个数字序列的命令:
-"	 i2.<esc>
-"	 qa
-"	 yyp<C-a>q
-"	 98@a
+"     i2.<esc>
+"     qa
+"     yyp<C-a>q
+"     98@a
 "-----------------------------------------------------------------------------
 "双击m键可以删除Win下生成的多余换行符CR（在Vim中可以看到蓝色的^M）
 "nmap mm :%s/\r//g<cr>

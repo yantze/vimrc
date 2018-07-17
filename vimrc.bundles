@@ -90,15 +90,15 @@ call plug#begin("$VIMHOME/plugged")
         Plug 'honza/vim-snippets'
         Plug 'SirVer/ultisnips'
         let g:snippets_dir="$VIM/snippets/"
-        " Plug 'Shougo/neocomplete'
-        " Plug 'Shougo/neosnippet'
-        " " Plug 'Shougo/neosnippet-snippets'
+        Plug 'Shougo/neocomplete'
+        Plug 'Shougo/neosnippet'
+        Plug 'Shougo/neosnippet-snippets'
         "
         " " https://github.com/Shougo/neosnippet.vim/issues/215#issuecomment-35847891
         " let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
         "
         " " Tell Neosnippet about the other snippets
-        " let g:neosnippet#snippets_directory='~/.vim/snippets'
+        let g:neosnippet#snippets_directory='~/.vim/snippets'
         "
         " " SuperTab like snippets behavior.
         " if exists("g:no_compile_plugin")
