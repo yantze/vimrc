@@ -361,7 +361,7 @@ let g:color_dark = 0
     filetype plugin on           " 针对不同的文件类型加载对应的插件
     filetype plugin indent on    " 启用自动补全
     set visualbell t_vb=         " 关闭visual bell/声音
-    set t_Co=256                 " 设置文字可以显示多少种颜色
+    " set t_Co=256                 " 设置文字可以显示多少种颜色, 历史原因可能是比 8-bit 色彩更少, 可能比 8-bit 终端更早
     au GuiEnter * set t_vb=    " 关闭beep/屏闪
     " set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
@@ -415,16 +415,16 @@ let g:color_dark = 0
         " 插入模式下用绝对行号,普通模式下用相对
         augroup numbertoggle
             autocmd!
-            autocmd BufEnter,FocusGained,InsertLeave * set relativenumber nonumber
+            autocmd BufEnter,FocusGained,InsertLeave * set relativenumber " nonumber
             autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber number
         augroup END
 
         function! NumberToggle()
-        if(&relativenumber == 1)
-            set norelativenumber nonumber
-        else
-            set relativenumber number
-        endif
+            if(&relativenumber == 1)
+                set norelativenumber nonumber
+            else
+                set relativenumber number
+            endif
         endfunc
         nnoremap <F2> :call NumberToggle()<cr>
 
@@ -558,7 +558,7 @@ else
         " set nu!
     else
         silent! colorscheme solarized
-        let g:solarized_termcolors=256
+        " let g:solarized_termcolors=256 " 其实这里256 是把颜色减少了
         let g:solarized_visibility="normal"
         let g:solarized_bold = 1
 
