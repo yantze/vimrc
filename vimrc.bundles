@@ -2,49 +2,6 @@ call plug#begin("$VIMHOME/plugged")
 
 " { General
 
-    " AutoComplete {
-    if v:version >= 750
-        " YCM = clang_complete +AutoComplPop +Supertab +neocomplcache +Syntastic(类似功能,仅仅针对c/c++/obj-c代码)
-
-        if !exists("g:no_compile_plugin")
-            Plug 'Valloric/YouCompleteMe', { 'do': 'XX=clang++ CC=clang python3 install.py --clang-completer' }
-            " --gocode-completer
-        endif
-        " let g:ycm_add_preview_to_completeopt=0
-        " let g:ycm_confirm_extra_conf=0
-        " set completeopt-=preview
-        "competeble with UltraSnips
-        let g:ycm_key_list_select_completion   = []
-        let g:ycm_key_list_previous_completion = []
-        let g:ycm_global_ycm_extra_conf        = $VIMHOME . '/rc/ycm_extra_conf.py'
-
-        " 下里的filetype主要是和上面的syntastic对应，用于使用clang编译的情况
-        let g:ycm_extra_conf_vim_data = ['&filetype', 'g:syntastic_c_compiler_options', 'g:syntastic_cpp_compiler_options']
-        let g:ycm_filetype_blacklist = {
-            \ 'notes' : 1,
-            \ 'markdown' : 1,
-            \ 'text' : 1,
-            \ 'gitcommit': 1,
-            \ 'mail': 1,
-        \}
-        let g:ycm_error_symbol   = '>>'
-        let g:ycm_warning_symbol = '>!'
-        let g:ycm_collect_identifiers_from_tags_files = 1
-        let g:ycm_collect_identifiers_from_comments_and_strings = 1
-        " 确保了在你完成操作之后，自动补全窗口不会消失
-        let g:ycm_autoclose_preview_window_after_completion=1
-        " offer like ctags: declara, define and multi, only support c/cpp
-        " nnoremap <leader>gl :YcmCompleter GoToDeclaration<CR>
-        " nnoremap <leader>gf :YcmCompleter GoToDefinition<CR>
-        nnoremap <leader>gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-
-        " 自动补全配置 - 选中一项，要回车选中当前项
-        " 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
-        " method 1: set completeopt=longest,menu
-        " method 2: inoremap <expr> <CR>       pumvisible() ? "\<c-y>" : "\<cr>"
-    endif
-    " }
-
     " 语法查错 {
         " Syntastic
         if !exists("g:no_compile_plugin")
