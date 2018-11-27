@@ -95,10 +95,8 @@ gvim +PlugInstall
 | ---                 | ---                                                                                                                                                                                                                          |
 | `<c-p>`               | 快速查找当前文件夹下所有子目录的文件,ctrl+j/k上下选择文件                                                                                                                                                                    |
 | :ag                 | 查找当前目录下的所有文件的关键字                                                                                                                                                                                             |
-| ,gd                 | 使用YCM的快速查找头文件定义,类似vs中的F12                                                                                                                                                                                    |
 | ,ci                 | 注释当前行或选定行(自动识别文件类型后添加注释)                                                                                                             f                                                                 |
 | ,cm                 | 块注释(可选中)                                                                                                                                                                                                               |
-| `key<Tab>`            | UltiSnip And YCM 可以自动补全，UltiSnip对py，ycm对c好一些, <c-j/k>上下选择下一个瞄准位                                                                                                                                       |
 | `<c-n><c-j/k>`        | 用<c-n>当前选中的行，用<c-j/k>来移动行的位置(vim-multipe-cursors)                                                                                                                                                            |
 | `<m-j/k>`             | 用alt/command+j/k移动当前行的位置(功能同上)                                                                                                                                                                                  |
 | `<c-n>`               | 不停的选中<c-n>,可以执行多光标编辑 , <c-p>回到前一个,<c-x>放弃当前这个光标到下一个 , 其中i,a,I,A可以在insert模式，c,s可以在normal模式，c是清除当前选中的文字 , 有个小bug,就是在多光标选中模式下，要先按i或者a这个键，再按I/A |
@@ -113,8 +111,6 @@ gvim +PlugInstall
 
 ### 关于自动补全
 本配置自动补全有三个部分:
-- [YouCompleteMe](https://github.com/Valloric/YouCompleteMe) , 综合自动补全， <tab>选定，c-j/k 上下选择
-- [UltraSnip](https://github.com/SirVer/ultisnips), 类自动补全，可以让多处同名的动更新，对 python 支持较好,快捷键与 YCM 已经合并，不需要修改
 - [vim-snippets](https://github.com/honza/vim-snippets) , 常见snippets 都有，根据文件类型和语法补全，同时可以在 `~/.vim/snippets` 中自行添加
 
 ### 衍生 vim
