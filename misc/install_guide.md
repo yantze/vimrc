@@ -68,25 +68,6 @@ cscope
 待续
 ```
 
-### YCM
-[warning]如果出现下面的错误或者如果你在vps上编译YCM,说明你的内存不够用
-```
-g++: internal compiler error: Killed (program cc1plus)
-Please submit a full bug report,
-```
-使用交换分区来解决
-```bash
-sudo dd if=/dev/zero of=/swapfile bs=64M count=16
-sudo mkswap /swapfile
-sudo chmod 644 /swapfile
-sudo swapon /swapfile
-```
-当完成编译后,可以选择取消交换分区
-```bash
-sudo swapoff /swapfile
-sudo rm /swapfile
-```
-
 ### vba文件安装方法(这个项目暂时不需要)
 1. 如果有扩展名为vba的vim插件,需要用vimball方式安装
 1. 用vim打开vba格式的文件，输入 `:so %`,

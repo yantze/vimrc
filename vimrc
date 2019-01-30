@@ -347,6 +347,18 @@ let g:color_dark = 0
     function! RemoveOldViewFiles()
         exe 'find '.$VIMHOME.'/view/* -mtime +90 -exec rm {} \;'
     endfunction
+
+    function! SetCurLineNum()
+        let g:nal_cur_line_num = line("v")
+    endfunction
+
+    function! AddLineNum()
+        let num1 = line("v")
+        let num2 = num1 - g:nal_cur_line_num + 1
+        let num2 = " " . num2
+        "echo num2
+        return num2
+    endfunction
 " }
 
 " }
@@ -588,6 +600,15 @@ else
         " silent! colorscheme pt_black
     endif
 endif
+
+" pure vim {
+    if get(g:, 'colors_name', 'default') == 'default'
+        if &background == 'light'
+            hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
+            hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
+        endif
+    endif
+}
 
 " }
 
@@ -1298,6 +1319,11 @@ command! Sw w !sudo tee % > /dev/null
 " Show difference between modified buffer and original file
 command! DiffSaved call s:DiffWithSaved()
 
+" 给选中行添加行号
+map <silent> <leader>anu :%s/^/\=line(".")." "/g<cr>
+vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()." "/<cr>
+
+
 " tabn/tabp 切换tab
 " tabnew 创建新窗口
 " :retab 对当前文档重新替换tab为空格
@@ -1313,7 +1339,12 @@ command! DiffSaved call s:DiffWithSaved()
 
 " }
 
-" Study {
+" Notes {
+    " Check runtime message
+    " vim -V9myVim.log
+    " last error message
+    " :messages
+    " help g<
 
     " 函数学习
     " function CloseBuffer()
@@ -1339,24 +1370,6 @@ command! DiffSaved call s:DiffWithSaved()
     " 显示当前定义的变量直接输入:
     " :let
 
-" }
-
-" Theme {
-
-    " dark mode {
-    " set background=dark
-    " let g:airline_theme='serene' " aireline dark theme
-    " }
-
-
-    " pure vim {
-    if get(g:, 'colors_name', 'default') == 'default'
-        if &background == 'light'
-            hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
-            hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
-        endif
-    endif
-    " }
 " }
 
 " Locals {
@@ -1388,22 +1401,14 @@ command! DiffSaved call s:DiffWithSaved()
     endfunction
     map <silent> <leader>tch :call SetColorColumn()<CR>
     map <silent> <leader>tci :call FomartTable()<CR>
+
+
+    " dark mode {
+    " set background=dark
+    " let g:airline_theme='serene' " aireline dark theme
+    " }
+
 " }
-
-" 给选中行添加数字
-function! SetCurLineNum()
-    let g:nal_cur_line_num = line("v")
-endfunction
-
-function! AddLineNum()
-    let num1 = line("v")
-    let num2 = num1 - g:nal_cur_line_num + 1
-    let num2 = " " . num2
-    "echo num2
-    return num2
-endfunction
-vmap <silent> <leader>anu o<esc>:call SetCurlineNum()<cr>gv:s/^/\=addLineNum()." "/<cr>
-
 
 
 " syn match Comment "^.*{$" conceal cchar=x

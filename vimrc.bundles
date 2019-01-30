@@ -42,45 +42,69 @@ call plug#begin("$VIMHOME/plugged")
         " 编辑 js 文件时，:w 自动显示错误，也可以手动 :SyntasticCheck
     " }
 
-    " Others {
-        " 代码补全 snippets
-        Plug 'honza/vim-snippets'
-        Plug 'SirVer/ultisnips'
-        let g:snippets_dir="$VIM/snippets/"
+    " 调用外部命令格式化代码 {
+    Plug 'Chiel92/vim-autoformat'
+    let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
+    let g:formatters_javascript = ['eslint']
+    noremap <s-f> :Autoformat<CR>:w<CR>
+
+    " 预备环境
+    " npm install -g eslint eslint-plugin-standard eslint-plugin-promise eslint-config-standard
+
+    " 将标准输入写到临时文件eslint-temp-xxx.js
+    " 调用 eslint --fix 来修复它
+    " 将 eslint-temp-xxx.js 输出到标准输出。
+    " 截掉文件尾的换行（\n）
+    " 删掉临时文件
+
+    " Trick 解释:
+    " 临时文件放在当前目录而非/tmp。否则 eslint 会根据 /tmp/eslint-temp-xxx.js 路径来读取配置文件。
+    " 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
+    " 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
+    " http://harttle.com/2017/03/12/vim-eslint.html
+
+    " Plug 'maksimr/vim-jsbeautify' " based on .editorconfig
+    " js-beautify 感觉有些情况不行
+    " 简化版本的 js-beautify
+    " esformatter Javascript indenting. Handles promise chains correctly while other indenters do not.
+    " https://gist.github.com/nisaacson/6939960
+
+    " }
+
+    " 代码补全 Others {
         Plug 'Shougo/neocomplete'
         Plug 'Shougo/neosnippet'
         Plug 'Shougo/neosnippet-snippets'
-        "
-        " " https://github.com/Shougo/neosnippet.vim/issues/215#issuecomment-35847891
-        " let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
-        "
-        " " Tell Neosnippet about the other snippets
+
+        " Tell Neosnippet about the other snippets
         let g:neosnippet#snippets_directory='~/.vim/snippets'
-        "
-        " " SuperTab like snippets behavior.
+
+        " SuperTab like snippets behavior.
         " if exists("g:no_compile_plugin")
-        "     imap <expr><TAB>
-        "     \ pumvisible() ? "\<C-n>" :
-        "     \ neosnippet#expandable_or_jumpable() ?
-        "     \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-        "     smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        "     \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+            imap <expr><TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ neosnippet#expandable_or_jumpable() ?
+            \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+            smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
         " endif
-        "
-        " " For conceal markers.
+
+        " https://github.com/Shougo/neosnippet.vim/issues/215#issuecomment-35847891
+        " let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
+
+        " For conceal markers.
         " if has('conceal')
         "     set conceallevel=2 concealcursor=niv
         " endif
     " }
+
 " }
 
-" { Colorschemes
+" { Colorschemes & Highlight
 
     " 比较全的 color scheme
     Plug 'flazz/vim-colorschemes'
 
-    " new status-line
-    " Plug 'itchyny/lightline.vim'
     " vim-airline > powerline > vim-powerline
     " Powerline {
         Plug 'vim-airline/vim-airline'
@@ -92,6 +116,7 @@ call plug#begin("$VIMHOME/plugged")
         if !exists("g:no_compile_plugin")
             let g:airline_theme='solarized' " serene
         endif
+
         " Solarized 主题
         let g:solarized_termcolors=16 " 16 | 256
         let g:solarized_termtrans=1 " 0 | 1
@@ -129,7 +154,7 @@ call plug#begin("$VIMHOME/plugged")
     " Press + to expand the visual selection and _ to shrink it.
     Plug 'terryma/vim-expand-region'
 
-    " quoting/parenthesizing made simple, there have many shortkey
+    " Easily delete, change and add such surroundings in pairs.
     Plug 'tpope/vim-surround'
 
     " 按等号或者其它符号对齐
@@ -142,44 +167,29 @@ call plug#begin("$VIMHOME/plugged")
     let g:multi_cursor_use_default_mapping=0
     " Default mapping
     let g:multi_cursor_next_key='<C-n>'
-    let g:multi_cursor_prev_key='<C-N>'
+    " let g:multi_cursor_prev_key='<C-p>'
     let g:multi_cursor_skip_key='<C-x>'
     let g:multi_cursor_quit_key='<Esc>'
-
-    " 快捷注释
-    " :tComment - inherit the NERD_commenter shortkey {
-        " comments.vim 用c-c/c-x做注释
-        " Plug 'comments.vim'
-        " 用<leader>ci/cm做注释
-        " Plug 'scrooloose/nerdcommenter'
-        " 这个更智能一些,我的配置里面快捷键inhert了nerdcommenter
-        Plug 'tomtom/tcomment_vim'
-
-        map <leader>ci <Plug>TComment_<Leader>__
-        map <leader>cm <Plug>TComment_<Leader>_b
-        " NERD_commenter      注释处理插件
-        " let loaded_nerd_tree = 1
-        " let NERDSpaceDelims = 1                        " 自动添加前置空格
-    " }
 
     " automatically add the closing quote, bracket
     Plug 'Raimondi/delimitMate'
     " Plug 'Townk/vim-autoclose'
 
-    " 调用外部命令格式化代码
-    Plug 'Chiel92/vim-autoformat'
-    let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
-    let g:formatters_javascript = ['eslint']
-    " 将标准输入写到临时文件eslint-temp-xxx.js
-    " 调用 eslint --fix 来修复它
-    " 将 eslint-temp-xxx.js 输出到标准输出。
-    " 截掉文件尾的换行（\n）
-    " 删掉临时文件
-    " Trick 解释
-    " 临时文件放在当前目录而非/tmp。否则 eslint 会根据 /tmp/eslint-temp-xxx.js 路径来读取配置文件。
-    " 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
-    " 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
-    " http://harttle.com/2017/03/12/vim-eslint.html
+    " 快捷注释 :tComment - inherit the NERD_commenter shortkey {
+        " 相比其它更智能，我的配置里面快捷键inhert了nerdcommenter
+        Plug 'tomtom/tcomment_vim'
+
+        map <leader>ci <Plug>TComment_<Leader>__
+        map <leader>cm <Plug>TComment_<Leader>_b
+
+        " comments.vim 用c-c/c-x做注释
+        " Plug 'comments.vim'
+        " 用<leader>ci/cm做注释
+        " Plug 'scrooloose/nerdcommenter'
+        " NERD_commenter      注释处理插件
+        " let loaded_nerd_tree = 1
+        " let NERDSpaceDelims = 1                        " 自动添加前置空格
+    " }
 
 " }
 
@@ -251,6 +261,7 @@ call plug#begin("$VIMHOME/plugged")
         " let g:ackprg = 'ag --vimgrep --smart-case'
 
         " <C-W>p not work
+        " \ "H": "<C-W><CR><C-W>K<C-W>b",
         let g:ack_mappings = {
         \ "J": "<CR><C-W>j",
         \ "K": "<CR><C-W>k",
@@ -264,7 +275,6 @@ call plug#begin("$VIMHOME/plugged")
         \ "h": "<C-W><CR><C-W>K",
         \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
         \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
-        " \ "H": "<C-W><CR><C-W>K<C-W>b",
         cnoreabbrev ag Ack
         cnoreabbrev aG Ack
         cnoreabbrev Ag Ack
@@ -280,15 +290,23 @@ call plug#begin("$VIMHOME/plugged")
         endif
     " }
 
+    " 在()、""、甚至HTML标签之间快速跳转；
+    Plug 'vim-scripts/matchit.zip'
+
     " 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
     " Plug 'bufexplorer.zip'
 
     " 智能打开浏览器
     Plug 'tyru/open-browser.vim'
+    " Open URI under cursor or search.--go brower
+    nmap gb <Plug>(openbrowser-smart-search)
+    " Open URI selected word or search.
+    vmap gb <Plug>(openbrowser-smart-search)
+    " Open URI you also can use <leader>gb because of "textbrowser.vim"
 
 " }
 
-" { Web
+" { Front End
 
     " zen emmet {
         " Plug 'ZenCoding.vim' " original zen coding
@@ -313,7 +331,7 @@ call plug#begin("$VIMHOME/plugged")
 
         " emmet(zen coding) 介绍
         " 是横扫各大小编辑器的快速编码插件，其使用类`CSS`选择器的语法实现扩展性编码，确实够酷、够快
-        "
+
         " `Zen Coding`在`Vim`下的默认触发键是`Ctrl + Y + ,`（注意，最后还有一个逗号）
         "
         " 调用规则
@@ -347,27 +365,16 @@ call plug#begin("$VIMHOME/plugged")
 
     "}
 
+    " Generate function comment
     Plug 'heavenshell/vim-jsdoc'
-
-    " linting intergration require Plug 'scrooloose/syntastic' installed above
-    " npm install -g jshint
 
     Plug 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
     " Plug 'jelera/vim-javascript-syntax' " 可能与 pangloss 功能重复
     " Plug 'lukaszb/vim-web-indent' " 包含了javascript.vim 和html.vim
     Plug 'isRuslan/vim-es6'
 
-    " javascript 补全
+    " node 补全 require 或者 定位到 require 中的文件
     Plug 'moll/vim-node'
-    Plug 'jamescarr/snipmate-nodejs' " snipmate extend node
-
-    " Plug 'maksimr/vim-jsbeautify' " based on .editorconfig
-    " js-beautify 格式化网页代码
-    " map <s-f> :call JsBeautify()<cr>
-
-    " 简化版本的 js-beautify
-    " esformatter Javascript indenting. Handles promise chains correctly while other indenters do not.
-    " https://gist.github.com/nisaacson/6939960
 
     " Plug 'skammer/vim-css-color'
     Plug 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
@@ -390,40 +397,22 @@ call plug#begin("$VIMHOME/plugged")
         \ ['darkcyan',    'SeaGreen3'],
         \ ['darkred',     'DarkOrchid3'],
         \ ['red',         'firebrick3'],
-        \ ]
+    \ ]
     let g:rbpt_max = 16
     let g:rbpt_loadcmd_toggle = 0
-
-    " 在()、""、甚至HTML标签之间快速跳转；
-    Plug 'vim-scripts/matchit.zip'
 
     " support css word with -
     " set iskeyword+=-
 
-    " Plug 'kchmck/vim-coffee-script'
-    " Plug 'tpope/vim-haml'
-    " Plug 'digitaltoad/vim-jade'
-    " Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-    " Plug 'JulesWang/css.vim'
-    " Plug 'cakebaker/scss-syntax.vim'
-    " Plug 'hail2u/vim-css3-syntax'
-    " Plug 'mattn/webapi-vim'
-    " Plug 'ludovicchabant/vim-lawrencium'
-    " Plug 'mhinz/vim-signify'
-    " Plug 'tpope/vim-sleuth'
     Plug 'posva/vim-vue'
 
 " }
 
 " { Misc
 
-    Plug 'kovisoft/slimv'
-    let g:slimv_swank_cmd = '!osascript -e "tell application \"Terminal\" to do script \"sbcl --load ~/.vim/slime/start-swank.lisp\""'
-
-    Plug 'diepm/vim-rest-console'
-
-    " weixin program
-    Plug 'chemzqm/wxapp.vim'
+    " txt
+    "对txt文件列目录 dep:taglist.vim
+    Plug 'vim-scripts/TxtBrowser'
 
     " vim-markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用
@@ -435,16 +424,17 @@ call plug#begin("$VIMHOME/plugged")
         Plug 'suan/vim-instant-markdown'
     " }
 
-    " highlighting for applescript
-    Plug 'dearrrfish/vim-applescript'
+    "python
+    " Plug 'fs111/pydoc.vim'
+    Plug 'vim-scripts/python.vim'
+    " 检查python的代码错误,编译需要'+python'
+    " Plug 'pyflakes.vim'
 
-    " Open URI under cursor or search.--go brower
-    nmap gb <Plug>(openbrowser-smart-search)
-    " Open URI selected word or search.
-    vmap gb <Plug>(openbrowser-smart-search)
-    " Open URI you also can use <leader>gb because of "textbrowser.vim"
+    Plug 'kovisoft/slimv'
+    let g:slimv_swank_cmd = '!osascript -e "tell application \"Terminal\" to do script \"sbcl --load ~/.vim/slime/start-swank.lisp\""'
 
-    Plug 'tpope/vim-fugitive'
+    " Git
+    " Plug 'tpope/vim-fugitive'
     " :Gdiff - Diffs file with current version in repository
     " :Gw - Saves and git adds
     " :Gco or :Gcommit - Commits
@@ -454,48 +444,39 @@ call plug#begin("$VIMHOME/plugged")
     " http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
     " Plug 'joonty/vdebug'
 
+    " Plug 'diepm/vim-rest-console'
+
+    " weixin program
+    " Plug 'chemzqm/wxapp.vim'
+
+
     " helps editing xml (and [x]html, sgml, xslt) files
-    Plug 'othree/xml.vim'
+    " Plug 'othree/xml.vim'
     " A filetype Plug for VIM to help edit XML files
     " Plug 'sukima/xmledit'
     " Plug 'tpope/vim-ragtag'
-    Plug 'elzr/vim-json'
-
+    " Plug 'elzr/vim-json'
 
     " 读取大文件
     " Plug 'LargeFile'
 
     " Go
-    if !exists("g:no_compile_plugin")
-        Plug 'fatih/vim-go'
-    endif
+    " if !exists("g:no_compile_plugin")
+    "     Plug 'fatih/vim-go'
+    " endif
 
     " Plug 'MarcWeber/vim-addon-manager-known-repositories'
 
-
-    " Ruby
-    " Plug 'thoughtbot/vim-rspec'
-    " Plug 'rspec.vim'
-    " Plug 'Keithbsmiley/rspec.vim'
-    " Plug 'tpope/vim-rails'
-    " ruby package manage
-    " Plug 'tpope/vim-bundler'
-    " A vim Plug for highlighting and indenting JST/EJS syntax. Based on the eruby syntax from vim-ruby.
-    " Plug 'briancollins/vim-jst'
-    " Slim is a template language for ruby or ROR whose goal is reduce the syntax to the essential parts without becoming cryptic.
-    " Plug 'slim-template/vim-slim'
-    " Plug 'vim-ruby/vim-ruby'
-
     " PHP
     " php genner
-    Plug 'vim-scripts/phpvim'
+    " Plug 'vim-scripts/phpvim'
     " Plug 'php.vim-html-enhanced'
     " 增加对php的兼容
-    Plug 'StanAngeloff/php.vim'
+    " Plug 'StanAngeloff/php.vim'
     " 匹配
     " Plug 'shawncplus/phpcomplete.vim'
     " 模板引擎
-    Plug 'tobyS/vmustache'
+    " Plug 'tobyS/vmustache'
     " php debuger
     " https://brookhong.github.io/2014/09/27/dbgpavim-cn.html
     " Plug 'brookhong/DBGPavim' "dbgpavim继承自DBGp-X-client'
@@ -507,28 +488,21 @@ call plug#begin("$VIMHOME/plugged")
     " nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
 
 
-    " txt
-    "对txt文件列目录 dep:taglist.vim
-    Plug 'vim-scripts/TxtBrowser'
-
-    Plug 'emezeske/manpageview'
-    Plug 'vim-scripts/cecutil'
-    Plug 'vim-scripts/info.vim'
+    " Plug 'emezeske/manpageview'
+    " Plug 'vim-scripts/cecutil'
+    " Plug 'vim-scripts/info.vim'
     " Plug 'rkitover/vimpager' " Use Vim as PAGER
 
-    "python
-    " Plug 'fs111/pydoc.vim'
-    Plug 'vim-scripts/python.vim'
-    " 检查python的代码错误,编译需要'+python'
-    " Plug 'pyflakes.vim'
+    " Highlight
 
-    "Highlight
+    " highlighting for applescript
+    Plug 'dearrrfish/vim-applescript'
+
 
     " swift
     " Plug 'Keithbsmiley/swift.vim'
     " another swift
     " Plug 'toyamarinyon/vim-swift'
-
 
 " }
 
