@@ -410,11 +410,33 @@ call plug#begin("$VIMHOME/plugged")
 
 " { Misc
 
-    " txt
-    "对txt文件列目录 dep:taglist.vim
+    " Plain text brower(show the document map and syntax highlight in plain text) {
     Plug 'vim-scripts/TxtBrowser'
+    " :help txt-keywords@cn
+    " 对txt文件列目录 dep:taglist.vim
+    " 以空格打头, 后跟关键字"figure"的行定义为"文本图",该行将被列在taglist窗口中.
+    " 以空格打头, 后跟关键字"table"的行定义为"文本表",该行将被列在taglist窗口中.
+    " map <silent> <leader>bft :set ft=txt<cr>
+    " map <silent> <leader>bgu :TxtBrowserUrl<cr><cr>  " 打开URL
+    " map <silent> <leader>bgw :TxtBrowserWord<cr><cr> " 查单词
+    " map <silent> <leader>bgs :TxtBrowserSearch<cr><cr> " search word under cursor
+    let tlist_txt_settings = 'txt;c:content;f:figures;t:tables'
+    let TxtBrowser_Dict_Url='http://dict.cn/text'      "英文词典
+    " let Txtbrowser_Search_Engine='http://www.baidu.com/s?wd=text&oq=text&f=3&rsp=2'
+    au BufRead,BufNewFile *.txt     setlocal ft=txt "syntax hlg txt for txt.vim
+    au BufRead,BufNewFile *log      setlocal ft=txt "syntax hlg log for txt.vim
+    au BufRead,BufNewFile readme    setlocal ft=txt "syntax hlg log for txt.vim
+    au BufRead,BufNewFile README    setlocal ft=txt "syntax hlg log for txt.vim
+    au BufRead,BufNewFile INSTALL   setlocal ft=txt "syntax hlg log for txt.vim
+    au BufRead,BufNewFile *.tag     setlocal ft=txt
+    " au BufRead,BufNewFile ReadMe    setlocal ft=txt "syntax hlg log for txt.vim
+    " au FileType rd                  setlocal ft=txt "syntax hlg readme for txt.vim
+    " au BufRead,BufNewFile diCtTmp   setlocal ft=txt
+    " au BufRead,BufNewFile *.sed.in  setlocal ft=txt
+    " au BufRead,BufNewFile *.sed.out setlocal ft=txt
+    " }
 
-    " vim-markdown {
+    " Markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用
         Plug 'plasticboy/vim-markdown'
         " 设置md文件是否用自己的方式折叠
@@ -424,7 +446,7 @@ call plug#begin("$VIMHOME/plugged")
         Plug 'suan/vim-instant-markdown'
     " }
 
-    "python
+    " python
     " Plug 'fs111/pydoc.vim'
     Plug 'vim-scripts/python.vim'
     " 检查python的代码错误,编译需要'+python'

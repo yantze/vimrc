@@ -359,6 +359,32 @@ let g:color_dark = 0
         "echo num2
         return num2
     endfunction
+
+    function! SetColorColumn()
+        let col_num = virtcol(".")
+        let cc_list = split(&cc, ',')
+        if count(cc_list, string(col_num)) <= 0
+            " cc(colorcolumn)选项需要vim7.3以上版本才支持.
+            execute "set cc+=".col_num
+        else
+            execute "set cc-=".col_num
+        endif
+    endfunction
+
+    " Remove trailing whitespace when writing a buffer, but not for diff files.
+    " From: Vigil
+    function! RemoveTrailingWhitespace()
+        if &ft != "diff"
+            let b:curcol = col(".")
+            let b:curline = line(".")
+            silent! %s/\(\[.*\]\[.*\]\)\s\+$/\1@@@@@@@@/
+            silent! %s/\s\+$//
+            silent! %s/\(\s*\n\)\+\%$//
+            silent! %s/\(\[.*\]\[.*\]\)@@@@@@@@$/\1  /
+            call cursor(b:curline, b:curcol)
+        endif
+    endfunction
+
 " }
 
 " }
@@ -608,7 +634,7 @@ endif
             hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
         endif
     endif
-}
+" }
 
 " }
 
@@ -688,6 +714,7 @@ endif
 " }
 
 " Statusline {
+" 当没有 airline 插件的时候使用这里的自定义
 if !&statusline
 
     " https://shapeshed.com/vim-statuslines/
@@ -767,165 +794,171 @@ endif
     "
 " }
 
-" Instant Preview Markdown {
+" Markdown {
+
+    " Instant Preview Markdown
     let g:instant_markdown_autostart = 0
     map <leader>rp :InstantMarkdownPreview<CR>
+
+    let tlist_markdown_settings = 'markdown;c:content;f:figures;t:tables;h:headlines'
+    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set ft=markdown
+    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword+=[
+    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword-=_
+    " au FileType markdown,MARKDOWN  set iskeyword+=[
+    " au FileType markdown,MARKDOWN  set iskeyword-=_
+    " au BufWritePre *{md,mdown,mkd,mkdn,markdown,mdwn} call RemoveTrailingWhitespace()
+
 " }
 
 " Python {
-    " Base Setting {
-        " python highlight
-        let python_highlight_all = 1
-        let b:python_version_2 = 1
-        let g:python_version_2 = 1
+    " python highlight
+    let python_highlight_all = 1
+    let b:python_version_2 = 1
+    let g:python_version_2 = 1
 
-        au BufRead *.wsgi setl filetype=python
+    au BufRead *.wsgi setl filetype=python
 
-        au BufNewFile,BufRead *.py,*.pyw
-            \ set tabstop=4 |
-            \ set softtabstop=4 |
-            \ set shiftwidth=4 |
-            \ set textwidth=79 |
-            \ set expandtab |
-            \ set autoindent |
-            \ set fileformat=unix |
+    au BufNewFile,BufRead *.py,*.pyw
+        \ set tabstop=4 |
+        \ set softtabstop=4 |
+        \ set shiftwidth=4 |
+        \ set textwidth=79 |
+        \ set expandtab |
+        \ set autoindent |
+        \ set fileformat=unix |
 
-        " Use UNIX (\n) line endings.
-        au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
+    " Use UNIX (\n) line endings.
+    au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
 
-        " Display tabs at the beginning of a line in Python mode as bad.
-        " au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-        " Make trailing whitespace be flagged as bad.
-        " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+    " Display tabs at the beginning of a line in Python mode as bad.
+    " au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+    " Make trailing whitespace be flagged as bad.
+    " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 
-        " 支持Virtualenv虚拟环境
+    " 支持Virtualenv虚拟环境
 
-        " 上面“转到定义”功能的一个问题，就是默认情况下Vim不知道virtualenv虚拟环境的情况，所以你必须在配置文件中添加下面的代码，使得Vim和YouCompleteMe能够发现你的虚拟环境：
+    " 上面“转到定义”功能的一个问题，就是默认情况下Vim不知道virtualenv虚拟环境的情况，所以你必须在配置文件中添加下面的代码，使得Vim和YouCompleteMe能够发现你的虚拟环境：
 
-        " python with virtualenv support
-        " py << EOF
-        " import os
-        " import sys
-        " if 'VIRTUAL_ENV' in os.environ:
-        "   project_base_dir = os.environ['VIRTUAL_ENV']
-        "   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-        "   execfile(activate_this, dict(__file__=activate_this))
-        " EOF
-        " 这段代码会判断你目前是否在虚拟环境中编辑，然后切换到相应的虚拟环境，并设置好你的系统路径，确保YouCompleteMe能够找到相应的site packages文件夹。
-        " 上面的代码似乎已经被下面的插件智能解 决
-        " https://github.com/jmcantrell/vim-virtualenv
-        " 如果有一天一直使用 python  可以考虑把 python 放在单独的一个文件配置中, 参考这篇文章
-        " https://segmentfault.com/a/1190000003962806
-    " }
+    " python with virtualenv support
+    " py << EOF
+    " import os
+    " import sys
+    " if 'VIRTUAL_ENV' in os.environ:
+    "   project_base_dir = os.environ['VIRTUAL_ENV']
+    "   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    "   execfile(activate_this, dict(__file__=activate_this))
+    " EOF
+    " 这段代码会判断你目前是否在虚拟环境中编辑，然后切换到相应的虚拟环境，并设置好你的系统路径，确保YouCompleteMe能够找到相应的site packages文件夹。
+    " 上面的代码似乎已经被下面的插件智能解 决
+    " https://github.com/jmcantrell/vim-virtualenv
+    " 如果有一天一直使用 python  可以考虑把 python 放在单独的一个文件配置中, 参考这篇文章
+    " https://segmentfault.com/a/1190000003962806
 " }
 
 " PHP {
-    " Base Setting {
-        let g:phpcomplete_relax_static_constraint = 1
-        let g:phpcomplete_complete_for_unknown_classes = 1
-        let g:phpcomplete_search_tags_for_variables = 1
-        let g:phpcomplete_mappings = {
-          \ 'jump_to_def': ',g',
-          \ }
+    let g:phpcomplete_relax_static_constraint = 1
+    let g:phpcomplete_complete_for_unknown_classes = 1
+    let g:phpcomplete_search_tags_for_variables = 1
+    let g:phpcomplete_mappings = {
+        \ 'jump_to_def': ',g',
+        \ }
 
-        "只有在是PHP文件时，才启用PHP补全
-        function! AddPHPFuncList()
-            set dictionary+=$HOME/.vim/vimfiles/resource/php-offical.dict
-            set complete-=k complete+=k
-        endfunction
+    "只有在是PHP文件时，才启用PHP补全
+    function! AddPHPFuncList()
+        set dictionary+=$HOME/.vim/vimfiles/resource/php-offical.dict
+        set complete-=k complete+=k
+    endfunction
 
-        " Map <leader>el to error_log value
-        " takes the whatever is under the cursor and wraps it in error_log( and
-        " print_r( with parameter true and a label
-        au FileType php nnoremap <leader>el ^vg_daerror_log( '<esc>pa=' . print_r( <esc>pa, true ) );<cr><esc>
+    " Map <leader>el to error_log value
+    " takes the whatever is under the cursor and wraps it in error_log( and
+    " print_r( with parameter true and a label
+    au FileType php nnoremap <leader>el ^vg_daerror_log( '<esc>pa=' . print_r( <esc>pa, true ) );<cr><esc>
 
-        au FileType php call AddPHPFuncList()
-        au FileType php setlocal omnifunc=syntaxcomplete#Complete
-        au BufNewFile,BufRead *.phtml set filetype=php
+    au FileType php call AddPHPFuncList()
+    au FileType php setlocal omnifunc=syntaxcomplete#Complete
+    au BufNewFile,BufRead *.phtml set filetype=php
 
-        " set tags+= ~/.vim/vimfiles/resource/tags-php
+    " set tags+= ~/.vim/vimfiles/resource/tags-php
 
-        " autocmd FileType php setlocal omnifunc=phpcomplete#CompleteTags
-        " 除了使用Tab这个补全的方式，还可以使用Ctrl+x，Ctrl+o来补全上面文件的内置函数
+    " autocmd FileType php setlocal omnifunc=phpcomplete#CompleteTags
+    " 除了使用Tab这个补全的方式，还可以使用Ctrl+x，Ctrl+o来补全上面文件的内置函数
 
-        " function! RunPhpcs()
-            " let l:filename=@%
-            " let l:phpcs_output=system('phpcs --report=csv --standard=YMC '.l:filename)
-            " let l:phpcs_list=split(l:phpcs_output, "\n")
-            " unlet l:phpcs_list[0]
-            " cexpr l:phpcs_list
-            " cwindow
-            " endfunction
+    " function! RunPhpcs()
+        " let l:filename=@%
+        " let l:phpcs_output=system('phpcs --report=csv --standard=YMC '.l:filename)
+        " let l:phpcs_list=split(l:phpcs_output, "\n")
+        " unlet l:phpcs_list[0]
+        " cexpr l:phpcs_list
+        " cwindow
+        " endfunction
 
-            " set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
-        " command! Phpcs execute RunPhpcs()
-        " php debug
-        let g:vdebug_keymap = {
-        \    "run"               : "<F5>",
-        \    "set_breakpoint"    : "<F9>",
-        \    "run_to_cursor"     : "<F1>",
-        \    "get_context"       : "<F2>",
-        \    "detach"            : "<F7>",
-        \    "step_over"         : "<F10>",
-        \    "step_into"         : "<F11>",
-        \    "step_out"          : '<leader><F11>',
-        \    "close"             : '<leader><F5>',
-        \    "eval_under_cursor" : "<Leader>ec",
-        \    "eval_visual"       : "<Leader>ev",
-        \}
-        let g:vdebug_options = {
-        \    "port"               : 9000,
-        \    "server"             : 'localhost',
-        \    "timeout"            : 20,
-        \    "on_close"           : 'detach',
-        \    "break_on_open"      : 0,
-        \    "path_maps"          : {},
-        \    "debug_window_level" : 0,
-        \    "debug_file_level"   : 0,
-        \    "debug_file"         : "",
-        \    "watch_window_style" : 'expanded',
-        \    "marker_default"     : '*',
-        \    "marker_closed_tree" : '+',
-        \    "marker_open_tree"   : '-'
-        \}
+        " set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
+    " command! Phpcs execute RunPhpcs()
+    " php debug
+    let g:vdebug_keymap = {
+    \    "run"               : "<F5>",
+    \    "set_breakpoint"    : "<F9>",
+    \    "run_to_cursor"     : "<F1>",
+    \    "get_context"       : "<F2>",
+    \    "detach"            : "<F7>",
+    \    "step_over"         : "<F10>",
+    \    "step_into"         : "<F11>",
+    \    "step_out"          : '<leader><F11>',
+    \    "close"             : '<leader><F5>',
+    \    "eval_under_cursor" : "<Leader>ec",
+    \    "eval_visual"       : "<Leader>ev",
+    \}
+    let g:vdebug_options = {
+    \    "port"               : 9000,
+    \    "server"             : 'localhost',
+    \    "timeout"            : 20,
+    \    "on_close"           : 'detach',
+    \    "break_on_open"      : 0,
+    \    "path_maps"          : {},
+    \    "debug_window_level" : 0,
+    \    "debug_file_level"   : 0,
+    \    "debug_file"         : "",
+    \    "watch_window_style" : 'expanded',
+    \    "marker_default"     : '*',
+    \    "marker_closed_tree" : '+',
+    \    "marker_open_tree"   : '-'
+    \}
 
-        " 要让vim支持php/js的错误查询，先安装syntastic插件
-        " 然后用php对应的版本pear install PHP_CodeSniffer-2.0.0a2
-        " shell测试：phpcs index.php
-        " phpcs，tab 4个空格，编码参考使用CodeIgniter风格
-        " let g:syntastic_phpcs_conf = "--tab-width=3 --standard=Zend"
-        " let g:syntastic_phpcs_conf = "--tab-width=4 --standard=CodeIgniter"
-        " 也可以在cli中执行下面的命令
-        " phpcs --config-set default_standard Zend
-        " 如果怕被phpcs提示的错误吓倒，可以把Zend改成none,这样就只会提示一些常见的错误
-        "
-        let g:phpqa_messdetector_ruleset = ''
-        let g:phpqa_messdetector_cmd = '/usr/bin/phpmd'
-        " 在打开文件的时候检查
-        let g:phpqa_messdetector_autorun = 0
-    " }
+    " 要让vim支持php/js的错误查询，先安装syntastic插件
+    " 然后用php对应的版本pear install PHP_CodeSniffer-2.0.0a2
+    " shell测试：phpcs index.php
+    " phpcs，tab 4个空格，编码参考使用CodeIgniter风格
+    " let g:syntastic_phpcs_conf = "--tab-width=3 --standard=Zend"
+    " let g:syntastic_phpcs_conf = "--tab-width=4 --standard=CodeIgniter"
+    " 也可以在cli中执行下面的命令
+    " phpcs --config-set default_standard Zend
+    " 如果怕被phpcs提示的错误吓倒，可以把Zend改成none,这样就只会提示一些常见的错误
+    "
+    let g:phpqa_messdetector_ruleset = ''
+    let g:phpqa_messdetector_cmd = '/usr/bin/phpmd'
+    " 在打开文件的时候检查
+    let g:phpqa_messdetector_autorun = 0
 " }
 
 " RUBY {
     " 针对部分语言取消指定字符的单词属性
-    au FileType ruby     set iskeyword+=!
-    au FileType ruby     set iskeyword+=?
+    " au FileType ruby     set iskeyword+=!
+    " au FileType ruby     set iskeyword+=?
 
     " 对部分语言设置单独的缩进
-    au FileType ruby,eruby set shiftwidth=2
-    au FileType ruby,eruby set tabstop=2
+    " au FileType ruby,eruby set shiftwidth=2
+    " au FileType ruby,eruby set tabstop=2
 
     " auto completed
-    let g:rubycomplete_buffer_loading = 1
-    let g:rubycomplete_classes_in_global = 1
-    let g:rubycomplete_rails = 1
-    autocmd FileType ruby compiler ruby
+    " let g:rubycomplete_buffer_loading = 1
+    " let g:rubycomplete_classes_in_global = 1
+    " let g:rubycomplete_rails = 1
+    " autocmd FileType ruby compiler ruby
 " }
 
 " Node {
 
-    " shortcut
     " F         格式化当前页面 js,html,css. 可选中局部格式化
 
     " au FileType javascript,coffee,slim,jade set shiftwidth=2
@@ -945,11 +978,6 @@ endif
 
     " ignore Node and JS stuff
     set wildignore+=*/node_modules/*,*.min.js
-
-    hi link coffeeSpaceError NONE
-    hi link coffeeSemicolonError NONE
-    hi link coffeeReservedError NONE
-    map <leader>cf :CoffeeCompile watch vert<cr>
 
 " }
 
@@ -1062,25 +1090,6 @@ endif
 " m字符       and '字符      --标记位置 and 跳转到标记位置
 " q字符 xxx q and @字符      --录制宏   and 执行宏
 
-" =======
-" 自定义快捷键
-" =======
-
-" 用Ctrl+v Tab可以产生原生的Tab
-" :e $m<tab> 自动扩展到:e $MYVIMRC 然后打开vimrc
-"
-" 少用
-" ga 转换光标下的内容为多进制
-" 碰到不能输入*号键，先按Ctrl+v，再输入想要输入的特殊符号
-" gCtrl+g 统计字数
-" Ctrl+x, Ctrl+f 补全当前要输入的路径
-"
-"
-
-
-
-
-
 
 
 " Ctrl + h/j/k/l 移动光标到上下左右位置
@@ -1089,24 +1098,9 @@ endif
 " m+1~9 mark 1~9文件的位置
 " :vert diffsplit main.c
 " dp : diffput,把增加的部分放到另外一边
-"
-" mapping search with Ack
-"nnoremap <leader>f :Ack<space>
 
 
-" Win paste
-" imap <C-V> <C-r>+
-
-" 把 CTRL-S 映射为 保存
-" imap <C-S> <C-C>:w<CR>
-
-
-" 用两个<CR>可以隐藏执行命令后出现的提示信息"
-" map F :call FormatCode() <CR><CR>
-" map <silent>F 也可以隐藏
-" F                   格式化输出(已抛弃,js-beautify better)
-" map F :%s/{/{\r/g <CR> :%s/}/}\r/g <CR>  :%s/;/;\r/g <CR> gg=G
-
+" -------- 自定义快捷键 --------
 
 " Ctrl + H            光标移当前行行首
 imap <c-h> <ESC>I
@@ -1323,6 +1317,41 @@ command! DiffSaved call s:DiffWithSaved()
 map <silent> <leader>anu :%s/^/\=line(".")." "/g<cr>
 vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()." "/<cr>
 
+" 给当前列添加标记
+map <silent> <leader>tch :call SetColorColumn()<CR>
+
+
+" }
+
+" Notes {
+    " Check runtime message
+    " vim -V9myVim.log
+    " last error message
+    " :messages
+    " help g<
+
+    " 变量
+    " 查看设置的值
+    " echo &statusline
+    " 查看设置的键与值
+    " set statusline?
+
+    " 显示当前定义的变量直接输入:
+    " :let
+
+    " :exe "normal! " . (winwidth(0)-3) . "aa\<Esc>2a\<C-V>u3042")
+    " 
+    " repeat 字符串
+    " exec 'map <F2> :silent! let g:g="'.repeat('foobar ',200).'"<cr>'
+
+" 用Ctrl+v Tab可以产生原生的Tab
+" :e $m<tab> 自动扩展到:e $MYVIMRC 然后打开vimrc
+"
+" 少用
+" ga 转换光标下的内容为多进制
+" 碰到不能输入*号键，先按Ctrl+v，再输入想要输入的特殊符号
+" gCtrl+g 统计字数
+" Ctrl+x, Ctrl+f 补全当前要输入的路径
 
 " tabn/tabp 切换tab
 " tabnew 创建新窗口
@@ -1337,42 +1366,37 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
 " :mks ~/.vim/sessions/foo.vim
 " :source ~/.vim/session/foo.vim
 
-" }
 
-" Notes {
-    " Check runtime message
-    " vim -V9myVim.log
-    " last error message
-    " :messages
-    " help g<
 
-    " 函数学习
-    " function CloseBuffer()
-    "   exe 'normal! :w | %bd | e#'
-    " endfunction
-    " nmap <Tab> :call CloseBuffer()<CR>
-    " nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
+" :r! {command}   insert the standard output of {command} below the cursor
+" ga              show ascii value of character under cursor in decimal, hex, and octal
+" :bdelete 3      把一个缓冲区从列表中去除
+" :bwipe          把一个缓冲区从列表中彻底去除
+" :highlight      查看高亮代号
 
-    " 变量
-    " 查看设置的值
-    " echo &statusline
-    " 查看设置的键与值
-    " set statusline?
+" === Regex ===
+" 字符数
+" :%s/./&/gn<cr>
+" 单词数
+" :%s/\i\+/&/gn<cr>
 
-    " 查看高亮代号
-    " :highlight
-    "
-    " :exe "normal! " . (winwidth(0)-3) . "aa\<Esc>2a\<C-V>u3042")
-    " 
-    " repeat 字符串
-    " exec 'map <F2> :silent! let g:g="'.repeat('foobar ',200).'"<cr>'
-
-    " 显示当前定义的变量直接输入:
-    " :let
+" === 函数学习 ===
+" 更多可以看前面 function 片段
+" function CloseBuffer()
+"   exe 'normal! :w | %bd | e#'
+" endfunction
+" nmap <Tab> :call CloseBuffer()<CR>
+" nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
+"
+" 用两个<CR>可以隐藏执行命令后出现的提示信息"
+" map F :call FormatCode() <CR><CR>
+" map <silent>F 也可以隐藏
+" map F :%s/{/{\r/g <CR> :%s/}/}\r/g <CR>  :%s/;/;\r/g <CR> gg=G
 
 " }
 
 " Locals {
+
     let g:snips_author = 'yantze'
     let g:snips_email  = 'ivastiny@gmail.com'
     let g:snips_info   = 'https://vastiny.com'
@@ -1384,32 +1408,6 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
         source ~/.vimrc_local
     endif
 
-    function! FomartTable()
-        let in = getreg("\"")
-        echo in
-    endfunction
- 
-    function! SetColorColumn()
-        let col_num = virtcol(".")
-        let cc_list = split(&cc, ',')
-        if count(cc_list, string(col_num)) <= 0
-            " cc(colorcolumn)选项需要vim7.3以上版本才支持.
-            execute "set cc+=".col_num
-        else
-            execute "set cc-=".col_num
-        endif
-    endfunction
-    map <silent> <leader>tch :call SetColorColumn()<CR>
-    map <silent> <leader>tci :call FomartTable()<CR>
-
-
-    " dark mode {
-    " set background=dark
-    " let g:airline_theme='serene' " aireline dark theme
-    " }
-
 " }
 
-
-" syn match Comment "^.*{$" conceal cchar=x
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
