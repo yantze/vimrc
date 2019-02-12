@@ -99,8 +99,7 @@ call plug#begin("$VIMHOME/plugged")
     " }
 
 " }
-
-" { Colorschemes & Highlight
+" { Color Schemes & Highlight
 
     " 比较全的 color scheme
     Plug 'flazz/vim-colorschemes'
@@ -145,10 +144,13 @@ call plug#begin("$VIMHOME/plugged")
         let g:indent_guides_guide_size            = 1  " 指定对齐线的尺寸
         " 因为go自动会添加tab, 使用<leader>ig也可以切换
         let g:indent_guides_exclude_filetypes = ['help', 'nerdtree', 'go']
+
+        map <silent> <leader>tig :IndentGuidesToggle<cr>
+        map <silent> <leader>tch :call SetColorColumn()<CR> " 给当前列添加标记
+
     " }
 
 " }
-
 " { Editor
 
     " Press + to expand the visual selection and _ to shrink it.
@@ -192,13 +194,12 @@ call plug#begin("$VIMHOME/plugged")
     " }
 
 " }
-
 " { Browsing & Navigating code
 
     " :NERDTree - FileList {
         " 文件管理器
         Plug 'scrooloose/nerdtree'
-        map <leader>fl :NERDTreeToggle<CR>
+        map <leader>wf :NERDTreeToggle<CR>
         " 内置的文件浏览器已经够了
         " Plug 'winmanager'
 
@@ -207,9 +208,12 @@ call plug#begin("$VIMHOME/plugged")
         " go   to preview file (open but maintain focus on ag.vim results)
 
 
+        let g:NERDTreeMapToggleZoom = 'a'
+        let g:NERDTreeMapToggleHidden = 'h'
+        let g:NERDTreeWinSize = 18
+
         let NERDTreeQuitOnOpen = 1
         let NERDChristmasTree=1
-        let g:NERDTreeWinSize = 18
         let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] " ignore displa file
         let NERDTreeMinimalUI=0 " 不显示项目树上额外的信息，例如帮助、提示
         " autocmd VimEnter * NERDTree " auto start nerdtree
@@ -229,6 +233,10 @@ call plug#begin("$VIMHOME/plugged")
         let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
         let Tlist_Use_Right_Window     = 1             " 在右侧窗口中显示
         let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
+
+        " \wt                 打开Taglist/TxtBrowser窗口，在右侧栏显示
+        nmap <leader>wt :Tlist<CR><c-l>  " TlistToggle<CR>
+
     " }
 
     " :CtrlP - 快速打开文件 {
@@ -240,6 +248,10 @@ call plug#begin("$VIMHOME/plugged")
         " nnoremap <Leader>f :CtrlPClearAllCaches<CR>
         " nnoremap <Leader>j :CtrlP ~/<CR>
         nnoremap <Leader><space> :CtrlPBuffer<CR>
+
+        " \ff                 打开文件搜索窗口，在状态栏显示 [ctrlp.vim插件]
+        nmap <leader>ff :CtrlP<CR>
+
 
         " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
         let g:ctrlp_custom_ignore = {
@@ -305,7 +317,6 @@ call plug#begin("$VIMHOME/plugged")
     " Open URI you also can use <leader>gb because of "textbrowser.vim"
 
 " }
-
 " { Front End
 
     " zen emmet {
@@ -407,7 +418,6 @@ call plug#begin("$VIMHOME/plugged")
     Plug 'posva/vim-vue'
 
 " }
-
 " { Misc
 
     " Plain text brower(show the document map and syntax highlight in plain text) {
@@ -440,7 +450,17 @@ call plug#begin("$VIMHOME/plugged")
         " 集成了md的语法和颜色配置,里面的toc功能不可用
         Plug 'plasticboy/vim-markdown'
         " 设置md文件是否用自己的方式折叠
-        let g:vim_markdown_folding_disabled = 1
+        " let g:vim_markdown_folding_disabled = 1
+        " Change fold style to pythonic
+        " let g:vim_markdown_folding_style_pythonic = 1
+        " Disable math conceal with LaTeX math syntax enabled, add the following to your .vimrc:
+        let g:tex_conceal = ""
+        let g:vim_markdown_math = 1
+        " 代码块的语法声明
+        let g:vim_markdown_fenced_languages = ['js=javascript, bash=sh']
+        " ```js
+        " content
+        " ```
 
         " 与 instant 配合使用 https://github.com/yantze/instant-markdown-d
         Plug 'suan/vim-instant-markdown'

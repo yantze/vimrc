@@ -388,7 +388,6 @@ let g:color_dark = 0
 " }
 
 " }
-
 " Setting {
 
 " Basic {
@@ -434,6 +433,9 @@ let g:color_dark = 0
     " insert schema, ctrl+w and other keys likes emacs
     set iskeyword+=- " remove - as a word boundary
     set iskeyword+=$
+
+    " 隐藏想要隐藏的字符
+    set conceallevel=2
 
 " }
 
@@ -783,7 +785,6 @@ endif
 " }
 
 " }
-
 " Scene Setting {
 
 " ManPage {
@@ -808,6 +809,9 @@ endif
     " au FileType markdown,MARKDOWN  set iskeyword-=_
     " au BufWritePre *{md,mdown,mkd,mkdn,markdown,mdwn} call RemoveTrailingWhitespace()
 
+    " :Toch 水平底部添加 Toc， 这个可以复制到正文里面
+    " ]]    go to next header.
+    " [[    go to previous header. Contrast with ]c.
 " }
 
 " Python {
@@ -957,7 +961,7 @@ endif
     " autocmd FileType ruby compiler ruby
 " }
 
-" Node {
+" JavaScript & Node {
 
     " F         格式化当前页面 js,html,css. 可选中局部格式化
 
@@ -975,6 +979,8 @@ endif
         \ set tabstop=4 |
         \ set softtabstop=4 |
         \ set shiftwidth=4
+
+    au FileType javascript set fdm=syntax
 
     " ignore Node and JS stuff
     set wildignore+=*/node_modules/*,*.min.js
@@ -1027,7 +1033,6 @@ endif
 " }
 
 " }
-
 " Shortcut {
 
 " marker 使用
@@ -1143,22 +1148,16 @@ nmap <leader>bb :Tab /=<CR>
 " \bn                 自定义对齐    [Tabular插件]
 nmap <leader>bn :Tab /
 
-" \tl                 打开Taglist/TxtBrowser窗口，在右侧栏显示
-nmap <leader>tl :Tlist<CR><c-l>
-
-" \ff                 打开文件搜索窗口，在状态栏显示 [ctrlp.vim插件]
-nmap <leader>ff :CtrlP<CR>
-
 " \16                 十六进制格式查看
 nmap <leader>16 <ESC>:%!xxd<ESC>
 
 " \r16                返回普通格式
 nmap <leader>r16 <ESC>:%!xxd -r<ESC>
 
-" \rb                 一键去除所有尾部空白 trailing
+" \r<cr>                 一键去除所有尾部空白 trailing
 " imap <leader>rb <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-nmap <leader>rb <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-vmap <leader>rb <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+nmap <leader>r<cr> <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+vmap <leader>r<cr> <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 " \rt                 一键替换全部Tab为空格
 " imap <leader>rt <ESC>:call RemoveTabs()<CR>
@@ -1167,12 +1166,6 @@ vmap <leader>rt <ESC>:call RemoveTabs()<CR>
 
 " \rl
 nmap <leader>rl :so ~/.vim/vimrc<CR>
-
-" \r<cr>              一键替换特殊字符 ^M
-" 相同功能 :set notextmode
-" imap <leader>rcr <ESC>:%s/\r//g<CR>
-nmap <leader>r<cr> :%s/\r//g<CR>
-vmap <leader>r<cr> <ESC>:%s/\r//g<CR>
 
 " \th                 一键生成与当前编辑文件同名的HTML文件 [不输出行号]
 " imap <leader>th <ESC>:set nonumber<CR>:set norelativenumber<CR><ESC>:TOhtml<CR><ESC>:w %:r.html<CR><ESC>:q<CR>:set number<CR>:set relativenumber<CR>
@@ -1317,13 +1310,11 @@ command! DiffSaved call s:DiffWithSaved()
 map <silent> <leader>anu :%s/^/\=line(".")." "/g<cr>
 vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()." "/<cr>
 
-" 给当前列添加标记
-map <silent> <leader>tch :call SetColorColumn()<CR>
 
 
 " }
-
 " Notes {
+
     " Check runtime message
     " vim -V9myVim.log
     " last error message
@@ -1343,6 +1334,16 @@ map <silent> <leader>tch :call SetColorColumn()<CR>
     " 
     " repeat 字符串
     " exec 'map <F2> :silent! let g:g="'.repeat('foobar ',200).'"<cr>'
+
+" it can be changed on the fly with:
+" :let g:vim_markdown_folding_level = 1
+" :edit
+
+" 编辑二进制文件
+" vim -b file     %!xxd 切换为十六进制
+
+" 把當前文件復制一份, 其後綴名為A.txt
+"map <silent> <leader>no :A.txt<esc>
 
 " 用Ctrl+v Tab可以产生原生的Tab
 " :e $m<tab> 自动扩展到:e $MYVIMRC 然后打开vimrc
@@ -1374,11 +1375,18 @@ map <silent> <leader>tch :call SetColorColumn()<CR>
 " :bwipe          把一个缓冲区从列表中彻底去除
 " :highlight      查看高亮代号
 
-" === Regex ===
+
+
+" ==== Regex ====
 " 字符数
 " :%s/./&/gn<cr>
 " 单词数
 " :%s/\i\+/&/gn<cr>
+
+" :%s/\r//g<CR>  " 一键替换特殊字符 ^M
+" 相同功能 :set notextmode
+
+
 
 " === 函数学习 ===
 " 更多可以看前面 function 片段
@@ -1394,7 +1402,6 @@ map <silent> <leader>tch :call SetColorColumn()<CR>
 " map F :%s/{/{\r/g <CR> :%s/}/}\r/g <CR>  :%s/;/;\r/g <CR> gg=G
 
 " }
-
 " Locals {
 
     let g:snips_author = 'yantze'
@@ -1408,6 +1415,12 @@ map <silent> <leader>tch :call SetColorColumn()<CR>
         source ~/.vimrc_local
     endif
 
-" }
+    autocmd BufReadCmd *.xmind,*.crx,*.apk,*.whl,*.egg  call zip#Browse(expand("<amatch>"))
 
-" vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
+    " 在 Windows 里面改变编码
+    " autocmd CmdwinEnter	* fenc=cp936
+
+    " 界面相关的快捷键以 ,w 开头
+" }
+ 
+" vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldenable foldlevelstart=99 :
