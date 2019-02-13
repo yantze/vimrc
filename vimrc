@@ -1423,4 +1423,4 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
     " 界面相关的快捷键以 ,w 开头
 " }
  
-" vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldenable foldlevelstart=99 :
+" vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
