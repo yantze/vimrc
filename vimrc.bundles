@@ -44,6 +44,11 @@ call plug#begin("$VIMHOME/plugged")
 
     " 调用外部命令格式化代码 {
     Plug 'Chiel92/vim-autoformat'
+
+    " json
+    " npm i -g fixjson
+
+    " javascript
     let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
     let g:formatters_javascript = ['eslint']
     noremap <s-f> :Autoformat<CR>:w<CR>
@@ -101,9 +106,6 @@ call plug#begin("$VIMHOME/plugged")
 " }
 " { Color Schemes & Highlight
 
-    " 比较全的 color scheme
-    Plug 'flazz/vim-colorschemes'
-
     " vim-airline > powerline > vim-powerline
     " Powerline {
         Plug 'vim-airline/vim-airline'
@@ -150,6 +152,33 @@ call plug#begin("$VIMHOME/plugged")
 
     " }
 
+    " 比较全的 color scheme
+    Plug 'flazz/vim-colorschemes'
+
+    " Plug 'skammer/vim-css-color'
+    Plug 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
+    " 配置高亮括号,给原来的括号加上高亮
+    " Plug 'kien/rainbow_parentheses.vim'
+    let g:rbpt_colorpairs = [
+        \ ['brown',       'RoyalBlue3'],
+        \ ['Darkblue',    'SeaGreen3'],
+        \ ['darkgray',    'DarkOrchid3'],
+        \ ['darkgreen',   'firebrick3'],
+        \ ['darkcyan',    'RoyalBlue3'],
+        \ ['darkred',     'SeaGreen3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['brown',       'firebrick3'],
+        \ ['gray',        'RoyalBlue3'],
+        \ ['black',       'SeaGreen3'],
+        \ ['darkmagenta', 'DarkOrchid3'],
+        \ ['Darkblue',    'firebrick3'],
+        \ ['darkgreen',   'RoyalBlue3'],
+        \ ['darkcyan',    'SeaGreen3'],
+        \ ['darkred',     'DarkOrchid3'],
+        \ ['red',         'firebrick3'],
+    \ ]
+    let g:rbpt_max = 16
+    let g:rbpt_loadcmd_toggle = 0
 " }
 " { Editor
 
@@ -386,31 +415,6 @@ call plug#begin("$VIMHOME/plugged")
 
     " node 补全 require 或者 定位到 require 中的文件
     Plug 'moll/vim-node'
-
-    " Plug 'skammer/vim-css-color'
-    Plug 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
-    " 配置高亮括号,给原来的括号加上高亮
-    " Plug 'kien/rainbow_parentheses.vim'
-    let g:rbpt_colorpairs = [
-        \ ['brown',       'RoyalBlue3'],
-        \ ['Darkblue',    'SeaGreen3'],
-        \ ['darkgray',    'DarkOrchid3'],
-        \ ['darkgreen',   'firebrick3'],
-        \ ['darkcyan',    'RoyalBlue3'],
-        \ ['darkred',     'SeaGreen3'],
-        \ ['darkmagenta', 'DarkOrchid3'],
-        \ ['brown',       'firebrick3'],
-        \ ['gray',        'RoyalBlue3'],
-        \ ['black',       'SeaGreen3'],
-        \ ['darkmagenta', 'DarkOrchid3'],
-        \ ['Darkblue',    'firebrick3'],
-        \ ['darkgreen',   'RoyalBlue3'],
-        \ ['darkcyan',    'SeaGreen3'],
-        \ ['darkred',     'DarkOrchid3'],
-        \ ['red',         'firebrick3'],
-    \ ]
-    let g:rbpt_max = 16
-    let g:rbpt_loadcmd_toggle = 0
 
     " support css word with -
     " set iskeyword+=-
