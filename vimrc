@@ -392,20 +392,21 @@ let g:color_dark = 0
         let g:zenmode_width = 100
         let s:sidebar = ( winwidth( winnr() ) - g:zenmode_width - 2 ) / 2
         " Create the left sidebar
-        exec( "silent leftabove " . s:sidebar . "vsplit new" )
+        exec("silent leftabove " . s:sidebar . "vsplit new")
         setlocal noma
         setlocal nocursorline
         setlocal nonumber
         silent! setlocal norelativenumber
         wincmd l
         " Create the right sidebar
-        exec( "silent rightbelow " . s:sidebar . "vsplit new" )
+        exec("silent rightbelow " . s:sidebar . "vsplit new")
         setlocal noma
         setlocal nocursorline
         setlocal nonumber
         silent! setlocal norelativenumber
         wincmd h
 
+        exec("hi VertSplit ctermbg=white ctermfg=white")
         call NumberToggle()
     endfunc
 
@@ -446,6 +447,8 @@ let g:color_dark = 0
     " set viminfo='20,\"50       " read/write a .viminfo file, don't store more than 50 lines of registers
     set display=lastline         " 不要显示@@@@@
     " set conceallevel=2         " 隐藏想要隐藏的字符
+    " set fillchars+=vert:\      " 设置 split bar 的内容字符
+    " set foldcolumn=2           " 左侧窗边的宽度
 
     " 光标的上下方至少保留显示的行数
     set scrolloff=5
@@ -499,7 +502,7 @@ let g:color_dark = 0
 
 
     set list                     " 显示特殊字符，其中Tab使用高亮竖线代替，尾部空白使用高亮点号代替
-    set showbreak=↪\
+    " set showbreak=↪\           " 显示换行后新行的首字符
     set listchars=tab:→\ ,extends:›,precedes:‹,nbsp:␣,trail:·
     " set listchars=tab:\|\ ,trail:. " 设置tab/尾部字符用什么填充
 
