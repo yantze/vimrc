@@ -385,6 +385,30 @@ let g:color_dark = 0
         endif
     endfunction
 
+
+    " Toggle to ZenMode
+    " https://github.com/mmai/vim-zenmode/blob/master/plugin/zenmode.vim
+    func! ZenMode()
+        let g:zenmode_width = 100
+        let s:sidebar = ( winwidth( winnr() ) - g:zenmode_width - 2 ) / 2
+        " Create the left sidebar
+        exec( "silent leftabove " . s:sidebar . "vsplit new" )
+        setlocal noma
+        setlocal nocursorline
+        setlocal nonumber
+        silent! setlocal norelativenumber
+        wincmd l
+        " Create the right sidebar
+        exec( "silent rightbelow " . s:sidebar . "vsplit new" )
+        setlocal noma
+        setlocal nocursorline
+        setlocal nonumber
+        silent! setlocal norelativenumber
+        wincmd h
+
+        call NumberToggle()
+    endfunc
+
 " }
 
 " }
@@ -398,8 +422,8 @@ let g:color_dark = 0
     filetype plugin on           " 针对不同的文件类型加载对应的插件
     filetype plugin indent on    " 启用自动补全
     set visualbell t_vb=         " 关闭visual bell/声音
-    " set t_Co=256                 " 设置文字可以显示多少种颜色, 历史原因可能是比 8-bit 色彩更少, 可能比 8-bit 终端更早
-    au GuiEnter * set t_vb=    " 关闭beep/屏闪
+    " set t_Co=256               " 设置文字可以显示多少种颜色, 历史原因可能是比 8-bit 色彩更少, 可能比 8-bit 终端更早
+    au GuiEnter * set t_vb=      " 关闭beep/屏闪
     " set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
     set backspace=2              " 设置退格键可用
@@ -409,33 +433,31 @@ let g:color_dark = 0
     set hidden                   " 允许在有未保存的修改时切换缓冲区
     set laststatus=2             " 开启状态栏信息
     set cmdheight=2              " 命令行的高度，默认为1，这里设为2
-    " set bsdir=buffer             " 设定文件浏览器目录为当前目录
+    " set bsdir=buffer           " 设定文件浏览器目录为当前目录
     " set autochdir " sometimes can not work
     autocmd BufEnter * silent! lcd %:p:h
     set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
-    " set cursorcolumn             " 突出显示当前列
+    " set cursorcolumn           " 突出显示当前列
     set history=500              " keep 500 lines of command line history
     silent! set mouse=a          " 启用鼠标
 
     set cursorline               " 突出显示当前行
-    " set tw=78                    "超过80个字符就折行(textwrap)
-    " set viminfo='20,\"50         " read/write a .viminfo file, don't store more than 50 lines of registers
+    " set tw=78                  "超过80个字符就折行(textwrap)
+    " set viminfo='20,\"50       " read/write a .viminfo file, don't store more than 50 lines of registers
     set display=lastline         " 不要显示@@@@@
+    " set conceallevel=2         " 隐藏想要隐藏的字符
 
     " 光标的上下方至少保留显示的行数
     set scrolloff=5
 
-    set showmatch                   " 显示括号配对情况
+    set showmatch                " 显示括号配对情况
 
-    " set lsp=0                    "设置行间距
+    " set lsp=0                  " 设置行间距
 
     " => Modify word boundary characters
     " insert schema, ctrl+w and other keys likes emacs
     set iskeyword+=- " remove - as a word boundary
     set iskeyword+=$
-
-    " 隐藏想要隐藏的字符
-    set conceallevel=2
 
 " }
 
@@ -453,11 +475,11 @@ let g:color_dark = 0
     if v:version > 703
         set relativenumber number
         " 插入模式下用绝对行号,普通模式下用相对
-        augroup numbertoggle
-            autocmd!
-            autocmd BufEnter,FocusGained,InsertLeave * set relativenumber " nonumber
-            autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber number
-        augroup END
+        " augroup numbertoggle
+        "     autocmd!
+        "     autocmd BufEnter,FocusGained,InsertLeave * set relativenumber " nonumber
+        "     autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber number
+        " augroup END
 
         function! NumberToggle()
             if(&relativenumber == 1)
@@ -805,6 +827,9 @@ endif
     " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set ft=markdown
     " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword+=[
     " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword-=_
+
+    au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set conceallevel=2
+
     " au FileType markdown,MARKDOWN  set iskeyword+=[
     " au FileType markdown,MARKDOWN  set iskeyword-=_
     " au BufWritePre *{md,mdown,mkd,mkdn,markdown,mdwn} call RemoveTrailingWhitespace()
@@ -1422,5 +1447,5 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
 
     " 界面相关的快捷键以 ,w 开头
 " }
- 
+
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
