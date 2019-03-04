@@ -406,6 +406,7 @@ let g:color_dark = 0
         silent! setlocal norelativenumber
         wincmd h
 
+        exec("hi NonText ctermfg=white")
         exec("hi VertSplit ctermbg=white ctermfg=white")
         call NumberToggle()
     endfunc
@@ -1062,6 +1063,7 @@ endif
 
 " }
 " Shortcut {
+" ,fl 可以查单词
 
 " marker 使用
 " m 0~9 标记文件
