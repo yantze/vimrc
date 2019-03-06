@@ -397,6 +397,7 @@ let g:color_dark = 0
         setlocal nocursorline
         setlocal nonumber
         silent! setlocal norelativenumber
+        setlocal statusline=%#LineNr#       " change statusline background color
         wincmd l
         " Create the right sidebar
         exec("silent rightbelow " . s:sidebar . "vsplit new")
@@ -406,8 +407,8 @@ let g:color_dark = 0
         silent! setlocal norelativenumber
         wincmd h
 
-        exec("hi NonText ctermfg=white")
-        exec("hi VertSplit ctermbg=white ctermfg=white")
+        exec("hi NonText ctermfg=white")                 " 把左边的底部波浪号隐藏
+        exec("hi VertSplit ctermbg=white ctermfg=white") " 分隔边框的颜色
         call NumberToggle()
     endfunc
 
