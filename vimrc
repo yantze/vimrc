@@ -407,8 +407,10 @@ let g:color_dark = 0
         silent! setlocal norelativenumber
         wincmd h
 
-        exec("hi NonText ctermfg=white")                 " 把左边的底部波浪号隐藏
-        exec("hi VertSplit ctermbg=white ctermfg=white") " 分隔边框的颜色
+        " 把左边的底部波浪号隐藏
+        exec("hi NonText ctermfg=white")
+        " 分隔边框的颜色
+        exec("hi VertSplit ctermbg=white ctermfg=white")
         call NumberToggle()
     endfunc
 
@@ -1362,7 +1364,7 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
     " :let
 
     " :exe "normal! " . (winwidth(0)-3) . "aa\<Esc>2a\<C-V>u3042")
-    " 
+    "
     " repeat 字符串
     " exec 'map <F2> :silent! let g:g="'.repeat('foobar ',200).'"<cr>'
 
@@ -1449,7 +1451,7 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
     autocmd BufReadCmd *.xmind,*.crx,*.apk,*.whl,*.egg  call zip#Browse(expand("<amatch>"))
 
     " 在 Windows 里面改变编码
-    " autocmd CmdwinEnter	* fenc=cp936
+    " autocmd CmdwinEnter    * fenc=cp936
 
     " 界面相关的快捷键以 ,w 开头
 " }
