@@ -835,7 +835,7 @@ endif
     " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword+=[
     " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword-=_
 
-    au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set conceallevel=2
+    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set conceallevel=2
 
     " au FileType markdown,MARKDOWN  set iskeyword+=[
     " au FileType markdown,MARKDOWN  set iskeyword-=_
