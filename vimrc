@@ -3,6 +3,7 @@
 let g:color_dark = 0
 " let g:no_plugin = 1
 " let g:no_compile_plugin = 1
+" let g:no_plugin_install = 0
 
 " General {
 
@@ -49,6 +50,7 @@ let g:color_dark = 0
     " 安装插件 :PlugInstall
     " let g:no_plugin=1 " to do not add-on plugin
     if !exists("g:no_plugin") && !empty(glob("$VIMHOME/vimrc.bundles"))
+        let g:no_plugin_install = 1
         source $VIMHOME/vimrc.bundles
     endif
 
