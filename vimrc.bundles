@@ -329,10 +329,8 @@ call plug#begin("$VIMHOME/plugged")
             " 快速移动
             " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
             Plug 'Lokaltog/vim-easymotion'
-            if !exists("g:no_plugin_install")
-                map  / <Plug>(easymotion-sn)
-                omap / <Plug>(easymotion-tn)
-            endif
+            map  / <Plug>(easymotion-sn)
+            omap / <Plug>(easymotion-tn)
         endif
 
         " Plug 'justinmk/vim-sneak'

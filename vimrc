@@ -1,9 +1,8 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
 let g:color_dark = 0
-" let g:no_plugin = 1
 " let g:no_compile_plugin = 1
-" let g:no_plugin_install = 0
+" let g:no_vimrc_bundles = 0
 
 " General {
 
@@ -48,9 +47,7 @@ let g:color_dark = 0
 
     " Package Manager
     " 安装插件 :PlugInstall
-    " let g:no_plugin=1 " to do not add-on plugin
-    if !exists("g:no_plugin") && !empty(glob("$VIMHOME/vimrc.bundles"))
-        let g:no_plugin_install = 1
+    if !exists("g:no_vimrc_bundles") && !empty(glob("$VIMHOME/vimrc.bundles"))
         source $VIMHOME/vimrc.bundles
     endif
 
@@ -542,7 +539,7 @@ let g:color_dark = 0
     endif
 
 
-    " if !exists("g:no_plugin")
+    " if !exists("g:no_vimrc_bundles")
         " 由于不同版本的 vim 导致 mkview 出现越来越多问题，弃用
         " autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
         " autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
