@@ -1062,6 +1062,9 @@ endif
 
     " gg=G format for xml
     au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+
+    " json
+    au FileType json set fdm=syntax
 " }
 
 " }
@@ -1448,6 +1451,7 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
         source ~/.vimrc_local
     endif
 
+    " 下面格式的文件当作 zip 包打开
     autocmd BufReadCmd *.xmind,*.crx,*.apk,*.whl,*.egg  call zip#Browse(expand("<amatch>"))
 
     " 在 Windows 里面改变编码

@@ -51,7 +51,7 @@ call plug#begin("$VIMHOME/plugged")
     " javascript
     let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
     let g:formatters_javascript = ['eslint']
-    noremap <s-f> :Autoformat<CR>:w<CR>
+    noremap <leader><s-f> :Autoformat<CR>:w<CR>
 
     " 预备环境
     " npm install -g eslint eslint-plugin-standard eslint-plugin-promise eslint-config-standard
@@ -67,6 +67,9 @@ call plug#begin("$VIMHOME/plugged")
     " 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
     " 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
     " http://harttle.com/2017/03/12/vim-eslint.html
+
+    " Python
+    " pip install autopep8
 
     " Plug 'maksimr/vim-jsbeautify' " based on .editorconfig
     " js-beautify 感觉有些情况不行
@@ -325,10 +328,15 @@ call plug#begin("$VIMHOME/plugged")
         if v:version > 703
             " 快速移动
             " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
-            Plug 'Lokaltog/vim-easymotion'
-            map  / <Plug>(easymotion-sn)
-            omap / <Plug>(easymotion-tn)
+            " Plug 'Lokaltog/vim-easymotion'
+            " map  / <Plug>(easymotion-sn)
+            " omap / <Plug>(easymotion-tn)
         endif
+
+        " Plug 'justinmk/vim-sneak'
+        " label-mode for a minimalist alternative to EasyMotion
+        let g:sneak#label = 1
+
     " }
 
     " 在()、""、甚至HTML标签之间快速跳转；
