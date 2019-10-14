@@ -1,9 +1,5 @@
 # VIMRC
 
-> 2017-08-22 更新插件管理器为 Plug，所有配置均不变
-
-> 2017-06-15 更新了整体结构, 原来的结构在 `tag v0.1`
-
 - 快速安装
 ```
 git clone http://github.com/yantze/vimrc ~/.vim && vim +PlugInstall
