@@ -429,6 +429,9 @@ call plug#begin("$VIMHOME/plugged")
 
     Plug 'posva/vim-vue'
 
+    Plug 'leafgarland/typescript-vim'
+
+
 " }
 " { Misc
 
