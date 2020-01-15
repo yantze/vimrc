@@ -1,0 +1,20 @@
+snippet !       HTML注释
+	<!-- ${0} -->
+snippet head    文章专用的 yaml 标记
+	---
+	title: ${2}
+	date: `strftime("%Y-%m-%d %H:%M")`
+	status: private
+	author: yantze
+	tag: ${1}
+	---
+    ${0}
+	<!-- more -->
+
+snippet table  创建一个 2x4 的表格
+    |   |   |
+    |:-:|---|
+    | ${1}  |   |
+    | ${2}  |   |
+    | ${0}  |   |
+
