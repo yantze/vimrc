@@ -7,4 +7,4 @@ rc/*.pyc
 view
 .VimballRecord
 _undodir
-
+autoload/plug.vim

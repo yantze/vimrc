@@ -1,8 +1,8 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
-let g:color_dark = 0
+" let g:color_dark = 1
 " let g:no_compile_plugin = 1
-" let g:no_vimrc_bundles = 0
+" let g:no_vimrc_bundles = 1
 
 " General {
 
@@ -431,8 +431,6 @@ let g:color_dark = 0
     " set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
     set backspace=2              " 设置退格键可用
-    set autoindent               " 自动对齐
-    set smartindent              " 智能自动缩进
     set ruler                    " 右下角显示光标位置的状态行
     set hidden                   " 允许在有未保存的修改时切换缓冲区
     set laststatus=2             " 开启状态栏信息
@@ -513,7 +511,7 @@ let g:color_dark = 0
     set wrap
     set linebreak                                    " 自动断行, 用 breakat 控制
     set enc=utf-8                                    " 设置编码
-    set fenc=utf-8                                   " 设置文件编码
+    " set fenc=utf-8                                   " 设置文件编码
     set fencs=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936 " 设置文件编码检测类型及支持格式
     set shortmess+=filmnrxoOtT                       " Abbrev. of messages (avoids 'hit enter')
     set viewoptions=folds,options,cursor,unix,slash  " Better Unix / Windows compatibility
@@ -630,7 +628,7 @@ else
         let g:solarized_visibility="normal"
         let g:solarized_bold = 1
 
-        if g:color_dark == 1
+        if exists("g:color_dark")
             set background=dark
             let g:airline_theme='serene' " aireline dark theme
         else
@@ -698,9 +696,8 @@ endif
 
 " 缩进配置 {
 
-    set smartindent
-    " 自动缩进
-    set autoindent
+    set smartindent      " 自动缩进
+    set autoindent       " 自动对齐
 
     " tab 键宽度为4空格
     set tabstop=4
