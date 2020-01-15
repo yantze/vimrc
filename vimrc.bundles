@@ -1,3 +1,10 @@
+" Install Vim-Plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
 call plug#begin("$VIMHOME/plugged")
 
 " { General
@@ -49,6 +56,7 @@ call plug#begin("$VIMHOME/plugged")
     " npm i -g fixjson
 
     " javascript
+    " npm i -g eslint
     let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
     let g:formatters_javascript = ['eslint']
     noremap <leader><s-f> :Autoformat<CR>:w<CR>
@@ -337,6 +345,10 @@ call plug#begin("$VIMHOME/plugged")
         " label-mode for a minimalist alternative to EasyMotion
         let g:sneak#label = 1
 
+        " brew install fzf
+        " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run the install script
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        Plug 'junegunn/fzf.vim'
     " }
 
     " 在()、""、甚至HTML标签之间快速跳转；
