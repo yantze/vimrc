@@ -1175,10 +1175,13 @@ nmap <leader>v "+p
 vmap <leader>v "+p
 
 " \bb                 按=号对齐代码 [Tabular插件]
-nmap <leader>bb :Tab /=<CR>
+nmap <leader>bb :Tabularize /=<CR>
+
+" \ba                 不要把 = 放入排列
+nmap <leader>bb :Tabularize /=\zs<CR>
 
 " \bn                 自定义对齐    [Tabular插件]
-nmap <leader>bn :Tab /
+nmap <leader>bn :Tabularize /
 
 " \16                 十六进制格式查看
 nmap <leader>16 <ESC>:%!xxd<ESC>
