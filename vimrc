@@ -191,7 +191,8 @@
                 exec "!g++ -Wall -std=c++11 -o %:r %:t && %:r.exe"
             else
                 " exec "!g++ -Wall -std=c++11 -o %:r %:t && ./%:r"
-                exec "!clang++ -Wall -std=c++11 `pkg-config --cflags --libs opencv`  -o %:r %:t && ./%:r"
+                exec "!clang++ -Wall -std=c++14 `pkg-config --cflags` -o %:r %:t && ./%:r"
+                " --libs opencv " add openvcv support
                 " -ggdb " add gdb support
             endif
         elseif &filetype == "d"
@@ -1189,18 +1190,22 @@ nmap <leader>16 <ESC>:%!xxd<ESC>
 " \r16                返回普通格式
 nmap <leader>r16 <ESC>:%!xxd -r<ESC>
 
-" \r<cr>                 一键去除所有尾部空白 trailing
-" imap <leader>rb <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-nmap <leader>r<cr> <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-vmap <leader>r<cr> <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+" \r<cr>
+" cntrl : Removing control symbols
+" ^print : Removing non-printable characters (note that in versions prior to ~8.1.1 this removes non-ASCII characters also):
+" :%!tr -cd '[:print:]\n'
+nmap <leader>r<cr> :%s/[[:cntrl:]]\\|[^[:print:]]//g<CR>
+
+" \rl                 一键去除所有尾部空白 trailing
+nmap <leader>rl <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 " \rt                 一键替换全部Tab为空格
 " imap <leader>rt <ESC>:call RemoveTabs()<CR>
 nmap <leader>rt :call RemoveTabs()<CR>
 vmap <leader>rt <ESC>:call RemoveTabs()<CR>
 
-" \rl
-nmap <leader>rl :so ~/.vim/vimrc<CR>
+" \rso
+nmap <leader>rso :so ~/.vim/vimrc<CR>
 
 " \th                 一键生成与当前编辑文件同名的HTML文件 [不输出行号]
 " imap <leader>th <ESC>:set nonumber<CR>:set norelativenumber<CR><ESC>:TOhtml<CR><ESC>:w %:r.html<CR><ESC>:q<CR>:set number<CR>:set relativenumber<CR>
@@ -1345,6 +1350,9 @@ command! DiffSaved call s:DiffWithSaved()
 map <silent> <leader>anu :%s/^/\=line(".")." "/g<cr>
 vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()." "/<cr>
 
+" 跳转到前一次和后一次编辑的地方
+nnoremap g; g;zz
+nnoremap g, g,zz
 
 
 " }
