@@ -502,6 +502,9 @@ call plug#begin("$VIMHOME/plugged")
     Plug 'kovisoft/slimv'
     let g:slimv_swank_cmd = '!osascript -e "tell application \"Terminal\" to do script \"sbcl --load ~/.vim/slime/start-swank.lisp\""'
 
+    " Rust
+    Plug 'rust-lang/rust.vim'
+
     " Git
     " Plug 'tpope/vim-fugitive'
     " :Gdiff - Diffs file with current version in repository

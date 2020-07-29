@@ -115,6 +115,11 @@ macvim
 mvim 可以支持 gview、gvim、gvimdiff、mvim、mvimdiff、mview 等命令
 ```
 
+### Fonts
+- https://github.com/yantze/dotfiles/tree/master/fonts 一般都是用 Monaco powerline
+- https://github.com/powerline/fonts
+注意：有些情况，iTerm2 没有加载 powerline 里面的图形符号，可以通过设置 Preferences -> Profiles -> Text -> Use built-in Powerline glyphs 打开图形的显示
+
 ### Thanks
 [ruchee's vimrc](https://github.com/ruchee/vimrc)
 

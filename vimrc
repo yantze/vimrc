@@ -266,7 +266,8 @@
         elseif &filetype == "ls"
             exec "!lsc -c %:t && node %:r.js"
         elseif &filetype == "typescript"
-            exec "!tsc %:t && node %:r.js"
+            " exec "!tsc %:t && node %:r.js"
+            exec "!npx ts-node %:r.ts"
         elseif &filetype == "javascript"
             " exec "!node --experimental-modules  %:t"
             exec "!node %:t"
@@ -1196,7 +1197,7 @@ nmap <leader>r16 <ESC>:%!xxd -r<ESC>
 " :%!tr -cd '[:print:]\n'
 nmap <leader>r<cr> :%s/[[:cntrl:]]\\|[^[:print:]]//g<CR>
 
-" \rl                 一键去除所有尾部空白 trailing
+" \rl                 一键去除所有尾部空白 trailing remove
 nmap <leader>rl <ESC>:let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 " \rt                 一键替换全部Tab为空格
