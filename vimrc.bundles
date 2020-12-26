@@ -205,13 +205,7 @@ call plug#begin("$VIMHOME/plugged")
     " http://www.wklken.me/posts/2015/06/07/vim-plugin-easyalign.html
 
     " multiple cursors
-    Plug 'terryma/vim-multiple-cursors'
-    let g:multi_cursor_use_default_mapping=0
-    " Default mapping
-    let g:multi_cursor_next_key='<C-n>'
-    " let g:multi_cursor_prev_key='<C-p>'
-    let g:multi_cursor_skip_key='<C-x>'
-    let g:multi_cursor_quit_key='<Esc>'
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
     " automatically add the closing quote, bracket
     Plug 'Raimondi/delimitMate'

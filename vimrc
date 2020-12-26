@@ -1,7 +1,7 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
-" let g:color_dark = 1
-" let g:no_compile_plugin = 1
+let g:color_dark = 1
+let g:no_compile_plugin = 1
 " let g:no_vimrc_bundles = 1
 
 " General {
@@ -1005,10 +1005,10 @@ endif
     " au BufRead,BufNewFile *.coffee setl foldmethod=indent nofoldenable
     " au BufRead,BufNewFile *.coffee setl shiftwidth=2 expandtab
 
-    au BufNewFile,BufRead *.js,*.html,*.css
-        \ set tabstop=4 |
-        \ set softtabstop=4 |
-        \ set shiftwidth=4
+    au BufNewFile,BufRead *.ts,*.tsx,*.js,*.jsx,*.html,*.css,*.less
+        \ set tabstop=2 |
+        \ set softtabstop=2 |
+        \ set shiftwidth=2
 
     au FileType javascript set fdm=syntax
 
@@ -1046,8 +1046,8 @@ endif
 
 " Other {
     " 对部分语言设置单独的缩进
-    au FileType scala,clojure,lua,dart,sh set shiftwidth=2
-    au FileType scala,clojure,lua,dart,sh set tabstop=2
+    au FileType json,scala,clojure,lua,dart,sh set shiftwidth=2
+    au FileType json,scala,clojure,lua,dart,sh set tabstop=2
     " 针对部分语言取消指定字符的单词属性
     au FileType clojure  set iskeyword-=.
     au FileType clojure  set iskeyword-=>
