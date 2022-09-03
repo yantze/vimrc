@@ -1,7 +1,7 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
 let g:color_dark = 1
-let g:no_compile_plugin = 1
+" let g:no_compile_plugin = 1
 " let g:no_vimrc_bundles = 1
 
 " General {
@@ -182,9 +182,10 @@ let g:no_compile_plugin = 1
         if &filetype == "c"
             if WINDOWS()
                 exec !gcc -Wall -std=c11 -o %:r %:t && %:r.exe"
-            else
+            elseif OSX()
                 exec "!clang -Wall -std=c11 -o %:r %:t && ./%:r"
-                " exec "!gcc -Wall -o %:r %:t && ./%:r"
+            else
+                exec "!gcc -Wall -o %:r %:t && ./%:r"
             endif
         elseif &filetype == "cpp"
             if WINDOWS()
@@ -625,14 +626,24 @@ else
         " 在 macvim 中，不支持
         " set nu!
     else
+        " colortheme list: ir_black grb256 BusyBee pt_black solarized xoria256
+        " silent! colorscheme pt_black
+
         silent! colorscheme solarized
-        " let g:solarized_termcolors=256 " 其实这里256 是把颜色减少了
-        let g:solarized_visibility="normal"
-        let g:solarized_bold = 1
+        " Solarized 主题
+        let g:solarized_termcolors=16 " 16 | 256
+        let g:solarized_termtrans=1 " 0 | 1
+        let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
+        let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
+        let g:solarized_bold = 1 " 1 | 0
+        " highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
+        " g:solarized_degrade = 0 | 1
+        " g:solarized_underline = 1 | 0
+        " g:solarized_italic = 1 | 0
+        " g:solarized_contrast = “normal”| “high” or “low”
 
         if exists("g:color_dark")
             set background=dark
-            let g:airline_theme='serene' " aireline dark theme
         else
             set background=light
         endif
@@ -642,18 +653,6 @@ else
             hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
         endif
 
-        " highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
-        " g:solarized_termcolors= 16 | 256
-        " g:solarized_termtrans = 0 | 1
-        " g:solarized_degrade = 0 | 1
-        " g:solarized_bold = 1 | 0
-        " g:solarized_underline = 1 | 0
-        " g:solarized_italic = 1 | 0
-        " g:solarized_contrast = “normal”| “high” or “low”
-        " g:solarized_visibility= “normal”| “high” or “low”
-
-        " colortheme list: ir_black grb256 BusyBee pt_black solarized xoria256
-        " silent! colorscheme pt_black
     endif
 endif
 
@@ -1354,6 +1353,9 @@ vmap <silent> <leader>anu o<esc>:call SetCurLineNum()<cr>gv:s/^/\=AddLineNum()."
 " 跳转到前一次和后一次编辑的地方
 nnoremap g; g;zz
 nnoremap g, g,zz
+
+" 使用 fd 作为 Esc 退出快捷键
+imap fd <Esc>
 
 
 " }

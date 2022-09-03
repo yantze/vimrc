@@ -8,149 +8,7 @@ endif
 call plug#begin("$VIMHOME/plugged")
 
 " { General
-
-    " 语法查错 {
-        " Syntastic
-        if !exists("g:no_compile_plugin")
-            Plug 'scrooloose/syntastic'
-        endif
-        let g:syntastic_check_on_open        = 0
-        let g:syntastic_enable_signs         = 1
-
-        let g:syntastic_error_symbol = "✗"
-        let g:syntastic_warning_symbol = "⚠"
-        let g:syntastic_style_error_symbol = '!'
-        let g:syntastic_style_warning_symbol = '?'
-
-        let c_no_curly_error = 1
-
-        let g:syntastic_c_checker          = "clang"
-        let g:syntastic_c_compiler_options = "-std=c11"
-
-        let g:syntastic_cpp_checker          = "clang++"
-        let g:syntastic_cpp_compiler_options = "-std=c++11"
-
-        let g:syntastic_javascript_checkers = ['eslint']
-        " let g:syntastic_javascript_eslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
-
-        " 在 :w 时是否语法检查
-        " let g:syntastic_mode_map = { 'mode': 'active',
-        " \ 'passive_filetypes': ['elixir', 'javascript'] }
-
-        " Install
-        " :SyntasticInfo 检查当前 checker 的信息
-        " :SyntasticCheck 语法检查
-
-        " With js
-        " 安装全局
-        " npm i -g eslint-config-standard eslint-plugin-standard eslint-plugin-node eslint-plugin-import eslint-plugin-promise eslint
-        " 初始当前项目
-        " eslint --init
-        " 编辑 js 文件时，:w 自动显示错误，也可以手动 :SyntasticCheck
-    " }
-
-    " 调用外部命令格式化代码 {
-    Plug 'Chiel92/vim-autoformat'
-
-    " json
-    " npm i -g fixjson
-
-    " javascript
-    " npm i -g eslint
-    let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
-    let g:formatters_javascript = ['eslint']
-    noremap <leader><s-f> :Autoformat<CR>:w<CR>
-
-    " 预备环境
-    " npm install -g eslint eslint-plugin-standard eslint-plugin-promise eslint-config-standard
-
-    " 将标准输入写到临时文件eslint-temp-xxx.js
-    " 调用 eslint --fix 来修复它
-    " 将 eslint-temp-xxx.js 输出到标准输出。
-    " 截掉文件尾的换行（\n）
-    " 删掉临时文件
-
-    " Trick 解释:
-    " 临时文件放在当前目录而非/tmp。否则 eslint 会根据 /tmp/eslint-temp-xxx.js 路径来读取配置文件。
-    " 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
-    " 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
-    " http://harttle.com/2017/03/12/vim-eslint.html
-
-    " Python
-    " pip install autopep8
-
-    " Plug 'maksimr/vim-jsbeautify' " based on .editorconfig
-    " js-beautify 感觉有些情况不行
-    " 简化版本的 js-beautify
-    " esformatter Javascript indenting. Handles promise chains correctly while other indenters do not.
-    " https://gist.github.com/nisaacson/6939960
-
-    " }
-
-    " 代码补全 Others {
-        Plug 'Shougo/neocomplete'
-        Plug 'Shougo/neosnippet'
-        Plug 'Shougo/neosnippet-snippets'
-
-        " Tell Neosnippet about the other snippets
-        let g:neosnippet#snippets_directory='~/.vim/snippets'
-
-        " SuperTab like snippets behavior.
-        " if exists("g:no_compile_plugin")
-            imap <expr><TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ neosnippet#expandable_or_jumpable() ?
-            \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-            smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-        " endif
-
-        " https://github.com/Shougo/neosnippet.vim/issues/215#issuecomment-35847891
-        " let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
-
-        " For conceal markers.
-        " if has('conceal')
-        "     set conceallevel=2 concealcursor=niv
-        " endif
-    " }
-
-" }
-" { Color Schemes & Highlight
-
-    " vim-airline > powerline > vim-powerline
-    " Powerline {
-        Plug 'vim-airline/vim-airline'
-        Plug 'vim-airline/vim-airline-themes'
-
-        let g:airline_powerline_fonts = 1
-
-        " About theme
-        if !exists("g:no_compile_plugin")
-            let g:airline_theme='solarized' " serene
-        endif
-
-        " Solarized 主题
-        let g:solarized_termcolors=16 " 16 | 256
-        let g:solarized_termtrans=1 " 0 | 1
-        let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
-        let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
-
-        " 打开airline的扩展tab buffer exploer功能
-        " let g:airline#extensions#tabline#enabled = 1
-        " determine whether bufferline will overwrite customization variables
-        " let g:airline#extensions#bufferline#overwrite_variables = 1
-
-        " AirLine彩色状态栏:badwolf, bubblegum, luna, raven, serene
-        " serene需要修改的地方：
-        " 白色状态栏: sol
-        " ~/.dotfiles/vimrc/vimfiles/bundle/vim-airline/autoload/airline/themes +4
-        " 改为235
-        " configure the title text for quickfix buffers
-        " let g:airline#extensions#quickfix#quickfix_text = 'Quickfix'
-    " }
-
-    " 会出现缩进一条一条的颜色
-    " indent-guide {
+    " 缩进标记条 indent-guide {
         Plug 'nathanaelkane/vim-indent-guides'
         " Indent_guides       显示对齐线
         let g:indent_guides_enable_on_vim_startup = 1  " 默认关闭
@@ -160,8 +18,150 @@ call plug#begin("$VIMHOME/plugged")
 
         map <silent> <leader>tig :IndentGuidesToggle<cr>
         map <silent> <leader>tch :call SetColorColumn()<CR> " 给当前列添加标记
-
     " }
+    " 快捷注释 :tComment - inherit the NERD_commenter shortkey {
+        " 相比其它更智能，我的配置里面快捷键inhert了nerdcommenter
+        Plug 'tomtom/tcomment_vim'
+
+        map <leader>ci <Plug>TComment_<Leader>__
+        map <leader>cm <Plug>TComment_<Leader>_b
+
+        " comments.vim 用c-c/c-x做注释
+        " Plug 'comments.vim'
+        " 用<leader>ci/cm做注释
+        " Plug 'scrooloose/nerdcommenter'
+        " NERD_commenter      注释处理插件
+        " let loaded_nerd_tree = 1
+        " let NERDSpaceDelims = 1                        " 自动添加前置空格
+    " }
+
+    " Press + to expand the visual selection and _ to shrink it.
+    Plug 'terryma/vim-expand-region'
+
+    " Easily delete, change and add such surroundings in pairs.
+    Plug 'tpope/vim-surround'
+
+    " 按等号或者其它符号对齐
+    Plug 'godlygeek/tabular'
+    " Plug 'junegunn/vim-easy-align'
+    " http://www.wklken.me/posts/2015/06/07/vim-plugin-easyalign.html
+
+    " multiple cursors
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+    " automatically add the closing quote, bracket
+    " TODO: 修复 ` 按三次的问题再开启
+    " Plug 'Raimondi/delimitMate'
+    " Plug 'Townk/vim-autoclose'
+" }
+" 语法检查（停用） {
+    " Syntastic
+    " if !exists("g:no_compile_plugin")
+    "     Plug 'scrooloose/syntastic'
+    " endif
+    let g:syntastic_check_on_open        = 0
+    let g:syntastic_enable_signs         = 1
+
+    let g:syntastic_error_symbol = "✗"
+    let g:syntastic_warning_symbol = "⚠"
+    let g:syntastic_style_error_symbol = '!'
+    let g:syntastic_style_warning_symbol = '?'
+
+    let c_no_curly_error = 1
+
+    let g:syntastic_c_checker          = "clang"
+    let g:syntastic_c_compiler_options = "-std=c11"
+
+    let g:syntastic_cpp_checker          = "clang++"
+    let g:syntastic_cpp_compiler_options = "-std=c++11"
+
+    let g:syntastic_javascript_checkers = ['eslint']
+    " let g:syntastic_javascript_eslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
+
+    " 在 :w 时是否语法检查
+    " let g:syntastic_mode_map = { 'mode': 'active',
+    " \ 'passive_filetypes': ['elixir', 'javascript'] }
+
+    " Install
+    " :SyntasticInfo 检查当前 checker 的信息
+    " :SyntasticCheck 语法检查
+
+    " With js
+    " 安装全局
+    " npm i -g eslint-config-standard eslint-plugin-standard eslint-plugin-node eslint-plugin-import eslint-plugin-promise eslint
+    " 初始当前项目
+    " eslint --init
+    " 编辑 js 文件时，:w 自动显示错误，也可以手动 :SyntasticCheck
+" }
+" 调用外部命令格式化代码 {
+Plug 'Chiel92/vim-autoformat'
+
+" json
+" npm i -g fixjson
+
+" javascript
+" npm i -g eslint
+let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
+let g:formatters_javascript = ['eslint']
+noremap <leader><s-f> :Autoformat<CR>:w<CR>
+
+" 预备环境
+" npm install -g eslint eslint-plugin-standard eslint-plugin-promise eslint-config-standard
+
+" 将标准输入写到临时文件eslint-temp-xxx.js
+" 调用 eslint --fix 来修复它
+" 将 eslint-temp-xxx.js 输出到标准输出。
+" 截掉文件尾的换行（\n）
+" 删掉临时文件
+
+" Trick 解释:
+" 临时文件放在当前目录而非/tmp。否则 eslint 会根据 /tmp/eslint-temp-xxx.js 路径来读取配置文件。
+" 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
+" 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
+" http://harttle.com/2017/03/12/vim-eslint.html
+
+" Python
+" pip install autopep8
+" }
+" 代码补全 & snippets {
+    Plug 'jayli/vim-easycomplete'
+    noremap gr :EasyCompleteReference<CR>
+    noremap gd :EasyCompleteGotoDefinition<CR>
+    noremap rn :EasyCompleteRename<CR>
+    noremap gb :BackToOriginalBuffer<CR>
+    nnoremap <silent> <C-k> :EasyCompleteNextDiagnostic<CR>
+    nnoremap <silent> <C-j> :EasyCompletePreviousDiagnostic<CR>
+
+    Plug 'SirVer/ultisnips'
+    let g:UltiSnipsExpandTrigger="<c-y><c-y>"
+
+    " Plug 'Shougo/neocomplete'
+    " Plug 'Shougo/neosnippet'
+    " Plug 'Shougo/neosnippet-snippets'
+
+    " Tell Neosnippet about the other snippets
+    " let g:neosnippet#snippets_directory='~/.vim/snippets'
+
+    " SuperTab like snippets behavior.
+    " if exists("g:no_compile_plugin")
+        " imap <expr><TAB>
+        " \ pumvisible() ? "\<C-n>" :
+        " \ neosnippet#expandable_or_jumpable() ?
+        " \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+        " smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        " \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+    " endif
+
+    " https://github.com/Shougo/neosnippet.vim/issues/215#issuecomment-35847891
+    " let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
+
+    " For conceal markers.
+    " if has('conceal')
+    "     set conceallevel=2 concealcursor=niv
+    " endif
+" }
+" { Color Schemes & Highlight
+    " 部分语言的配色会在 Language Section
 
     " 比较全的 color scheme
     Plug 'flazz/vim-colorschemes'
@@ -191,56 +191,14 @@ call plug#begin("$VIMHOME/plugged")
     let g:rbpt_max = 16
     let g:rbpt_loadcmd_toggle = 0
 " }
-" { Editor
-
-    " Press + to expand the visual selection and _ to shrink it.
-    Plug 'terryma/vim-expand-region'
-
-    " Easily delete, change and add such surroundings in pairs.
-    Plug 'tpope/vim-surround'
-
-    " 按等号或者其它符号对齐
-    Plug 'godlygeek/tabular'
-    " Plug 'junegunn/vim-easy-align'
-    " http://www.wklken.me/posts/2015/06/07/vim-plugin-easyalign.html
-
-    " multiple cursors
-    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-
-    " automatically add the closing quote, bracket
-    Plug 'Raimondi/delimitMate'
-    " Plug 'Townk/vim-autoclose'
-
-    " 快捷注释 :tComment - inherit the NERD_commenter shortkey {
-        " 相比其它更智能，我的配置里面快捷键inhert了nerdcommenter
-        Plug 'tomtom/tcomment_vim'
-
-        map <leader>ci <Plug>TComment_<Leader>__
-        map <leader>cm <Plug>TComment_<Leader>_b
-
-        " comments.vim 用c-c/c-x做注释
-        " Plug 'comments.vim'
-        " 用<leader>ci/cm做注释
-        " Plug 'scrooloose/nerdcommenter'
-        " NERD_commenter      注释处理插件
-        " let loaded_nerd_tree = 1
-        " let NERDSpaceDelims = 1                        " 自动添加前置空格
-    " }
-
-" }
-" { Browsing & Navigating code
-
+" { Browsing & Navigating file
     " :NERDTree - FileList {
         " 文件管理器
         Plug 'scrooloose/nerdtree'
         map <leader>wf :NERDTreeToggle<CR>
-        " 内置的文件浏览器已经够了
-        " Plug 'winmanager'
-
         " e    to open file and close the quickfix window
         " o    to open (same as enter)
         " go   to preview file (open but maintain focus on ag.vim results)
-
 
         let g:NERDTreeMapToggleZoom = 'a'
         let g:NERDTreeMapToggleHidden = 'h'
@@ -248,13 +206,15 @@ call plug#begin("$VIMHOME/plugged")
 
         let NERDTreeQuitOnOpen = 1
         let NERDChristmasTree=1
-        let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] " ignore displa file
+        let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] " ignore displap file
         let NERDTreeMinimalUI=0 " 不显示项目树上额外的信息，例如帮助、提示
         " autocmd VimEnter * NERDTree " auto start nerdtree
         " autocmd vimenter * if !argc() | NERDTree | endif " if not file start too
         autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " when no file colse nerdtree
-    " }
 
+        " 布局管理器，让各个窗口按照规则排列
+        " Plug 'winmanager'
+    " }
     ":Tlist  - 调用TagList {
         " 需安装 ctags
         if !exists("g:no_compile_plugin")
@@ -272,9 +232,8 @@ call plug#begin("$VIMHOME/plugged")
         nmap <leader>wt :Tlist<CR><c-l>  " TlistToggle<CR>
 
     " }
-
     " :CtrlP - 快速打开文件 {
-        Plug 'kien/ctrlp.vim'
+        Plug 'ctrlpvim/ctrlp.vim'
         let g:ctrlp_map = '<c-p>'
         let g:ctrlp_cmd = 'CtrlP'
         let g:ctrlp_working_path_mode = 'ra'
@@ -283,18 +242,16 @@ call plug#begin("$VIMHOME/plugged")
         " nnoremap <Leader>j :CtrlP ~/<CR>
         nnoremap <Leader><space> :CtrlPBuffer<CR>
 
-        " \ff                 打开文件搜索窗口，在状态栏显示 [ctrlp.vim插件]
+        " \ff                 打开文件搜索窗口，在状态栏显示
         nmap <leader>ff :CtrlP<CR>
-
 
         " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
         let g:ctrlp_custom_ignore = {
             \'dir': '\.git$\|\.hg$\|\.svn$\|bower_components$\|dist$\|node_modules$\|project_files$\|test$',
             \'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.pyo$\|\.rbc$\|\.rbo$\|\.class$\|\.o$\|\~$' }
     " }
-
     " Find & Search {
-        Plug 'mileszs/ack.vim'
+        " Plug 'mileszs/ack.vim'
         " original 'ack.vim' and Deprecated 'rking/ag.vim'
 
         " there use special tech, when you put ':ag ', will display ':Ag '
@@ -303,28 +260,28 @@ call plug#begin("$VIMHOME/plugged")
         " search the current word by ag
         " command! Agg exe 'Ag -Q ' . expand('<cword>')
 
-        let g:ackprg = 'rg -i --vimgrep'
-        " let g:ackprg = 'ag --vimgrep --smart-case'
-
-        " <C-W>p not work
-        " \ "H": "<C-W><CR><C-W>K<C-W>b",
-        let g:ack_mappings = {
-        \ "J": "<CR><C-W>j",
-        \ "K": "<CR><C-W>k",
-        \ "H": "<CR><C-W>h",
-        \ "L": "<CR><C-W>l",
-        \ "t": "<C-W><CR><C-W>T",
-        \ "T": "<C-W><CR><C-W>TgT<C-W>j",
-        \ "o": "<CR>",
-        \ "O": "<CR><C-W><C-W>:ccl<CR>",
-        \ "go": "<CR><C-W>j",
-        \ "h": "<C-W><CR><C-W>K",
-        \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
-        \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
-        cnoreabbrev ag Ack
-        cnoreabbrev aG Ack
-        cnoreabbrev Ag Ack
-        cnoreabbrev AG Ack
+        " let g:ackprg = 'rg -i --vimgrep'
+        " " let g:ackprg = 'ag --vimgrep --smart-case'
+        "
+        " " <C-W>p not work
+        " " \ "H": "<C-W><CR><C-W>K<C-W>b",
+        " let g:ack_mappings = {
+        " \ "J": "<CR><C-W>j",
+        " \ "K": "<CR><C-W>k",
+        " \ "H": "<CR><C-W>h",
+        " \ "L": "<CR><C-W>l",
+        " \ "t": "<C-W><CR><C-W>T",
+        " \ "T": "<C-W><CR><C-W>TgT<C-W>j",
+        " \ "o": "<CR>",
+        " \ "O": "<CR><C-W><C-W>:ccl<CR>",
+        " \ "go": "<CR><C-W>j",
+        " \ "h": "<C-W><CR><C-W>K",
+        " \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
+        " \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
+        " cnoreabbrev ag Ack
+        " cnoreabbrev aG Ack
+        " cnoreabbrev Ag Ack
+        " cnoreabbrev AG Ack
 
         " 操作
         if v:version > 703
@@ -337,7 +294,7 @@ call plug#begin("$VIMHOME/plugged")
 
         " Plug 'justinmk/vim-sneak'
         " label-mode for a minimalist alternative to EasyMotion
-        let g:sneak#label = 1
+        " let g:sneak#label = 1
 
         " brew install fzf
         " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run the install script
@@ -346,6 +303,7 @@ call plug#begin("$VIMHOME/plugged")
     " }
 
     " 在()、""、甚至HTML标签之间快速跳转；
+    " 如果是语法上的识别，在 Language Section 中添加
     Plug 'vim-scripts/matchit.zip'
 
     " 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
@@ -358,89 +316,82 @@ call plug#begin("$VIMHOME/plugged")
     " Open URI selected word or search.
     vmap gb <Plug>(openbrowser-smart-search)
     " Open URI you also can use <leader>gb because of "textbrowser.vim"
-
 " }
-" { Front End
+" { Language Special
+    " { Front End
 
-    " zen emmet {
-        " Plug 'ZenCoding.vim' " original zen coding
-        Plug 'mattn/emmet-vim'
+        " zen emmet {
+            " Plug 'ZenCoding.vim' " original zen coding
+            Plug 'mattn/emmet-vim'
 
-        "set zen coding
-        " let g:user_zen_settings = {
-        "  \  'php' : {
-        "  \    'extends' : 'html',
-        "  \    'filters' : 'c',
-        "  \  },
-        "  \  'xml' : {
-        "  \    'extends' : 'html',
-        "  \  },
-        "  \  'haml' : {
-        "  \    'extends' : 'html',
-        "  \  },
-        "  \  'erb' : {
-        "  \    'extends' : 'html',
-        "  \  },
-        "  \}
+            "set zen coding
+            " let g:user_zen_settings = {
+            "  \  'php' : {
+            "  \    'extends' : 'html',
+            "  \    'filters' : 'c',
+            "  \  },
+            "  \  'xml' : {
+            "  \    'extends' : 'html',
+            "  \  },
+            "  \  'haml' : {
+            "  \    'extends' : 'html',
+            "  \  },
+            "  \  'erb' : {
+            "  \    'extends' : 'html',
+            "  \  },
+            "  \}
 
-        " emmet(zen coding) 介绍
-        " 是横扫各大小编辑器的快速编码插件，其使用类`CSS`选择器的语法实现扩展性编码，确实够酷、够快
+            " emmet(zen coding) 介绍
+            " 是横扫各大小编辑器的快速编码插件，其使用类`CSS`选择器的语法实现扩展性编码，确实够酷、够快
 
-        " `Zen Coding`在`Vim`下的默认触发键是`Ctrl + Y + ,`（注意，最后还有一个逗号）
-        "
-        " 调用规则
-        " ```
-        " `1`、单个元素：`div`
-        " `2`、带`id`的元素，使用`#`号：`div#name`
-        " `3`、带`class`的元素，使用点号（`.`）：`div.header`
-        " `4`、`id`与`class`是可以同时使用的，如果`class`名中含多个单词，可以使用点号（`.`）进行连接：`div#name.header.one`
-        " `5`、子元素使用大于号（`>`），子元素的子元素可以连写：`div>p>h1`
-        " `6`、同级兄弟元素使用加号（`+`），可以使用括号避免歧义：`div>p>(h1+h2)`
-        " `7`、多项相同的元素，使用星号（`*`）：`ul>li*5`
-        " `8`、带有序号的元素，使用美元符（`$`），从`1`开始自动递增：`div>p#id$*5`
-        " `9`、如果需要指定序号的位数，只须多写几个美元符（`$`）即可：`div>p#id$$$*5`
-        " div>p#foo$*3>a
-        " ```
-        "
-        " 常用缩写
-        " ```
-        " html:4t  传统的`HTML4.01`模板
-        " html:5  `HTML5`模板
-        " style  样式标签
-        " script  脚本标签
-        " link  `link`标签
-        " a  链接标签
-        " ```
-        " 更多用法可以查看 ":help emmet"
-        " 或者 `gf` https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-        "
-        " ref:
-        " 本文修改于： https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
+            " `Zen Coding`在`Vim`下的默认触发键是`Ctrl + Y + ,`（注意，最后还有一个逗号）
+            "
+            " 调用规则
+            " ```
+            " `1`、单个元素：`div`
+            " `2`、带`id`的元素，使用`#`号：`div#name`
+            " `3`、带`class`的元素，使用点号（`.`）：`div.header`
+            " `4`、`id`与`class`是可以同时使用的，如果`class`名中含多个单词，可以使用点号（`.`）进行连接：`div#name.header.one`
+            " `5`、子元素使用大于号（`>`），子元素的子元素可以连写：`div>p>h1`
+            " `6`、同级兄弟元素使用加号（`+`），可以使用括号避免歧义：`div>p>(h1+h2)`
+            " `7`、多项相同的元素，使用星号（`*`）：`ul>li*5`
+            " `8`、带有序号的元素，使用美元符（`$`），从`1`开始自动递增：`div>p#id$*5`
+            " `9`、如果需要指定序号的位数，只须多写几个美元符（`$`）即可：`div>p#id$$$*5`
+            " div>p#foo$*3>a
+            " ```
+            "
+            " 常用缩写
+            " ```
+            " html:4t  传统的`HTML4.01`模板
+            " html:5  `HTML5`模板
+            " style  样式标签
+            " script  脚本标签
+            " link  `link`标签
+            " a  链接标签
+            " ```
+            " 更多用法可以查看 ":help emmet"
+            " 或者 `gf` https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
+            "
+            " ref:
+            " 本文修改于： https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
 
-    "}
+        "}
 
-    " Generate function comment
-    Plug 'heavenshell/vim-jsdoc'
+        " Generate function comment
+        Plug 'heavenshell/vim-jsdoc'
 
-    Plug 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
-    " Plug 'jelera/vim-javascript-syntax' " 可能与 pangloss 功能重复
-    " Plug 'lukaszb/vim-web-indent' " 包含了javascript.vim 和html.vim
-    Plug 'isRuslan/vim-es6'
+        " Front End
+        Plug 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
+        Plug 'isRuslan/vim-es6'
 
-    " node 补全 require 或者 定位到 require 中的文件
-    Plug 'moll/vim-node'
+        " node 补全 require 或者 定位到 require 中的文件
+        Plug 'moll/vim-node'
 
-    " support css word with -
-    " set iskeyword+=-
+        Plug 'leafgarland/typescript-vim'
 
-    Plug 'posva/vim-vue'
-
-    Plug 'leafgarland/typescript-vim'
-
-
-" }
-" { Misc
-
+        " support css word with -
+        " set iskeyword+=-
+    " }
     " Plain text brower(show the document map and syntax highlight in plain text) {
     Plug 'vim-scripts/TxtBrowser'
     " :help txt-keywords@cn
@@ -466,7 +417,6 @@ call plug#begin("$VIMHOME/plugged")
     " au BufRead,BufNewFile *.sed.in  setlocal ft=txt
     " au BufRead,BufNewFile *.sed.out setlocal ft=txt
     " }
-
     " Markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用
         Plug 'plasticboy/vim-markdown'
@@ -486,90 +436,28 @@ call plug#begin("$VIMHOME/plugged")
         " 与 instant 配合使用 https://github.com/yantze/instant-markdown-d
         Plug 'suan/vim-instant-markdown'
     " }
-
-    " python
-    " Plug 'fs111/pydoc.vim'
-    Plug 'vim-scripts/python.vim'
-    " 检查python的代码错误,编译需要'+python'
-    " Plug 'pyflakes.vim'
-
-    Plug 'kovisoft/slimv'
-    let g:slimv_swank_cmd = '!osascript -e "tell application \"Terminal\" to do script \"sbcl --load ~/.vim/slime/start-swank.lisp\""'
-
-    " Rust
-    Plug 'rust-lang/rust.vim'
-
-    " Git
-    " Plug 'tpope/vim-fugitive'
-    " :Gdiff - Diffs file with current version in repository
-    " :Gw - Saves and git adds
-    " :Gco or :Gcommit - Commits
-    " :Blame - Who change this line
-
-    " DBGP Debug
-    " http://blog.joncairns.com/2012/08/vdebug-a-dbgp-debugger-client-for-vim-supporting-php-python-perl-and-ruby/
-    " Plug 'joonty/vdebug'
-
-    " Plug 'diepm/vim-rest-console'
-
-    " weixin program
-    " Plug 'chemzqm/wxapp.vim'
-
-
-    " helps editing xml (and [x]html, sgml, xslt) files
-    " Plug 'othree/xml.vim'
-    " A filetype Plug for VIM to help edit XML files
-    " Plug 'sukima/xmledit'
-    " Plug 'tpope/vim-ragtag'
-    " Plug 'elzr/vim-json'
-
-    " 读取大文件
-    " Plug 'LargeFile'
-
-    " Go
-    " if !exists("g:no_compile_plugin")
-    "     Plug 'fatih/vim-go'
-    " endif
-
-    " Plug 'MarcWeber/vim-addon-manager-known-repositories'
-
-    " PHP
-    " php genner
-    " Plug 'vim-scripts/phpvim'
-    " Plug 'php.vim-html-enhanced'
-    " 增加对php的兼容
-    " Plug 'StanAngeloff/php.vim'
-    " 匹配
-    " Plug 'shawncplus/phpcomplete.vim'
-    " 模板引擎
-    " Plug 'tobyS/vmustache'
-    " php debuger
-    " https://brookhong.github.io/2014/09/27/dbgpavim-cn.html
-    " Plug 'brookhong/DBGPavim' "dbgpavim继承自DBGp-X-client'
-
-    " phpdocument generate
-    " pdv需要安装 "tobyS/vmustache模板引擎
-    " Plug 'tobyS/pdv'
-    " let g:pdv_template_dir = $HOME ."/.vim/bundle/pdv/templates_snip"
-    " nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
-
-
-    " Plug 'emezeske/manpageview'
-    " Plug 'vim-scripts/cecutil'
-    " Plug 'vim-scripts/info.vim'
-    " Plug 'rkitover/vimpager' " Use Vim as PAGER
-
-    " Highlight
-
-    " highlighting for applescript
-    Plug 'dearrrfish/vim-applescript'
-
-
-    " swift
-    " Plug 'Keithbsmiley/swift.vim'
-    " another swift
-    " Plug 'toyamarinyon/vim-swift'
-
+    " python {
+        " Plug 'fs111/pydoc.vim'
+        Plug 'vim-scripts/python.vim'
+        " 检查python的代码错误,编译需要'+python'
+        " Plug 'pyflakes.vim'
+    " }
+    " Lisp {
+        Plug 'kovisoft/slimv'
+        let g:slimv_swank_cmd = '!osascript -e "tell application \"Terminal\" to do script \"sbcl --load ~/.vim/slime/start-swank.lisp\""'
+    " }
+    " Rust {
+        Plug 'rust-lang/rust.vim'
+    " }
+    " Go {
+        " if !exists("g:no_compile_plugin")
+        "     Plug 'fatih/vim-go'
+        " endif
+    " }
+    " { AppleScript 
+        " highlighting for applescript
+        Plug 'dearrrfish/vim-applescript'
+    " }
 " }
 
 call plug#end()
