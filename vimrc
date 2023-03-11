@@ -1446,6 +1446,9 @@ imap fd <Esc>
 " map F :call FormatCode() <CR><CR>
 " map <silent>F 也可以隐藏
 " map F :%s/{/{\r/g <CR> :%s/}/}\r/g <CR>  :%s/;/;\r/g <CR> gg=G
+" 命令别名
+" cnoreabbrev ag Ack
+
 
 " }
 " Locals {

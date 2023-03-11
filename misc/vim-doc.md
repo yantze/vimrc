@@ -3,45 +3,40 @@
 
 整理： [yantze](http://github.com/yantze)
 
-## CheatSheet
-
-### 基础
-
-    `<leader>和<buffer>`
-    `<leader>` 默认是一个按钮，指的是反斜杠'\'，不过我在配置中设置成了','，减少小指的负担。
-    `<buffer>` 其实就是你当前打开的文件。
-    `.vimrc` 是vim的配置文件
-    `_vimrc.bundles` 是插件配置，里面有介绍每个插件的作用
-
-    # Bundle's Plugin
-    https://github.com/VundleVim/Vundle.vim
+## vim 常常使用但容易忘记的技巧
 
 
-### 掌握这些可以高效使用
+## 基础
 
-> 把本项目的 `_vimrc` 看完就可以玩转 vim 了。下面都是一些补充知识。
+### `<leader>和<buffer>` 介绍
+- `<leader>`: 默认是一个按钮，指的是反斜杠'\'，不过配置中设置成了','，减少小指的负担
+- `<buffer>`: 当前打开的文件
+- `.vimrc`: vim的配置文件
+- `_vimrc.bundles`: 插件配置，里面有介绍每个插件的作用
 
 ### 常用命令
 
 `数字`是很有意义
-
+```
     删除50  = 50dd
     下移20  = 20j
+```
 
 书签
-
+```
     `.          跳转至上次编辑位置
     ``          跳转上一次的位置
     ma          把当前位置存成标签 `a`
     `a          跳转到标签 `a` 处
+```
 
-
-
+```
 宏
 
     qx          开始记录宏，并将结果存入寄存器x，x代表1-9的数字
     q           退出记录模式
     @x          播放记录在x寄存器中的宏命令
+```
 
 
 寄存器
@@ -182,12 +177,6 @@ echo "wq"|ex -c "g/^$/d" filename
 ```
 
 
-
-
-
-
-
-
 ```
 r, R (Replace mode): r 只代一个字符一次；R一直代光标所在，按下 ESC 为止
 
@@ -223,12 +212,7 @@ Ctrl+u 删除光标前的一行， Ctrl+w 删除前面一个单词
 0           移到当前行的第一列
 ```
 
-
-
-
-
-
-### practic experience
+## 经验
 
 #### 配置里面<leader>rsl不同的实现方法
 ##### 执行选中行命令
@@ -1335,7 +1319,8 @@ zE                  除去 (Eliminate) 窗口里“所有”的折叠。
 ```
 
 
-### vim标记 <!-- {{{ -->
+### vim标记
+
 ```
 Ctrl+i/o 跳转到较早/较晚的地方，
 :marks  列出所有的标记
@@ -1377,11 +1362,11 @@ the last modification
 ```
 
 
-### VIM 寄存器 {{{
+### VIM 寄存器 
 ```
 将寄存器与各种删除、复制、粘贴命令组合使用，能够大大提高编辑文本的效率。
-指定寄存器
-在复制或删除文本时，可以使用"register命令将文本放入指定的寄存器中。例如以下命令，将复制的文本放到寄存器a中，同时文本也会被放入未命名寄存器中。
+- 指定寄存器
+在复制或删除文本时，可以使用`"` register 命令将文本放入指定的寄存器中。例如以下命令，将复制的文本放到寄存器a中，同时文本也会被放入未命名寄存器中。
 "ayy
 如果再使用相应的大写字母来指定寄存器，那么会将当前行内容追加到寄存器a中，这时该寄存器中就有了两行文本。
 "Ayy
@@ -1435,13 +1420,11 @@ the last modification
 "a5y:将5行存储到寄存器a
 "ap：复制寄存器a的内容
 ```
-<!-- }}} -->
 
-### 未整理 {{{
+### 未整理
 
 gv 选中之前选中过的内容 g~{motion} 切换{motion}跨越的文本的大小写 g~~ 切换当前行的大小写 gU{motion} 切换为大写 gu{motion} 切换为小写
 
-}}}
 
 ## Advance
 
@@ -1602,10 +1585,14 @@ vim -V9myVim.log api.js
 https://stackoverflow.com/questions/3025615/is-there-a-vim-runtime-log
 
 
+### 快捷键映射
+https://pic1.zhimg.com/80/v2-53b70b061cc2f5fa4c496ac15fef89b4_1440w.png
+ref: https://zhuanlan.zhihu.com/p/24713018
+ref: http://yyq123.blogspot.com/2010/12/vim-abbreviation.html
 
 
 ## Reference
 - https://stackoverflow.com/questions/19902089/vim-regex-capture-groups
 - http://kwiki.github.io/tips/Vim.html
 
-<!-- modeline vim: set ts=4 sw=4 tw=0 et fdm=marker foldlevel=1 foldenable foldlevelstart=99 : -->
+<!-- modeline vim: set ts=4 sw=4 tw=0 et foldlevel=1 foldenable foldlevelstart=99 : -->

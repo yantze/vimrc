@@ -54,45 +54,6 @@ call plug#begin("$VIMHOME/plugged")
     " Plug 'Raimondi/delimitMate'
     " Plug 'Townk/vim-autoclose'
 " }
-" 语法检查（停用） {
-    " Syntastic
-    " if !exists("g:no_compile_plugin")
-    "     Plug 'scrooloose/syntastic'
-    " endif
-    let g:syntastic_check_on_open        = 0
-    let g:syntastic_enable_signs         = 1
-
-    let g:syntastic_error_symbol = "✗"
-    let g:syntastic_warning_symbol = "⚠"
-    let g:syntastic_style_error_symbol = '!'
-    let g:syntastic_style_warning_symbol = '?'
-
-    let c_no_curly_error = 1
-
-    let g:syntastic_c_checker          = "clang"
-    let g:syntastic_c_compiler_options = "-std=c11"
-
-    let g:syntastic_cpp_checker          = "clang++"
-    let g:syntastic_cpp_compiler_options = "-std=c++11"
-
-    let g:syntastic_javascript_checkers = ['eslint']
-    " let g:syntastic_javascript_eslint_args = "--white --nomen --regexp --browser --devel --windows --sloppy --vars"
-
-    " 在 :w 时是否语法检查
-    " let g:syntastic_mode_map = { 'mode': 'active',
-    " \ 'passive_filetypes': ['elixir', 'javascript'] }
-
-    " Install
-    " :SyntasticInfo 检查当前 checker 的信息
-    " :SyntasticCheck 语法检查
-
-    " With js
-    " 安装全局
-    " npm i -g eslint-config-standard eslint-plugin-standard eslint-plugin-node eslint-plugin-import eslint-plugin-promise eslint
-    " 初始当前项目
-    " eslint --init
-    " 编辑 js 文件时，:w 自动显示错误，也可以手动 :SyntasticCheck
-" }
 " 调用外部命令格式化代码 {
 Plug 'Chiel92/vim-autoformat'
 
@@ -124,36 +85,22 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
 " pip install autopep8
 " }
 " 代码补全 & snippets {
-    Plug 'jayli/vim-easycomplete'
-    noremap gr :EasyCompleteReference<CR>
-    noremap gd :EasyCompleteGotoDefinition<CR>
-    noremap rn :EasyCompleteRename<CR>
-    noremap gb :BackToOriginalBuffer<CR>
-    nnoremap <silent> <C-k> :EasyCompleteNextDiagnostic<CR>
-    nnoremap <silent> <C-j> :EasyCompletePreviousDiagnostic<CR>
+    if !exists("g:no_compile_plugin")
+        Plug 'jayli/vim-easycomplete'
+        noremap gr :EasyCompleteReference<CR>
+        noremap gd :EasyCompleteGotoDefinition<CR>
+        noremap rn :EasyCompleteRename<CR>
+        noremap gb :BackToOriginalBuffer<CR>
+
+        " 快捷键冲突，自定义快捷键
+        let g:easycomplete_lsp_checking=0
+        nnoremap <silent> <C-k>k :EasyCompleteNextDiagnostic<CR>
+        nnoremap <silent> <C-k>j :EasyCompletePreviousDiagnostic<CR>
+    endif
 
     Plug 'SirVer/ultisnips'
+    " 用 <tab> 在 macOS 会冲突
     let g:UltiSnipsExpandTrigger="<c-y><c-y>"
-
-    " Plug 'Shougo/neocomplete'
-    " Plug 'Shougo/neosnippet'
-    " Plug 'Shougo/neosnippet-snippets'
-
-    " Tell Neosnippet about the other snippets
-    " let g:neosnippet#snippets_directory='~/.vim/snippets'
-
-    " SuperTab like snippets behavior.
-    " if exists("g:no_compile_plugin")
-        " imap <expr><TAB>
-        " \ pumvisible() ? "\<C-n>" :
-        " \ neosnippet#expandable_or_jumpable() ?
-        " \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-        " smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        " \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-    " endif
-
-    " https://github.com/Shougo/neosnippet.vim/issues/215#issuecomment-35847891
-    " let g:neosnippet#disable_runtime_snippets = { '_' : 1 }
 
     " For conceal markers.
     " if has('conceal')
@@ -192,7 +139,7 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
     let g:rbpt_loadcmd_toggle = 0
 " }
 " { Browsing & Navigating file
-    " :NERDTree - FileList {
+    " NERDTree - FileList {
         " 文件管理器
         Plug 'scrooloose/nerdtree'
         map <leader>wf :NERDTreeToggle<CR>
@@ -215,7 +162,7 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
         " 布局管理器，让各个窗口按照规则排列
         " Plug 'winmanager'
     " }
-    ":Tlist  - 调用TagList {
+    "Tlist  - 调用TagList {
         " 需安装 ctags
         if !exists("g:no_compile_plugin")
             Plug 'vim-scripts/taglist.vim'
@@ -232,7 +179,7 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
         nmap <leader>wt :Tlist<CR><c-l>  " TlistToggle<CR>
 
     " }
-    " :CtrlP - 快速打开文件 {
+    " CtrlP - 快速打开文件 {
         Plug 'ctrlpvim/ctrlp.vim'
         let g:ctrlp_map = '<c-p>'
         let g:ctrlp_cmd = 'CtrlP'
@@ -251,38 +198,6 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
             \'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.pyo$\|\.rbc$\|\.rbo$\|\.class$\|\.o$\|\~$' }
     " }
     " Find & Search {
-        " Plug 'mileszs/ack.vim'
-        " original 'ack.vim' and Deprecated 'rking/ag.vim'
-
-        " there use special tech, when you put ':ag ', will display ':Ag '
-        " cnoreabbrev ag Ag
-        " cabbrev ag <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'Ag' : 'ag')<CR>
-        " search the current word by ag
-        " command! Agg exe 'Ag -Q ' . expand('<cword>')
-
-        " let g:ackprg = 'rg -i --vimgrep'
-        " " let g:ackprg = 'ag --vimgrep --smart-case'
-        "
-        " " <C-W>p not work
-        " " \ "H": "<C-W><CR><C-W>K<C-W>b",
-        " let g:ack_mappings = {
-        " \ "J": "<CR><C-W>j",
-        " \ "K": "<CR><C-W>k",
-        " \ "H": "<CR><C-W>h",
-        " \ "L": "<CR><C-W>l",
-        " \ "t": "<C-W><CR><C-W>T",
-        " \ "T": "<C-W><CR><C-W>TgT<C-W>j",
-        " \ "o": "<CR>",
-        " \ "O": "<CR><C-W><C-W>:ccl<CR>",
-        " \ "go": "<CR><C-W>j",
-        " \ "h": "<C-W><CR><C-W>K",
-        " \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
-        " \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
-        " cnoreabbrev ag Ack
-        " cnoreabbrev aG Ack
-        " cnoreabbrev Ag Ack
-        " cnoreabbrev AG Ack
-
         " 操作
         if v:version > 703
             " 快速移动
@@ -419,7 +334,8 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
     " }
     " Markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用
-        Plug 'plasticboy/vim-markdown'
+        " Plug 'plasticboy/vim-markdown'
+        Plug 'preservim/vim-markdown'
         " 设置md文件是否用自己的方式折叠
         " let g:vim_markdown_folding_disabled = 1
         " Change fold style to pythonic
