@@ -1,7 +1,6 @@
 " author: yantze
 " $VIMHOME/vimrc.bundles " the package location
 let g:color_dark = 1
-" let g:no_compile_plugin = 1
 " let g:no_vimrc_bundles = 1
 
 " General {
@@ -113,9 +112,6 @@ let g:color_dark = 1
 
     func! RunSelected()
         exec ":s/\%V\(.*\)/{{__ "\1"}}/"
-    endfunc
-
-    func! PasteFromCloud()
     endfunc
 
     func! s:get_visual_selection()
@@ -279,63 +275,6 @@ let g:color_dark = 1
         endif
     endfunc
 
-    " 生成cscope和tags文件
-    function! Do_CsTag()
-        let dir = getcwd()
-        if filereadable("tags")
-            if WINDOWS()
-                let tagsdeleted=delete(dir."\\"."tags")
-            else
-                let tagsdeleted=delete("./"."tags")
-            endif
-            if(tagsdeleted!=0)
-                echohl WarningMsg | echo "Fail to do tags! I cannot delete the tags" | echohl None
-                return
-            endif
-        endif
-        if has("cscope")
-            silent! execute "cs kill -1"
-        endif
-        if filereadable("cscope.files")
-            if WINDOWS()
-                let csfilesdeleted=delete(dir."\\"."cscope.files")
-            else
-                let csfilesdeleted=delete("./"."cscope.files")
-            endif
-            if(csfilesdeleted!=0)
-                echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.files" | echohl None
-                return
-            endif
-        endif
-        if filereadable("cscope.out")
-            if WINDOWS()
-                let csoutdeleted=delete(dir."\\"."cscope.out")
-            else
-                let csoutdeleted=delete("./"."cscope.out")
-            endif
-            if(csoutdeleted!=0)
-                echohl WarningMsg | echo "Fail to do cscope! I cannot delete the cscope.out" | echohl None
-                return
-            endif
-        endif
-        if(executable('ctags'))
-            "silent! execute "!ctags -R --c-types=+p --fields=+S *"
-            silent! execute "!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ."
-        endif
-        if(executable('cscope') && has("cscope") )
-            if WINDOWS()
-                silent! execute "!find . -name '*.h' -o -name '*.c' -o -name '*.cpp' -o -name '*.java' -o -name '*.cs' > cscope.files"
-            else
-                silent! execute "!dir /s/b *.c,*.cpp,*.h,*.java,*.cs >> cscope.files"
-            endif
-            silent! execute "!cscope -b"
-            execute "normal :"
-            if filereadable("cscope.out")
-                execute "cs add cscope.out"
-            endif
-        endif
-    endfunction
-
     " Append modeline after last line in buffer.
     " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
     " files.
@@ -386,36 +325,6 @@ let g:color_dark = 1
             call cursor(b:curline, b:curcol)
         endif
     endfunction
-
-
-    " Toggle to ZenMode
-    " https://github.com/mmai/vim-zenmode/blob/master/plugin/zenmode.vim
-    func! ZenMode()
-        let g:zenmode_width = 100
-        let s:sidebar = ( winwidth( winnr() ) - g:zenmode_width - 2 ) / 2
-        " Create the left sidebar
-        exec("silent leftabove " . s:sidebar . "vsplit new")
-        setlocal noma
-        setlocal nocursorline
-        setlocal nonumber
-        silent! setlocal norelativenumber
-        setlocal statusline=%#LineNr#       " change statusline background color
-        wincmd l
-        " Create the right sidebar
-        exec("silent rightbelow " . s:sidebar . "vsplit new")
-        setlocal noma
-        setlocal nocursorline
-        setlocal nonumber
-        silent! setlocal norelativenumber
-        wincmd h
-
-        " 把左边的底部波浪号隐藏
-        exec("hi NonText ctermfg=white")
-        " 分隔边框的颜色
-        exec("hi VertSplit ctermbg=white ctermfg=white")
-        call NumberToggle()
-    endfunc
-
 " }
 
 " }
@@ -455,7 +364,7 @@ let g:color_dark = 1
     " set foldcolumn=2           " 左侧窗边的宽度
 
     " 光标的上下方至少保留显示的行数
-    set scrolloff=5
+    set scrolloff=3
 
     set showmatch                " 显示括号配对情况
 
@@ -889,107 +798,6 @@ endif
     " https://segmentfault.com/a/1190000003962806
 " }
 
-" PHP {
-    let g:phpcomplete_relax_static_constraint = 1
-    let g:phpcomplete_complete_for_unknown_classes = 1
-    let g:phpcomplete_search_tags_for_variables = 1
-    let g:phpcomplete_mappings = {
-        \ 'jump_to_def': ',g',
-        \ }
-
-    "只有在是PHP文件时，才启用PHP补全
-    function! AddPHPFuncList()
-        set dictionary+=$HOME/.vim/vimfiles/resource/php-offical.dict
-        set complete-=k complete+=k
-    endfunction
-
-    " Map <leader>el to error_log value
-    " takes the whatever is under the cursor and wraps it in error_log( and
-    " print_r( with parameter true and a label
-    au FileType php nnoremap <leader>el ^vg_daerror_log( '<esc>pa=' . print_r( <esc>pa, true ) );<cr><esc>
-
-    au FileType php call AddPHPFuncList()
-    au FileType php setlocal omnifunc=syntaxcomplete#Complete
-    au BufNewFile,BufRead *.phtml set filetype=php
-
-    " set tags+= ~/.vim/vimfiles/resource/tags-php
-
-    " autocmd FileType php setlocal omnifunc=phpcomplete#CompleteTags
-    " 除了使用Tab这个补全的方式，还可以使用Ctrl+x，Ctrl+o来补全上面文件的内置函数
-
-    " function! RunPhpcs()
-        " let l:filename=@%
-        " let l:phpcs_output=system('phpcs --report=csv --standard=YMC '.l:filename)
-        " let l:phpcs_list=split(l:phpcs_output, "\n")
-        " unlet l:phpcs_list[0]
-        " cexpr l:phpcs_list
-        " cwindow
-        " endfunction
-
-        " set errorformat+=\"%f\"\\,%l\\,%c\\,%t%*[a-zA-Z]\\,\"%m\"
-    " command! Phpcs execute RunPhpcs()
-    " php debug
-    let g:vdebug_keymap = {
-    \    "run"               : "<F5>",
-    \    "set_breakpoint"    : "<F9>",
-    \    "run_to_cursor"     : "<F1>",
-    \    "get_context"       : "<F2>",
-    \    "detach"            : "<F7>",
-    \    "step_over"         : "<F10>",
-    \    "step_into"         : "<F11>",
-    \    "step_out"          : '<leader><F11>',
-    \    "close"             : '<leader><F5>',
-    \    "eval_under_cursor" : "<Leader>ec",
-    \    "eval_visual"       : "<Leader>ev",
-    \}
-    let g:vdebug_options = {
-    \    "port"               : 9000,
-    \    "server"             : 'localhost',
-    \    "timeout"            : 20,
-    \    "on_close"           : 'detach',
-    \    "break_on_open"      : 0,
-    \    "path_maps"          : {},
-    \    "debug_window_level" : 0,
-    \    "debug_file_level"   : 0,
-    \    "debug_file"         : "",
-    \    "watch_window_style" : 'expanded',
-    \    "marker_default"     : '*',
-    \    "marker_closed_tree" : '+',
-    \    "marker_open_tree"   : '-'
-    \}
-
-    " 要让vim支持php/js的错误查询，先安装syntastic插件
-    " 然后用php对应的版本pear install PHP_CodeSniffer-2.0.0a2
-    " shell测试：phpcs index.php
-    " phpcs，tab 4个空格，编码参考使用CodeIgniter风格
-    " let g:syntastic_phpcs_conf = "--tab-width=3 --standard=Zend"
-    " let g:syntastic_phpcs_conf = "--tab-width=4 --standard=CodeIgniter"
-    " 也可以在cli中执行下面的命令
-    " phpcs --config-set default_standard Zend
-    " 如果怕被phpcs提示的错误吓倒，可以把Zend改成none,这样就只会提示一些常见的错误
-    "
-    let g:phpqa_messdetector_ruleset = ''
-    let g:phpqa_messdetector_cmd = '/usr/bin/phpmd'
-    " 在打开文件的时候检查
-    let g:phpqa_messdetector_autorun = 0
-" }
-
-" RUBY {
-    " 针对部分语言取消指定字符的单词属性
-    " au FileType ruby     set iskeyword+=!
-    " au FileType ruby     set iskeyword+=?
-
-    " 对部分语言设置单独的缩进
-    " au FileType ruby,eruby set shiftwidth=2
-    " au FileType ruby,eruby set tabstop=2
-
-    " auto completed
-    " let g:rubycomplete_buffer_loading = 1
-    " let g:rubycomplete_classes_in_global = 1
-    " let g:rubycomplete_rails = 1
-    " autocmd FileType ruby compiler ruby
-" }
-
 " JavaScript & Node {
 
     " F         格式化当前页面 js,html,css. 可选中局部格式化
@@ -1207,11 +1015,6 @@ vmap <leader>rt <ESC>:call RemoveTabs()<CR>
 " \rso
 nmap <leader>rso :so ~/.vim/vimrc<CR>
 
-" \th                 一键生成与当前编辑文件同名的HTML文件 [不输出行号]
-" imap <leader>th <ESC>:set nonumber<CR>:set norelativenumber<CR><ESC>:TOhtml<CR><ESC>:w %:r.html<CR><ESC>:q<CR>:set number<CR>:set relativenumber<CR>
-nmap <leader>th <ESC>:set nonumber<CR>:set norelativenumber<CR><ESC>:TOhtml<CR><ESC>:w %:r.html<CR><ESC>:q<CR>:set number<CR>:set relativenumber<CR>
-vmap <leader>th <ESC>:set nonumber<CR>:set norelativenumber<CR><ESC>:TOhtml<CR><ESC>:w %:r.html<CR><ESC>:q<CR>:set number<CR>:set relativenumber<CR>
-
 " move lines up or down (command - D)
 nmap <m-j> mz:m+<cr>`z
 nmap <m-k> mz:m-2<cr>`z
@@ -1329,7 +1132,6 @@ nnoremap <leader>C :call CopyToCloud()<CR>
 vmap <leader>C :call CopySelectedToCloud() <CR>
 " ==创建 Tags===
 "
-map <F12> :call Do_CsTag()<CR>
 nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR>
 nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
 nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
