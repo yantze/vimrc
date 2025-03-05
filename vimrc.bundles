@@ -35,9 +35,6 @@ call plug#begin("$VIMHOME/plugged")
         " let NERDSpaceDelims = 1                        " 自动添加前置空格
     " }
 
-    " Press + to expand the visual selection and _ to shrink it.
-    Plug 'terryma/vim-expand-region'
-
     " Easily delete, change and add such surroundings in pairs.
     Plug 'tpope/vim-surround'
 
@@ -55,52 +52,40 @@ call plug#begin("$VIMHOME/plugged")
     " Plug 'Townk/vim-autoclose'
 " }
 " 调用外部命令格式化代码 {
-Plug 'Chiel92/vim-autoformat'
+    Plug 'Chiel92/vim-autoformat'
 
-" json
-" npm i -g fixjson
+    " json
+    " npm i -g fixjson
 
-" javascript
-" npm i -g eslint
-let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
-let g:formatters_javascript = ['eslint']
-noremap <leader><s-f> :Autoformat<CR>:w<CR>
+    " javascript
+    " npm i -g eslint
+    let g:formatdef_eslint = '"SRC=eslint-temp-${RANDOM}.js; cat - >$SRC; eslint --fix $SRC >/dev/null 2>&1; cat $SRC | perl -pe \"chomp if eof\"; rm -f $SRC"'
+    let g:formatters_javascript = ['eslint']
+    noremap <leader><s-f> :Autoformat<CR>:w<CR>
 
-" 预备环境
-" npm install -g eslint eslint-plugin-standard eslint-plugin-promise eslint-config-standard
+    " 预备环境
+    " npm install -g eslint eslint-plugin-standard eslint-plugin-promise eslint-config-standard
 
-" 将标准输入写到临时文件eslint-temp-xxx.js
-" 调用 eslint --fix 来修复它
-" 将 eslint-temp-xxx.js 输出到标准输出。
-" 截掉文件尾的换行（\n）
-" 删掉临时文件
+    " eslint 格式化逻辑
+    " 将标准输入写到临时文件eslint-temp-xxx.js
+    " 调用 eslint --fix 来修复它
+    " 将 eslint-temp-xxx.js 输出到标准输出。
+    " 截掉文件尾的换行（\n）
+    " 删掉临时文件
 
-" Trick 解释:
-" 临时文件放在当前目录而非/tmp。否则 eslint 会根据 /tmp/eslint-temp-xxx.js 路径来读取配置文件。
-" 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
-" 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
-" http://harttle.com/2017/03/12/vim-eslint.html
+    " Trick 解释:
+    " 临时文件放在当前目录而非/tmp。否则 eslint 会根据 /tmp/eslint-temp-xxx.js 路径来读取配置文件。
+    " 临时文件不命名为隐藏文件。否则 eslint 会忽略它。
+    " 干掉文件尾的换行。这是因为 Vim 读入文件尾的换行后，会再来一个换行产生两个\n。
+    " http://harttle.com/2017/03/12/vim-eslint.html
 
-" Python
-" pip install autopep8
+    " Python
+    " pip install autopep8
 " }
 " 代码补全 & snippets {
-    if !exists("g:no_compile_plugin")
-        Plug 'jayli/vim-easycomplete'
-        noremap gr :EasyCompleteReference<CR>
-        noremap gd :EasyCompleteGotoDefinition<CR>
-        noremap rn :EasyCompleteRename<CR>
-        noremap gb :BackToOriginalBuffer<CR>
-
-        " 快捷键冲突，自定义快捷键
-        let g:easycomplete_lsp_checking=0
-        nnoremap <silent> <C-k>k :EasyCompleteNextDiagnostic<CR>
-        nnoremap <silent> <C-k>j :EasyCompletePreviousDiagnostic<CR>
-    endif
-
-    Plug 'SirVer/ultisnips'
+    " Plug 'SirVer/ultisnips'
     " 用 <tab> 在 macOS 会冲突
-    let g:UltiSnipsExpandTrigger="<c-y><c-y>"
+    " let g:UltiSnipsExpandTrigger="<c-y><c-y>"
 
     " For conceal markers.
     " if has('conceal')
@@ -139,46 +124,6 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
     let g:rbpt_loadcmd_toggle = 0
 " }
 " { Browsing & Navigating file
-    " NERDTree - FileList {
-        " 文件管理器
-        Plug 'scrooloose/nerdtree'
-        map <leader>wf :NERDTreeToggle<CR>
-        " e    to open file and close the quickfix window
-        " o    to open (same as enter)
-        " go   to preview file (open but maintain focus on ag.vim results)
-
-        let g:NERDTreeMapToggleZoom = 'a'
-        let g:NERDTreeMapToggleHidden = 'h'
-        let g:NERDTreeWinSize = 18
-
-        let NERDTreeQuitOnOpen = 1
-        let NERDChristmasTree=1
-        let NERDTreeIgnore = ['\.pyc$','\.sock$', '\~$', '\#.*#$'] " ignore displap file
-        let NERDTreeMinimalUI=0 " 不显示项目树上额外的信息，例如帮助、提示
-        " autocmd VimEnter * NERDTree " auto start nerdtree
-        " autocmd vimenter * if !argc() | NERDTree | endif " if not file start too
-        autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif " when no file colse nerdtree
-
-        " 布局管理器，让各个窗口按照规则排列
-        " Plug 'winmanager'
-    " }
-    "Tlist  - 调用TagList {
-        " 需安装 ctags
-        if !exists("g:no_compile_plugin")
-            Plug 'vim-scripts/taglist.vim'
-        endif
-        " tagbar is like the taglist
-        Plug 'majutsushi/tagbar'
-
-        let Tlist_Show_One_File        = 1             " 只显示当前文件的tags
-        let Tlist_Exit_OnlyWindow      = 1             " 如果Taglist窗口是最后一个窗口则退出Vim
-        let Tlist_Use_Right_Window     = 1             " 在右侧窗口中显示
-        let Tlist_File_Fold_Auto_Close = 1             " 自动折叠
-
-        " \wt                 打开Taglist/TxtBrowser窗口，在右侧栏显示
-        nmap <leader>wt :Tlist<CR><c-l>  " TlistToggle<CR>
-
-    " }
     " CtrlP - 快速打开文件 {
         Plug 'ctrlpvim/ctrlp.vim'
         let g:ctrlp_map = '<c-p>'
@@ -221,9 +166,6 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
     " 如果是语法上的识别，在 Language Section 中添加
     Plug 'vim-scripts/matchit.zip'
 
-    " 列出当前buffer列表的窗口,可以同过lru等排序快速找到文件
-    " Plug 'bufexplorer.zip'
-
     " 智能打开浏览器
     Plug 'tyru/open-browser.vim'
     " Open URI under cursor or search.--go brower
@@ -233,69 +175,7 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
     " Open URI you also can use <leader>gb because of "textbrowser.vim"
 " }
 " { Language Special
-    " { Front End
-
-        " zen emmet {
-            " Plug 'ZenCoding.vim' " original zen coding
-            Plug 'mattn/emmet-vim'
-
-            "set zen coding
-            " let g:user_zen_settings = {
-            "  \  'php' : {
-            "  \    'extends' : 'html',
-            "  \    'filters' : 'c',
-            "  \  },
-            "  \  'xml' : {
-            "  \    'extends' : 'html',
-            "  \  },
-            "  \  'haml' : {
-            "  \    'extends' : 'html',
-            "  \  },
-            "  \  'erb' : {
-            "  \    'extends' : 'html',
-            "  \  },
-            "  \}
-
-            " emmet(zen coding) 介绍
-            " 是横扫各大小编辑器的快速编码插件，其使用类`CSS`选择器的语法实现扩展性编码，确实够酷、够快
-
-            " `Zen Coding`在`Vim`下的默认触发键是`Ctrl + Y + ,`（注意，最后还有一个逗号）
-            "
-            " 调用规则
-            " ```
-            " `1`、单个元素：`div`
-            " `2`、带`id`的元素，使用`#`号：`div#name`
-            " `3`、带`class`的元素，使用点号（`.`）：`div.header`
-            " `4`、`id`与`class`是可以同时使用的，如果`class`名中含多个单词，可以使用点号（`.`）进行连接：`div#name.header.one`
-            " `5`、子元素使用大于号（`>`），子元素的子元素可以连写：`div>p>h1`
-            " `6`、同级兄弟元素使用加号（`+`），可以使用括号避免歧义：`div>p>(h1+h2)`
-            " `7`、多项相同的元素，使用星号（`*`）：`ul>li*5`
-            " `8`、带有序号的元素，使用美元符（`$`），从`1`开始自动递增：`div>p#id$*5`
-            " `9`、如果需要指定序号的位数，只须多写几个美元符（`$`）即可：`div>p#id$$$*5`
-            " div>p#foo$*3>a
-            " ```
-            "
-            " 常用缩写
-            " ```
-            " html:4t  传统的`HTML4.01`模板
-            " html:5  `HTML5`模板
-            " style  样式标签
-            " script  脚本标签
-            " link  `link`标签
-            " a  链接标签
-            " ```
-            " 更多用法可以查看 ":help emmet"
-            " 或者 `gf` https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-            "
-            " ref:
-            " 本文修改于： https://github.com/ruchee/backup2/blob/master/code/linux/vim/zencoding.wiki
-
-        "}
-
-        " Generate function comment
-        Plug 'heavenshell/vim-jsdoc'
-
-        " Front End
+    " Front End {
         Plug 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
         Plug 'isRuslan/vim-es6'
 
@@ -306,31 +186,6 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
 
         " support css word with -
         " set iskeyword+=-
-    " }
-    " Plain text brower(show the document map and syntax highlight in plain text) {
-    Plug 'vim-scripts/TxtBrowser'
-    " :help txt-keywords@cn
-    " 对txt文件列目录 dep:taglist.vim
-    " 以空格打头, 后跟关键字"figure"的行定义为"文本图",该行将被列在taglist窗口中.
-    " 以空格打头, 后跟关键字"table"的行定义为"文本表",该行将被列在taglist窗口中.
-    " map <silent> <leader>bft :set ft=txt<cr>
-    " map <silent> <leader>bgu :TxtBrowserUrl<cr><cr>  " 打开URL
-    " map <silent> <leader>bgw :TxtBrowserWord<cr><cr> " 查单词
-    " map <silent> <leader>bgs :TxtBrowserSearch<cr><cr> " search word under cursor
-    let tlist_txt_settings = 'txt;c:content;f:figures;t:tables'
-    let TxtBrowser_Dict_Url='http://dict.cn/text'      "英文词典
-    " let Txtbrowser_Search_Engine='http://www.baidu.com/s?wd=text&oq=text&f=3&rsp=2'
-    au BufRead,BufNewFile *.txt     setlocal ft=txt "syntax hlg txt for txt.vim
-    au BufRead,BufNewFile *log      setlocal ft=txt "syntax hlg log for txt.vim
-    au BufRead,BufNewFile readme    setlocal ft=txt "syntax hlg log for txt.vim
-    au BufRead,BufNewFile README    setlocal ft=txt "syntax hlg log for txt.vim
-    au BufRead,BufNewFile INSTALL   setlocal ft=txt "syntax hlg log for txt.vim
-    au BufRead,BufNewFile *.tag     setlocal ft=txt
-    " au BufRead,BufNewFile ReadMe    setlocal ft=txt "syntax hlg log for txt.vim
-    " au FileType rd                  setlocal ft=txt "syntax hlg readme for txt.vim
-    " au BufRead,BufNewFile diCtTmp   setlocal ft=txt
-    " au BufRead,BufNewFile *.sed.in  setlocal ft=txt
-    " au BufRead,BufNewFile *.sed.out setlocal ft=txt
     " }
     " Markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用
@@ -348,31 +203,12 @@ noremap <leader><s-f> :Autoformat<CR>:w<CR>
         " ```js
         " content
         " ```
-
-        " 与 instant 配合使用 https://github.com/yantze/instant-markdown-d
-        Plug 'suan/vim-instant-markdown'
     " }
     " python {
         " Plug 'fs111/pydoc.vim'
         Plug 'vim-scripts/python.vim'
         " 检查python的代码错误,编译需要'+python'
         " Plug 'pyflakes.vim'
-    " }
-    " Lisp {
-        Plug 'kovisoft/slimv'
-        let g:slimv_swank_cmd = '!osascript -e "tell application \"Terminal\" to do script \"sbcl --load ~/.vim/slime/start-swank.lisp\""'
-    " }
-    " Rust {
-        Plug 'rust-lang/rust.vim'
-    " }
-    " Go {
-        " if !exists("g:no_compile_plugin")
-        "     Plug 'fatih/vim-go'
-        " endif
-    " }
-    " { AppleScript 
-        " highlighting for applescript
-        Plug 'dearrrfish/vim-applescript'
     " }
 " }
 
