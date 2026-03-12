@@ -22,27 +22,12 @@ let g:color_dark = 1
         endif
     endif
 
-    " Platform Check
-    silent function! OSX()
-        return system('uname')=~'Darwin'
-    endfunction
-    silent function! LINUX()
-        return has('unix') && !has('macunix') && !has('win32unix')
-    endfunction
-    silent function! WINDOWS()
-        return  (has('win16') || has('win32') || has('win64'))
-    endfunction
-
     " 统一变量
-    if WINDOWS()
-        let $VIMHOME = $HOME."\\vimfiles" " C:\Users\User\vimfiles
-        let $VIMRC = $MYVIMRC
-        " set runtimepath=$HOME.'\.vim',$VIM.'\vimfiles',$VIMRUNTIME
-    else
-        let $VIMHOME = $HOME."/.vim"
-        let $VIMRC = $MYVIMRC
-        " set shell=/bin/sh
-    endif
+    let $VIMHOME = $HOME."/.vim"
+    let $VIMRC = $MYVIMRC
+
+    " Enable built-in matchit
+    packadd! matchit
 
     " Package Manager
     " 安装插件 :PlugInstall
@@ -176,36 +161,15 @@ let g:color_dark = 1
     func! Compile_Run_Code()
         exec "w"
         if &filetype == "c"
-            if WINDOWS()
-                exec !gcc -Wall -std=c11 -o %:r %:t && %:r.exe"
-            elseif OSX()
-                exec "!clang -Wall -std=c11 -o %:r %:t && ./%:r"
-            else
-                exec "!gcc -Wall -o %:r %:t && ./%:r"
-            endif
+            exec "!clang -Wall -std=c11 -o %:r %:t && ./%:r"
         elseif &filetype == "cpp"
-            if WINDOWS()
-                exec "!g++ -Wall -std=c++11 -o %:r %:t && %:r.exe"
-            else
-                " exec "!g++ -Wall -std=c++11 -o %:r %:t && ./%:r"
-                exec "!clang++ -Wall -std=c++14 `pkg-config --cflags` -o %:r %:t && ./%:r"
-                " --libs opencv " add openvcv support
-                " -ggdb " add gdb support
-            endif
+            exec "!clang++ -Wall -std=c++14 `pkg-config --cflags` -o %:r %:t && ./%:r"
         elseif &filetype == "d"
-            if WINDOWS()
-                exec "!dmd -wi %:t && %:r.exe"
-            else
-                exec "!dmd -wi %:t && ./%:r"
-            endif
+            exec "!dmd -wi %:t && ./%:r"
         elseif &filetype == "go"
             exec "!go run %:t"
         elseif &filetype == "rust"
-            if WINDOWS()
-                exec "!rustc %:t && %:r.exe"
-            else
-                exec "!rustc %:t && ./%:r"
-            endif
+            exec "!rustc %:t && ./%:r"
         elseif &filetype == "java"
             exec "!javac %:t && java %:r"
         elseif &filetype == "groovy"
@@ -309,20 +273,6 @@ let g:color_dark = 1
             execute "set cc+=".col_num
         else
             execute "set cc-=".col_num
-        endif
-    endfunction
-
-    " Remove trailing whitespace when writing a buffer, but not for diff files.
-    " From: Vigil
-    function! RemoveTrailingWhitespace()
-        if &ft != "diff"
-            let b:curcol = col(".")
-            let b:curline = line(".")
-            silent! %s/\(\[.*\]\[.*\]\)\s\+$/\1@@@@@@@@/
-            silent! %s/\s\+$//
-            silent! %s/\(\s*\n\)\+\%$//
-            silent! %s/\(\[.*\]\[.*\]\)@@@@@@@@$/\1  /
-            call cursor(b:curline, b:curcol)
         endif
     endfunction
 " }
@@ -461,107 +411,39 @@ let g:color_dark = 1
 
 " GUI & WIN {
 " 设置着色模式和字体
-if WINDOWS()
-    " 使用GUI界面时的设置
-    if has("gui_running")
-        " 启动gvim时窗口的大小
-        " set lines=42 columns=170
-        " 启动时自动最大化窗口
-        " au GUIEnter * simalt ~x
-
-        " winpos 20 20             " 指定窗口出现的位置，坐标原点在屏幕左上角
-        " set lines=20 columns=90  " 指定窗口大小，lines为高度，columns为宽度
-        set guioptions+=c        " 使用字符提示框
-        set guioptions-=m        " 隐藏菜单栏
-        set guioptions-=T        " 隐藏工具栏
-        set guioptions-=L        " 隐藏左侧滚动条
+if has("gui_running")
+    if has("gui_gtk2")
+        set guioptions=egitcaA  " 与Windows类似"
+        set guifont=Monaco\ 14
+    elseif has("gui_macvim")
+        set guifont=Monaco\ for\ Powerline:h12
+        set guifontwide=HiraginoSansGB-W3:h12
+        " set guifontwide=Go\ Mono\ for\ Powerline:h12
         set guioptions-=r        " 隐藏右侧滚动条
-        " set guioptions-=b        " 隐藏底部滚动条
-        " set showtabline=1        " 隐藏Tab栏
-        set guioptions+=aA       " get some autoselect interaction with the system clipboard
+        set guioptions-=L        " 隐藏左侧滚动条
+    end
 
-        " colortheme list: molokai autumn blackboard asu1dark busybee tomorrow
-        " colorscheme solarized  " deep blue
-        " colorscheme morning    " white
-        " colorscheme desertEx
-
-        " let g:zenburn_transparent = 1 " black
-        let g:zenburn_high_Contrast = 1
-        silent! colorscheme zenburn      " grey, my fav
-
-        " set font
-        " https://github.com/runsisi/consolas-font-for-powerline
-        set guifont=Powerline\ Consolas:h11:cANSI,Consolas\ NF:h11:cANSI,Consolas:h11,Inconsolata:h12
-        " https://gist.github.com/kevinis/c788f85a654b2d7581d8
-        " set guifont=Monaco\ for\ Powerline:h12:cANSI
-        set renderoptions=type:directx,renmode:5
-        " set guifont=Monaco:h11
-        " set guifont=Source\ Code\ Pro\ Regular:h15
-        " set guifont=YaHei\ Consolas\ Hybrid:h13
-        " set guifont=Source\ Code\ Pro:h13
-    else
-        silent! colorscheme CodeFactoryv3
-        " colorscheme ir_black
-        " 兼容windows下cmd的gb2312
-        " set enc=cp936
-        " help encoding-table
-        set termencoding=cp936
-        " In order to reload a file with proper encoding you can do:
-        " :e! ++enc=<the_encoding>.
-        " dos里面<backspace>和<c-h>完全链接了，要取消<c-h>的映射
-        iunmap <c-h>
-
-    endif
+    set background=light
+    silent! colorscheme solarized
+    set lines=38 columns=140
 else
-    if has("gui_running")
-        if has("gui_gtk2")
-            set guioptions=egitcaA  " 与Windows类似"
-            set guifont=Monaco\ 14
-        elseif has("gui_macvim")
-            set guifont=Monaco\ for\ Powerline:h12
-            set guifontwide=HiraginoSansGB-W3:h12
-            " set guifontwide=Go\ Mono\ for\ Powerline:h12
-            set guioptions-=r        " 隐藏右侧滚动条
-            set guioptions-=L        " 隐藏左侧滚动条
-        end
+    silent! colorscheme solarized
+    " Solarized 主题
+    let g:solarized_termcolors=16 " 16 | 256
+    let g:solarized_termtrans=1 " 0 | 1
+    let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
+    let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
+    let g:solarized_bold = 1 " 1 | 0
 
-        " set guifont=Monaco\ 13
-        " set guifontwide=HiraginoSansGB-W3:h15
-        " set guifont=YaHei\ Consolas\ Hybrid:h13
-        set background=light
-        silent! colorscheme solarized
-        set lines=38 columns=140
-
-        " 在 macvim 中，不支持
-        " set nu!
+    if exists("g:color_dark")
+        set background=dark
     else
-        " colortheme list: ir_black grb256 BusyBee pt_black solarized xoria256
-        " silent! colorscheme pt_black
-
-        silent! colorscheme solarized
-        " Solarized 主题
-        let g:solarized_termcolors=16 " 16 | 256
-        let g:solarized_termtrans=1 " 0 | 1
-        let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
-        let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
-        let g:solarized_bold = 1 " 1 | 0
-        " highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
-        " g:solarized_degrade = 0 | 1
-        " g:solarized_underline = 1 | 0
-        " g:solarized_italic = 1 | 0
-        " g:solarized_contrast = “normal”| “high” or “low”
-
-        if exists("g:color_dark")
-            set background=dark
-        else
-            set background=light
-        endif
-        highlight LineNr ctermbg=none ctermfg=none " 设置行号背景为 none
-        if &background == 'light'
-            hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
-            hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
-        endif
-
+        set background=light
+    endif
+    highlight LineNr ctermbg=none ctermfg=none " 设置行号背景为 none
+    if &background == 'light'
+        hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
+        hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
     endif
 endif
 
@@ -1056,9 +938,8 @@ imap <leader>p <Esc>:bp<CR>i
 :map <c-F2> :bp<CR>
 imap <c-F2> <Esc>:bp<CR>i
 
-" 上一次打开的缓冲区, 用 Ctrl+6 也可以做到
-" nmap <leader>k :b#<CR>
-" 用 ctrlp 插件， <leader><space> 默认选中的就是上次打开的 buffer
+" 用 fzf 插件， <leader><space> 默认选中的就是上次打开的 buffer
+nnoremap <Leader><space> :Buffers<CR>
 
 " \R         一键保存、编译、运行
 imap <leader>R <ESC>:call Compile_Run_Code()<CR>
@@ -1273,6 +1154,18 @@ imap fd <Esc>
     " autocmd CmdwinEnter    * fenc=cp936
 
     " 界面相关的快捷键以 ,w 开头
+" }
+
+" Modern Defaults & Auto-commands {
+    " 保存时自动去除行尾空格 (Neovim 现代方式)
+    autocmd BufWritePre * if &ft != 'diff' | silent! %s/\s\+$//e | endif
+
+    " 设置现代配色
+    if has('nvim')
+        silent! colorscheme catppuccin-mocha
+    else
+        silent! colorscheme solarized
+    endif
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :
