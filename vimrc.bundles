@@ -19,24 +19,15 @@ call plug#begin("$VIMHOME/plugged")
         map <silent> <leader>tig :IndentGuidesToggle<cr>
         map <silent> <leader>tch :call SetColorColumn()<CR> " 给当前列添加标记
     " }
-    " 快捷注释 :tComment - inherit the NERD_commenter shortkey {
-        " 相比其它更智能，我的配置里面快捷键inhert了nerdcommenter
-        Plug 'tomtom/tcomment_vim'
-
-        map <leader>ci <Plug>TComment_<Leader>__
-        map <leader>cm <Plug>TComment_<Leader>_b
-
-        " comments.vim 用c-c/c-x做注释
-        " Plug 'comments.vim'
-        " 用<leader>ci/cm做注释
-        " Plug 'scrooloose/nerdcommenter'
-        " NERD_commenter      注释处理插件
-        " let loaded_nerd_tree = 1
-        " let NERDSpaceDelims = 1                        " 自动添加前置空格
-    " }
-
     " Easily delete, change and add such surroundings in pairs.
     Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-commentary'
+
+    " Restore <leader>ci and <leader>cm for vim-commentary
+    nmap <leader>ci <Plug>CommentaryLine
+    xmap <leader>ci <Plug>Commentary
+    nmap <leader>cm <Plug>CommentaryLine
+    xmap <leader>cm <Plug>Commentary
 
     " 按等号或者其它符号对齐
     Plug 'godlygeek/tabular'
@@ -95,10 +86,9 @@ call plug#begin("$VIMHOME/plugged")
 " { Color Schemes & Highlight
     " 部分语言的配色会在 Language Section
 
-    " 比较全的 color scheme
-    Plug 'flazz/vim-colorschemes'
+    " 配色方案
+    Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
-    " Plug 'skammer/vim-css-color'
     Plug 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
     " 配置高亮括号,给原来的括号加上高亮
     " Plug 'kien/rainbow_parentheses.vim'
@@ -124,32 +114,11 @@ call plug#begin("$VIMHOME/plugged")
     let g:rbpt_loadcmd_toggle = 0
 " }
 " { Browsing & Navigating file
-    " CtrlP - 快速打开文件 {
-        Plug 'ctrlpvim/ctrlp.vim'
-        let g:ctrlp_map = '<c-p>'
-        let g:ctrlp_cmd = 'CtrlP'
-        let g:ctrlp_working_path_mode = 'ra'
-        " nnoremap <Leader>t :CtrlP getcwd()<CR>
-        " nnoremap <Leader>f :CtrlPClearAllCaches<CR>
-        " nnoremap <Leader>j :CtrlP ~/<CR>
-        nnoremap <Leader><space> :CtrlPBuffer<CR>
-
-        " \ff                 打开文件搜索窗口，在状态栏显示
-        nmap <leader>ff :CtrlP<CR>
-
-        " let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-        let g:ctrlp_custom_ignore = {
-            \'dir': '\.git$\|\.hg$\|\.svn$\|bower_components$\|dist$\|node_modules$\|project_files$\|test$',
-            \'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.pyo$\|\.rbc$\|\.rbo$\|\.class$\|\.o$\|\~$' }
-    " }
     " Find & Search {
         " 操作
-        if v:version > 703
-            " 快速移动
-            " 替换原来的查找，可以同时显示多个查找关键字(Easymotion)
-            Plug 'Lokaltog/vim-easymotion'
-            map  / <Plug>(easymotion-sn)
-            omap / <Plug>(easymotion-tn)
+        if has('nvim')
+            " 现代跳转工具
+            Plug 'folke/flash.nvim'
         endif
 
         " Plug 'justinmk/vim-sneak'
@@ -157,14 +126,10 @@ call plug#begin("$VIMHOME/plugged")
         " let g:sneak#label = 1
 
         " brew install fzf
-        " PlugInstall and PlugUpdate will clone fzf in ~/.fzf and run the install script
-        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        " Use the fzf installed via Homebrew
+        set rtp+=/usr/local/opt/fzf
         Plug 'junegunn/fzf.vim'
     " }
-
-    " 在()、""、甚至HTML标签之间快速跳转；
-    " 如果是语法上的识别，在 Language Section 中添加
-    Plug 'vim-scripts/matchit.zip'
 
     " 智能打开浏览器
     Plug 'tyru/open-browser.vim'
@@ -176,13 +141,8 @@ call plug#begin("$VIMHOME/plugged")
 " }
 " { Language Special
     " Front End {
-        Plug 'pangloss/vim-javascript' " syntax HTML/JS混排缩进改善
-        Plug 'isRuslan/vim-es6'
-
         " node 补全 require 或者 定位到 require 中的文件
         Plug 'moll/vim-node'
-
-        Plug 'leafgarland/typescript-vim'
 
         " support css word with -
         " set iskeyword+=-
