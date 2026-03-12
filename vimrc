@@ -35,50 +35,8 @@ let g:color_dark = 1
         source $VIMHOME/vimrc.bundles
     endif
 
-    " Adapte with putty because of putty only support the 7 character
-    " if $TERM == 'screen'
-        " http://vim.wikia.com/wiki/Get_Alt_key_to_work_in_terminal
-        " set <m-j>=j
-        " set <m-h>=h
-        " set <m-k>=k
-        " set <m-l>=l
-        "
-        " https://groups.google.com/forum/#!topic/vim_use/uKOmY-mHo_k
-        " 导致 ESC 延迟反应
-        " below set <esc> wait the next key millionstime
-        " set timeout timeoutlen=3000 ttimeoutlen=100
-
-        " 这个让 alt work in putty 的方法影响了其它平台的使用，禁用
-    " endif
     " the ^[ is an Esc char that comes before the 'a'
     " In most default configs, ^[a may be typed by pressing first <C-v>, then <M-a>
-
-    " http://vim.1045645.n5.nabble.com/Mapping-meta-key-within-tmux-td5716437.html
-    " Fix screen's key bindings.
-    " if &term == "screen"
-    "     " These work from my HP keyboard in PuTTY on Windows XP.
-    "     map <Esc>[D   <S-Left>
-    "     map <Esc>[C   <S-Right>
-    "     map <Esc>[11~ <F1>
-    "     map <Esc>[12~ <F2>
-    "     map <Esc>[13~ <F3>
-    "     map <Esc>[14~ <F4>
-    "     map <Esc>[15~ <F5>
-    "     map <Esc>[16~ <F6>
-    "     map <Esc>[17~ <F7>
-    "     map <Esc>[18~ <F8>
-    "     map <Esc>[19~ <F9>
-    "     map <Esc>[21~ <F10
-    "     map <Esc>[23~ <F11>
-    "     map <Esc>[24~ <F12>
-    " endif
-
-    " if &term=="xterm"
-    "     set t_Co=8
-    "     set t_Sb=[4%dm
-    "     set t_Sf=[3%dm
-    " endif
-
 " }
 
 " Functions {
@@ -94,24 +52,6 @@ let g:color_dark = 1
     func! CopySelectedToCloud()
         exec ":'<,'>:w !tee | xcopy"
     endfunc
-
-    func! RunSelected()
-        exec ":s/\%V\(.*\)/{{__ "\1"}}/"
-    endfunc
-
-    func! s:get_visual_selection()
-        " https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
-        let [line_start, column_start] = getpos("'<")[1:2]
-        let [line_end, column_end] = getpos("'>")[1:2]
-        let lines = getline(line_start, line_end)
-        if len(lines) == 0
-            return ''
-        endif
-        let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-        let lines[0] = lines[0][column_start - 1:]
-        return join(lines, "\n")
-    endfunc
-
 
     func! RemoveTabs()
         if &shiftwidth == 2
@@ -247,10 +187,6 @@ let g:color_dark = 1
                     \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
         let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
         call append(line("$"), l:modeline)
-    endfunction
-
-    function! RemoveOldViewFiles()
-        exe 'find '.$VIMHOME.'/view/* -mtime +90 -exec rm {} \;'
     endfunction
 
     function! SetCurLineNum()
@@ -397,63 +333,43 @@ let g:color_dark = 1
         set undodir=$VIMHOME/_undodir
         set undolevels=1000  " maximum number of changes that can be undone"
     endif
-
-
-    " if !exists("g:no_vimrc_bundles")
-        " 由于不同版本的 vim 导致 mkview 出现越来越多问题，弃用
-        " autocmd BufWinLeave *.* if expand('%') != '' && &buftype == '' | mkview | endif
-        " autocmd BufRead     *.* if expand('%') != '' && &buftype == '' | silent loadview | endif
-        " *.* is better for me than using just *, as when I load Vim it defaults to [No File]
-        " au BufWinLeave ?* silent mkview 1 " 星号前面的问号是忽略未命名文件
-        " 状态保存在 ~/.vim/view 文件夹,如果保存了之后,修改了 filetype 的 syntax 属性,需要删除 view 才能更新
-    " endif
 " }
 
-" GUI & WIN {
-" 设置着色模式和字体
-if has("gui_running")
-    if has("gui_gtk2")
-        set guioptions=egitcaA  " 与Windows类似"
-        set guifont=Monaco\ 14
-    elseif has("gui_macvim")
-        set guifont=Monaco\ for\ Powerline:h12
-        set guifontwide=HiraginoSansGB-W3:h12
-        " set guifontwide=Go\ Mono\ for\ Powerline:h12
-        set guioptions-=r        " 隐藏右侧滚动条
-        set guioptions-=L        " 隐藏左侧滚动条
-    end
+" GUI {
 
-    set background=light
-    silent! colorscheme solarized
-    set lines=38 columns=140
+" Solarized 主题
+let g:solarized_termcolors=16 " 16 | 256
+let g:solarized_termtrans=1 " 0 | 1
+let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
+let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
+let g:solarized_bold = 1 " 1 | 0
+" highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
+" g:solarized_degrade = 0 | 1
+" g:solarized_underline = 1 | 0
+" g:solarized_italic = 1 | 0
+" g:solarized_contrast = “normal”| “high” or “low”
+
+if exists("g:color_dark")
+    set background=dark
 else
-    silent! colorscheme solarized
-    " Solarized 主题
-    let g:solarized_termcolors=16 " 16 | 256
-    let g:solarized_termtrans=1 " 0 | 1
-    let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
-    let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
-    let g:solarized_bold = 1 " 1 | 0
-
-    if exists("g:color_dark")
-        set background=dark
-    else
-        set background=light
-    endif
-    highlight LineNr ctermbg=none ctermfg=none " 设置行号背景为 none
-    if &background == 'light'
-        hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
-        hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
-    endif
+    set background=light
 endif
+highlight LineNr ctermbg=none ctermfg=none " 设置行号背景为 none
+if &background == 'light'
+    hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
+    hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
+endif
+" 设置着色模式和字体
+" colortheme list: pt_black ir_black grb256 BusyBee pt_black solarized xoria256
+silent! colorscheme solarized
 
 " pure vim {
-    if get(g:, 'colors_name', 'default') == 'default'
-        if &background == 'light'
-            hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
-            hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
-        endif
-    endif
+    " if get(g:, 'colors_name', 'default') == 'default'
+    "     if &background == 'light'
+    "         hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
+    "         hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
+    "     endif
+    " endif
 " }
 
 " }
@@ -504,8 +420,7 @@ endif
     set shiftround
 
     set cindent
-    " 详细的tab设置：http://blog.chinaunix.net/uid-24774106-id-3396220.html
-    set smarttab                 "在行首按TAB将加入sw个空格，否则加入ts个空格;按Backspace可以删除4个空格
+    set smarttab
 
 " }
 
@@ -604,41 +519,9 @@ endif
 " }
 " Scene Setting {
 
-" ManPage {
-    " manpageview phpfunctionname.php
-    " 可以使用快捷键K查询
-    " 说明，比如你在centos里面装了man-pages，当你用K查询的时候，自动会弹出man 你光标下面的词
-    " manpageview 替代了插件pydoc.vim
-    "
-" }
-
-" Markdown {
-
-    " Instant Preview Markdown
-    let g:instant_markdown_autostart = 0
-    map <leader>rp :InstantMarkdownPreview<CR>
-
-    let tlist_markdown_settings = 'markdown;c:content;f:figures;t:tables;h:headlines'
-    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set ft=markdown
-    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword+=[
-    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set iskeyword-=_
-
-    " au BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn} set conceallevel=2
-
-    " au FileType markdown,MARKDOWN  set iskeyword+=[
-    " au FileType markdown,MARKDOWN  set iskeyword-=_
-    " au BufWritePre *{md,mdown,mkd,mkdn,markdown,mdwn} call RemoveTrailingWhitespace()
-
-    " :Toch 水平底部添加 Toc， 这个可以复制到正文里面
-    " ]]    go to next header.
-    " [[    go to previous header. Contrast with ]c.
-" }
-
 " Python {
     " python highlight
     let python_highlight_all = 1
-    let b:python_version_2 = 1
-    let g:python_version_2 = 1
 
     au BufRead *.wsgi setl filetype=python
 
@@ -897,12 +780,6 @@ vmap <leader>rt <ESC>:call RemoveTabs()<CR>
 " \rso
 nmap <leader>rso :so ~/.vim/vimrc<CR>
 
-" move lines up or down (command - D)
-nmap <m-j> mz:m+<cr>`z
-nmap <m-k> mz:m-2<cr>`z
-vmap <m-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <m-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
 " Tab move lines left or right (c-Ctrl,s-Shift)
 "nmap    <c-tab>     v>
 "nmap    <s-tab>     v<
@@ -962,12 +839,6 @@ map <leader>te :tabedit
 " map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 
-" Line(s) move up/down
-nnoremap <silent> <C-k>  :m-2<CR>==
-nnoremap <silent> <C-j>  :m+<CR>==
-xnoremap <silent> <C-k>  :m'<-2<CR>gv=gv
-xnoremap <silent> <C-j>  :m'>+<CR>gv=gv
-
 nnoremap <leader><F4> :set undofile!<CR>
 imap <leader><F4>     :set undofile!<CR>
 
@@ -978,8 +849,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 "nnoremap <leader>w <C-W>w
-
-nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
 
 " map j to gj and k to gk, so line navigation ignores line wrap
 nnoremap j gj
