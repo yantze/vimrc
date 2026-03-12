@@ -87,7 +87,8 @@ call plug#begin("$VIMHOME/plugged")
     " 部分语言的配色会在 Language Section
 
     " 配色方案
-    Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+    " 比较全的 color scheme
+    Plug 'flazz/vim-colorschemes'
 
     Plug 'lilydjwg/colorizer' " 这个是vimcsscolor的替代
 " }
