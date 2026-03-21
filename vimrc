@@ -121,27 +121,15 @@ let g:color_dark = 1
         elseif &filetype == "cs"
                 exec "!mcs %:t && mono %:r.exe"
         elseif &filetype == "fsharp"
-            if WINDOWS()
-                exec "!fsc %:t && %:r.exe"
-            else
-                exec "!fsharpc %:t && ./%:r.exe"
-            endif
+            exec "!fsharpc %:t && ./%:r.exe"
         elseif &filetype == "scheme" || &filetype == "racket"
             exec "!racket -fi %:t"
         elseif &filetype == "lisp"
             exec "!sbcl --load %:t"
         elseif &filetype == "ocaml"
-            if WINDOWS()
-                exec "!ocamlc -o %:r.exe %:t && %:r.exe"
-            else
-                exec "!ocamlc -o %:r %:t && ./%:r"
-            endif
+            exec "!ocamlc -o %:r %:t && ./%:r"
         elseif &filetype == "haskell"
-            if WINDOWS()
-                exec "!ghc -o %:r %:t && %:r.exe"
-            else
-                exec "!ghc -o %:r %:t && ./%:r"
-            endif
+            exec "!ghc -o %:r %:t && ./%:r"
         elseif &filetype == "lua"
             exec "!lua %:t"
         elseif &filetype == "perl"
@@ -162,10 +150,6 @@ let g:color_dark = 1
             exec "!haxe -main %:r --interp"
         elseif &filetype == "r"
             exec "!Rscript %:t"
-        elseif &filetype == "coffee"
-            exec "!coffee -c %:t && node %:r.js"
-        elseif &filetype == "ls"
-            exec "!lsc -c %:t && node %:r.js"
         elseif &filetype == "typescript"
             " exec "!tsc %:t && node %:r.js"
             exec "!npx ts-node %:r.ts"
@@ -219,32 +203,21 @@ let g:color_dark = 1
 " Basic {
 
     syntax enable                " 打开语法高亮
-    syntax on                    " 开启文件类型侦测
-    filetype indent on           " 针对不同的文件类型采用不同的缩进格式
-    filetype plugin on           " 针对不同的文件类型加载对应的插件
-    filetype plugin indent on    " 启用自动补全
-    set visualbell t_vb=         " 关闭visual bell/声音
-    " set t_Co=256               " 设置文字可以显示多少种颜色, 历史原因可能是比 8-bit 色彩更少, 可能比 8-bit 终端更早
-    au GuiEnter * set t_vb=      " 关闭beep/屏闪
+    filetype plugin indent on    " 文件类型检测 + 插件 + 缩进
+    set visualbell t_vb=         " 关闭 visual bell/声音（terminal Vim）
     " set t_ti= t_te=            " 退出 vim 后,vim 的内容仍显示在屏幕上
 
-    set backspace=2              " 设置退格键可用
-    set ruler                    " 右下角显示光标位置的状态行
-    set hidden                   " 允许在有未保存的修改时切换缓冲区
-    set laststatus=2             " 开启状态栏信息
-    set cmdheight=2              " 命令行的高度，默认为1，这里设为2
-    " set bsdir=buffer           " 设定文件浏览器目录为当前目录
-    " set autochdir " sometimes can not work
-    autocmd BufEnter * silent! lcd %:p:h
-    set wildmenu                 " 在命令行下显示匹配的字段到状态栏里面
-    " set cursorcolumn           " 突出显示当前列
-    set history=500              " keep 500 lines of command line history
+    set hidden                   " 允许在有未保存的修改时切换缓冲区（仅 Vim 需要，Neovim 已默认）
+    set laststatus=2             " 开启状态栏（仅 Vim 需要，Neovim 已默认）
+    set cmdheight=2              " 命令行的高度
+    augroup vimrc_autolcd
+        autocmd!
+        autocmd BufEnter * silent! lcd %:p:h
+    augroup END
+    set history=10000            " 历史记录条数（Vim 8+ 默认已是 10000）
     silent! set mouse=a          " 启用鼠标
 
     set cursorline               " 突出显示当前行
-    " set tw=78                  "超过80个字符就折行(textwrap)
-    " set viminfo='20,\"50       " read/write a .viminfo file, don't store more than 50 lines of registers
-    set display=lastline         " 不要显示@@@@@
     " set conceallevel=2         " 隐藏想要隐藏的字符
     " set fillchars+=vert:\      " 设置 split bar 的内容字符
     " set foldcolumn=2           " 左侧窗边的宽度
@@ -256,10 +229,6 @@ let g:color_dark = 1
 
     " set lsp=0                  " 设置行间距
 
-    " => Modify word boundary characters
-    " insert schema, ctrl+w and other keys likes emacs
-    set iskeyword+=- " remove - as a word boundary
-    set iskeyword+=$
 
 " }
 
@@ -274,28 +243,16 @@ let g:color_dark = 1
 
     " 相对行号 {
 
-    if v:version > 703
-        set relativenumber number
-        " 插入模式下用绝对行号,普通模式下用相对
-        " augroup numbertoggle
-        "     autocmd!
-        "     autocmd BufEnter,FocusGained,InsertLeave * set relativenumber " nonumber
-        "     autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber number
-        " augroup END
+    set relativenumber number
 
-        function! NumberToggle()
-            if(&relativenumber == 1)
-                set norelativenumber nonumber
-            else
-                set relativenumber number
-            endif
-        endfunc
-        nnoremap <F2> :call NumberToggle()<cr>
-
-        " no num and relative
-        " nnoremap <leader><F3> :set relativenumber!<CR>:set nu!<CR>
-        " imap <leader><F3>     :set relativenumber!<CR>:set nu!<CR>
-    endif
+    function! NumberToggle()
+        if(&relativenumber == 1)
+            set norelativenumber nonumber
+        else
+            set relativenumber number
+        endif
+    endfunc
+    nnoremap <F2> :call NumberToggle()<cr>
 
     " }
 
@@ -322,34 +279,23 @@ let g:color_dark = 1
 
     " restore last postion in file to $VIMHOME/view
     " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
-    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    augroup vimrc_lastpos
+        autocmd!
+        autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    augroup END
 
 
-    if v:version > 703
-        set undofile " 持续保留操作记录,默认filename.un~, valid feature for `vim --version` have +persistent_undo
-        if empty(glob("$VIMHOME/_undodir"))
-            call mkdir(expand("$VIMHOME/_undodir"))
-        endif
-        set undodir=$VIMHOME/_undodir
-        set undolevels=1000  " maximum number of changes that can be undone"
+    set undofile " 持续保留操作记录
+    if empty(glob("$VIMHOME/_undodir"))
+        call mkdir(expand("$VIMHOME/_undodir"))
     endif
+    set undodir=$VIMHOME/_undodir
+    set undolevels=1000  " maximum number of changes that can be undone
 " }
 
 " GUI {
 
-" Solarized 主题
-let g:solarized_termcolors=16 " 16 | 256
-let g:solarized_termtrans=1 " 0 | 1
-let g:solarized_contrast="normal" " 'normal' | 'high' or 'low'
-let g:solarized_visibility="normal" " 'normal' | 'high' or 'low'
-let g:solarized_bold = 1 " 1 | 0
-" highlight LineNr ctermbg=none ctermfg=grey " 设置行号背景为 none
-" g:solarized_degrade = 0 | 1
-" g:solarized_underline = 1 | 0
-" g:solarized_italic = 1 | 0
-" g:solarized_contrast = “normal”| “high” or “low”
-
-if exists("g:color_dark")
+if exists('g:color_dark')
     set background=dark
 else
     set background=light
@@ -359,18 +305,13 @@ if &background == 'light'
     hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
     hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
 endif
-" 设置着色模式和字体
-" colortheme list: pt_black ir_black grb256 BusyBee pt_black solarized xoria256
-silent! colorscheme solarized
 
-" pure vim {
-    " if get(g:, 'colors_name', 'default') == 'default'
-    "     if &background == 'light'
-    "         hi CursorLine term=bold cterm=bold ctermbg=7 guibg=Grey90
-    "         hi Folded term=bold,underline cterm=bold,underline ctermfg=11 ctermbg=7 guifg=DarkBlue guibg=LightGrey
-    "     endif
-    " endif
-" }
+" solarized 关键参数：termtrans=1 使用终端原生背景色（避免与命令行背景色不一致）
+let g:solarized_termcolors=256  " 使用终端 256 色，与终端配色一致
+let g:solarized_termtrans=1    " 透明背景，复用终端背景色
+
+" colortheme list: pt_black ir_black grb256 BusyBee solarized xoria256 wombat256 molokai
+silent! colorscheme solarized
 
 " }
 
@@ -419,28 +360,16 @@ silent! colorscheme solarized
     " 缩进时,取整
     set shiftround
 
-    set cindent
-    set smarttab
+    " cindent 仅在 C/C++ 文件类型中启用（通过 ftplugin），避免干扰其他语言
 
 " }
 
-" 粘贴模式 {
-
-    " 在插入模式下按 <F3> 进入粘贴模式,这时候粘贴复制过来的代码不会触发自动缩进
-    set pastetoggle=<F3>
-    " 离开插入模式时,关闭粘贴模式
-    autocmd InsertLeave * set nopaste
-
-" }"
-
 " Search {
 
-    set incsearch                " 开启实时搜索功能,查询时非常方便，如要查找book单词，当输入到/b时，会自动找到第一个b开头的单词，当输入到/bo时，会自动找到第一个bo开头的单词
-    set hlsearch                 " 开启高亮显示结果
+    " incsearch / magic 在 Vim 8+/Neovim 已是默认值
+    set hlsearch                 " 开启高亮显示结果（仅 Vim 需要，Neovim 已默认）
     set nowrapscan               " 搜索到文件两端时不重新搜索
     set ic                       " 忽略大小写查找
-    " 搜索正则匹配规则改变 见帮助 :h magic
-    set magic
     " 搜索模式为默认更先进的正则规则
     " nnoremap / /\v
     " vnoremap / /\v
@@ -510,7 +439,7 @@ endif
     set wildignore+=*.so,*.out,*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
     set wildignore+=*.luac " Lua byte code
     set wildignore+=*.pyc " Python byte code
-    set wildignore+=*.class" Python byte code
+    set wildignore+=*.class " Java byte code
     set wildignore+=*.spl " compiled spelling word lists
     set wildignore+=*/tmp/*,.DS_Store  " MacOSX/Linux
 
@@ -519,197 +448,62 @@ endif
 " }
 " Scene Setting {
 
-" Python {
-    " python highlight
+augroup vimrc_filetypes
+    autocmd!
+
+    " Python
     let python_highlight_all = 1
-
-    au BufRead *.wsgi setl filetype=python
-
-    au BufNewFile,BufRead *.py,*.pyw
+    autocmd BufRead *.wsgi setl filetype=python
+    autocmd BufNewFile,BufRead *.py,*.pyw
         \ set tabstop=4 |
         \ set softtabstop=4 |
         \ set shiftwidth=4 |
         \ set textwidth=79 |
         \ set expandtab |
         \ set autoindent |
-        \ set fileformat=unix |
+        \ set fileformat=unix
+    autocmd BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
 
-    " Use UNIX (\n) line endings.
-    au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
-
-    " Display tabs at the beginning of a line in Python mode as bad.
-    " au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
-    " Make trailing whitespace be flagged as bad.
-    " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
-
-    " 支持Virtualenv虚拟环境
-
-    " 上面“转到定义”功能的一个问题，就是默认情况下Vim不知道virtualenv虚拟环境的情况，所以你必须在配置文件中添加下面的代码，使得Vim和YouCompleteMe能够发现你的虚拟环境：
-
-    " python with virtualenv support
-    " py << EOF
-    " import os
-    " import sys
-    " if 'VIRTUAL_ENV' in os.environ:
-    "   project_base_dir = os.environ['VIRTUAL_ENV']
-    "   activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    "   execfile(activate_this, dict(__file__=activate_this))
-    " EOF
-    " 这段代码会判断你目前是否在虚拟环境中编辑，然后切换到相应的虚拟环境，并设置好你的系统路径，确保YouCompleteMe能够找到相应的site packages文件夹。
-    " 上面的代码似乎已经被下面的插件智能解 决
-    " https://github.com/jmcantrell/vim-virtualenv
-    " 如果有一天一直使用 python  可以考虑把 python 放在单独的一个文件配置中, 参考这篇文章
-    " https://segmentfault.com/a/1190000003962806
-" }
-
-" JavaScript & Node {
-
-    " F         格式化当前页面 js,html,css. 可选中局部格式化
-
-    " au FileType javascript,coffee,slim,jade set shiftwidth=2
-    " au FileType javascript,offee,slim,jade set tabstop=2
-
-    " au BufRead,BufNewFile *.scss set filetype=scss
-    " au BufRead,BufNewFile *.sass set filetype=scss
-    " au BufRead,BufNewFile *.js set filetype=javascript syntax=jquery
-    " au BufRead,BufNewFile *.less set filetype=css
-    " au BufRead,BufNewFile *.coffee setl foldmethod=indent nofoldenable
-    " au BufRead,BufNewFile *.coffee setl shiftwidth=2 expandtab
-
-    au BufNewFile,BufRead *.ts,*.tsx,*.js,*.jsx,*.html,*.css,*.less
+    " JavaScript / TypeScript / HTML / CSS
+    autocmd BufNewFile,BufRead *.ts,*.tsx,*.js,*.jsx,*.html,*.css,*.less
         \ set tabstop=2 |
         \ set softtabstop=2 |
         \ set shiftwidth=2
+    autocmd FileType javascript set fdm=syntax
 
-    au FileType javascript set fdm=syntax
+    " C/C++ - 生成 ctags: <leader>mt
+    " cindent 仅对 C 系文件类型启用
+    autocmd FileType c,cpp set cindent
 
-    " ignore Node and JS stuff
-    set wildignore+=*/node_modules/*,*.min.js
+    " Other languages - 缩进
+    autocmd FileType json,scala,clojure,lua,dart,sh set shiftwidth=2 tabstop=2
 
-" }
+    " iskeyword per filetype
+    autocmd FileType css,scss,less,html set iskeyword+=-
+    autocmd FileType javascript,typescript,javascriptreact,typescriptreact set iskeyword+=$
+    autocmd FileType php set iskeyword+=$
+    autocmd FileType clojure set iskeyword-=. iskeyword-=>
 
-" C/C++ {
+    " Filetype detection
+    autocmd BufRead,BufNewFile *.applescript,*.scpt set filetype=applescript
 
-    " c/c++环境开发IDE
-    " c开发介绍：http://blog.csdn.net/bokee/article/details/6633193
-    " Ctags
-    " inoremap  <c-]> <c-x><c-]> "ctags 补全快捷键
-    " 用ctrl+]和Ctrl+t跳转定义和返回
-    nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
-    " nmap <leader>mt <ESC>:!ctags -R --languages=
-    " set tags+=~/gitdb/rails/tags
-    " 生成cscope
-    " nmap <leader>gc :!cscope -Rbq -f cscope/cs.out <CR><CR>:echo 'generate cscope done'<cr>
-    " cscope的使用
-    " <leader>f
-    " s: Find this C symbol
-    " g: Find this definition
-    " d: Find functions called by this function
-    " c: Find functions calling this function
-    " t: Find this text string
-    " e: Find this egrep pattern
-    " f: Find this file
-    " i: Find files #including this file
-    " 使用taglist <leader>tl
-    " 在. -> :: 等地方可以自动补全
+    " XML formatting with xmllint
+    autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 
-" }
+    " JSON syntax folding
+    autocmd FileType json set fdm=syntax
 
-" Other {
-    " 对部分语言设置单独的缩进
-    au FileType json,scala,clojure,lua,dart,sh set shiftwidth=2
-    au FileType json,scala,clojure,lua,dart,sh set tabstop=2
-    " 针对部分语言取消指定字符的单词属性
-    au FileType clojure  set iskeyword-=.
-    au FileType clojure  set iskeyword-=>
-    au FileType perl,php set iskeyword-=$
+augroup END
 
-    au BufRead,BufNewFile *.applescript set filetype=applescript
-    au BufRead,BufNewFile *.scpt set filetype=applescript
+" ignore Node and JS stuff
+set wildignore+=*/node_modules/*,*.min.js
 
-    " au BufReadPre *.txt,*.log,*.ini setlocal ft=txt
-
-    " gg=G format for xml
-    au FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
-
-    " json
-    au FileType json set fdm=syntax
-" }
+" C/C++ - ctags
+nmap <silent><leader>mt :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q <cr><cr>:echo 'Generate Ctags Done'<cr>
 
 " }
 " Shortcut {
-" ,fl 可以查单词
-
-" marker 使用
-" m 0~9 标记文件
-" ' 0~9 随时打开文件
-
-" tips: 从vim暂时的切换到Console
-" 暂停vim方式:Ctrl+z, jobs, fg
-" 使用vim的sh命令启动新console :sh
-" 使用!bash启动一个console
-" 直接执行:!命令
-
-
-" ,ig                        --显示/关闭对齐线
-" 0 or ^ or $                --跳至 行首 or 第一个非空字符 or 行尾
-"
-
-"
-" [ Ctrl+D                   --跳至当前光标所在变量的首次定义位置 [从文件头部开始]
-" [ Ctrl+I                   --跳至当前光标所在变量的首次出现位置 [从文件头部开始]
-" [ D                        --列出当前光标所在变量的所有定义位置 [从文件头部开始]
-" [ I                        --列出当前光标所在变量的所有出现位置 [从文件头部开始]
-"
-" ---------- 文本操作 ----------
-"
-" dw de d0 d^ d$ dd          --删除
-" cw ce c0 c^ c$ cc          --删除并进入插入模式
-" yw ye y0 y^ y$ yy          --复制
-" vw ve v0 v^ v$ vv          --选中
-"
-" di分隔符                   --删除指定分隔符之间的内容 [不包括分隔符]
-" ci分隔符                   --删除指定分隔符之间的内容并进入插入模式 [不包括分隔符]
-" yi分隔符                   --复制指定分隔符之间的内容 [不包括分隔符]
-" vi分隔符                   --选中指定分隔符之间的内容 [不包括分隔符]
-"
-" da分隔符                   --删除指定分隔符之间的内容 [包括分隔符]
-" ca分隔符                   --删除指定分隔符之间的内容并进入插入模式 [包括分隔符]
-" ya分隔符                   --复制指定分隔符之间的内容 [包括分隔符]
-" va分隔符                   --选中指定分隔符之间的内容 [包括分隔符]
-"
-" Xi和Xa都可以在X后面加入一个数字，以指代所处理的括号层次
-" 如 d2i( 执行的是删除当前光标外围第二层括号内的所有内容
-"
-" dt字符                     --删除本行内容，直到遇到第一个指定字符 [不包括该字符]
-" ct字符                     --删除本行内容，直到遇到第一个指定字符并进入插入模式 [不包括该字符]
-" yt字符                     --复制本行内容，直到遇到第一个指定字符 [不包括该字符]
-" vt字符                     --选中本行内容，直到遇到第一个指定字符 [不包括该字符]
-"
-" df字符                     --删除本行内容，直到遇到第一个指定字符 [包括该字符]
-" cf字符                     --删除本行内容，直到遇到第一个指定字符并进入插入模式 [包括该字符]
-" yf字符                     --复制本行内容，直到遇到第一个指定字符 [包括该字符]
-" vf字符                     --选中本行内容，直到遇到第一个指定字符 [包括该字符]
-"
-" XT 和 XF 是 Xt/Xf 的反方向操作
-"
-" ---------- 便捷操作 ----------
-"
-" Ctrl + A                   --将当前光标所在数字自增1        [仅普通模式可用]
-" Ctrl + X                   --将当前光标所在数字自减1        [仅普通模式可用]
-" m字符       and '字符      --标记位置 and 跳转到标记位置
-" q字符 xxx q and @字符      --录制宏   and 执行宏
-
-
-
-" Ctrl + h/j/k/l 移动光标到上下左右位置
-" Ctrl + H/J/K/L 移动窗口到上下左右位置
-" '+1~9 上次打开的文件
-" m+1~9 mark 1~9文件的位置
-" :vert diffsplit main.c
-" dp : diffput,把增加的部分放到另外一边
-
+" 快捷键参考详见 ~/.vim/Notes.md
 
 " -------- 自定义快捷键 --------
 
@@ -752,7 +546,7 @@ vmap <leader>v "+p
 nmap <leader>bb :Tabularize /=<CR>
 
 " \ba                 不要把 = 放入排列
-nmap <leader>bb :Tabularize /=\zs<CR>
+nmap <leader>ba :Tabularize /=\zs<CR>
 
 " \bn                 自定义对齐    [Tabular插件]
 nmap <leader>bn :Tabularize /
@@ -786,33 +580,24 @@ nmap <leader>rso :so ~/.vim/vimrc<CR>
 "vmap    <c-tab>     >gv
 "vmap    <s-tab>     <gv
 
-:nmap <c-tab> :tabn<CR>
-:map <c-tab> :tabn<CR>
+map <c-tab> :tabn<CR>
 imap <c-tab> <Esc>:tabn<CR>i
 
-:nmap <c-s-tab> :tabp<CR>
-:map <c-s-tab> :tabp<CR>
+map <c-s-tab> :tabp<CR>
 imap <c-s-tab> <Esc>:tabp<CR>i
 
-" 关于缓冲区，可以用 bd 删除当前缓冲区
-" ls! 显示当前缓冲区列表，然后 :b2 选择缓冲区
-" 关闭所有缓冲，只保留当前 :w | %bd | e#
+" 关于缓冲区: bd 删除, ls! 列表, :b2 选择, :w | %bd | e# 只保留当前
 
 " 下一个缓冲区
-:nmap <leader>n :bn<CR>
-:map <leader>n :bn<CR>
+map <leader>n :bn<CR>
 imap <leader>n <Esc>:bp<CR>i
-:nmap <c-F3> :bn<CR>
-:map <c-F3> :bn<CR>
+map <c-F3> :bn<CR>
 imap <c-F3> <Esc>:bp<CR>i
 
-
 " 上一个缓冲区
-:nmap <leader>p :bp<CR>
-:map <leader>p :bp<CR>
+map <leader>p :bp<CR>
 imap <leader>p <Esc>:bp<CR>i
-:nmap <c-F2> :bp<CR>
-:map <c-F2> :bp<CR>
+map <c-F2> :bp<CR>
 imap <c-F2> <Esc>:bp<CR>i
 
 " 用 fzf 插件， <leader><space> 默认选中的就是上次打开的 buffer
@@ -880,16 +665,6 @@ nnoremap <leader>t4 :call Tab4()<CR>
 " 使用 xcopy 拷贝数据到自己的云粘贴板
 nnoremap <leader>C :call CopyToCloud()<CR>
 vmap <leader>C :call CopySelectedToCloud() <CR>
-" ==创建 Tags===
-"
-nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>:copen<CR>
-nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>:copen<CR>
-nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:copen<CR>
-nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>:copen<CR>
 
 " ## Command
 
@@ -911,103 +686,7 @@ imap fd <Esc>
 
 
 " }
-" Notes {
-
-    " Check runtime message
-    " vim -V9myVim.log
-    " last error message
-    " :messages
-    " help g<
-
-    " 变量
-    " 查看设置的值
-    " echo &statusline
-    " 查看设置的键与值
-    " set statusline?
-
-    " 显示当前定义的变量直接输入:
-    " :let
-
-    " :exe "normal! " . (winwidth(0)-3) . "aa\<Esc>2a\<C-V>u3042")
-    "
-    " repeat 字符串
-    " exec 'map <F2> :silent! let g:g="'.repeat('foobar ',200).'"<cr>'
-
-" it can be changed on the fly with:
-" :let g:vim_markdown_folding_level = 1
-" :edit
-
-" 编辑二进制文件
-" vim -b file     %!xxd 切换为十六进制
-
-" 把當前文件復制一份, 其後綴名為A.txt
-"map <silent> <leader>no :A.txt<esc>
-
-" 用Ctrl+v Tab可以产生原生的Tab
-" :e $m<tab> 自动扩展到:e $MYVIMRC 然后打开vimrc
-"
-" 少用
-" ga 转换光标下的内容为多进制
-" 碰到不能输入*号键，先按Ctrl+v，再输入想要输入的特殊符号
-" gCtrl+g 统计字数
-" Ctrl+x, Ctrl+f 补全当前要输入的路径
-
-" tabn/tabp 切换tab
-" tabnew 创建新窗口
-" :retab 对当前文档重新替换tab为空格
-" :set notextmode  去掉^M这个符号
-" :set paste  这个可以解决在linux下面有些字母会被执行 nopaste pastetoggle
-
-" 去掉BOM
-" set nobomb; set fileencoding=utf8; w
-
-" vim sessions
-" :mks ~/.vim/sessions/foo.vim
-" :source ~/.vim/session/foo.vim
-
-
-
-" :r! {command}   insert the standard output of {command} below the cursor
-" ga              show ascii value of character under cursor in decimal, hex, and octal
-" :bdelete 3      把一个缓冲区从列表中去除
-" :bwipe          把一个缓冲区从列表中彻底去除
-" :highlight      查看高亮代号
-
-
-
-" ==== Regex ====
-" 字符数
-" :%s/./&/gn<cr>
-" 单词数
-" :%s/\i\+/&/gn<cr>
-
-" :%s/\r//g<CR>  " 一键替换特殊字符 ^M
-" 相同功能 :set notextmode
-
-
-
-" === 函数学习 ===
-" 更多可以看前面 function 片段
-" function CloseBuffer()
-"   exe 'normal! :w | %bd | e#'
-" endfunction
-" nmap <Tab> :call CloseBuffer()<CR>
-" nnoremap 里第一个 n 代表 normal mode，后面的 noremap 代表不要重复映射，这是避免一个按键同时映射多个动作用的
-"
-" 用两个<CR>可以隐藏执行命令后出现的提示信息"
-" map F :call FormatCode() <CR><CR>
-" map <silent>F 也可以隐藏
-" map F :%s/{/{\r/g <CR> :%s/}/}\r/g <CR>  :%s/;/;\r/g <CR> gg=G
-" 命令别名
-" cnoreabbrev ag Ack
-
-
-" }
 " Locals {
-
-    let g:snips_author = 'yantze'
-    let g:snips_email  = 'ivastiny@gmail.com'
-    let g:snips_info   = 'https://vastiny.com'
 
     " For neovim python support
     let g:python3_host_prog = '/Users/yantze/.pyenv/shims/python3'
@@ -1016,25 +695,15 @@ imap fd <Esc>
         source ~/.vimrc_local
     endif
 
-    " 下面格式的文件当作 zip 包打开
-    autocmd BufReadCmd *.xmind,*.crx,*.apk,*.whl,*.egg  call zip#Browse(expand("<amatch>"))
-
-    " 在 Windows 里面改变编码
-    " autocmd CmdwinEnter    * fenc=cp936
+    augroup vimrc_locals
+        autocmd!
+        " 下面格式的文件当作 zip 包打开
+        autocmd BufReadCmd *.xmind,*.crx,*.apk,*.whl,*.egg call zip#Browse(expand("<amatch>"))
+        " 保存时自动去除行尾空格（排除 diff 和 markdown，markdown 两个尾部空格表示换行）
+        autocmd BufWritePre * if index(['diff', 'markdown'], &ft) < 0 | silent! %s/\s\+$//e | endif
+    augroup END
 
     " 界面相关的快捷键以 ,w 开头
-" }
-
-" Modern Defaults & Auto-commands {
-    " 保存时自动去除行尾空格 (Neovim 现代方式)
-    autocmd BufWritePre * if &ft != 'diff' | silent! %s/\s\+$//e | endif
-
-    " 设置现代配色
-    if has('nvim')
-        silent! colorscheme catppuccin-mocha
-    else
-        silent! colorscheme solarized
-    endif
 " }
 
 " vim: set ts=4 sw=4 tw=0 et fdm=marker foldmarker={,} foldlevel=0 foldenable foldlevelstart=99 :

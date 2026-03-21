@@ -8,3 +8,4 @@ view
 .VimballRecord
 _undodir
 autoload/plug.vim
+.netrwhist

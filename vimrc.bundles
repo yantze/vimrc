@@ -73,16 +73,6 @@ call plug#begin("$VIMHOME/plugged")
     " Python
     " pip install autopep8
 " }
-" 代码补全 & snippets {
-    " Plug 'SirVer/ultisnips'
-    " 用 <tab> 在 macOS 会冲突
-    " let g:UltiSnipsExpandTrigger="<c-y><c-y>"
-
-    " For conceal markers.
-    " if has('conceal')
-    "     set conceallevel=2 concealcursor=niv
-    " endif
-" }
 " { Color Schemes & Highlight
     " 部分语言的配色会在 Language Section
 
@@ -105,8 +95,12 @@ call plug#begin("$VIMHOME/plugged")
         " let g:sneak#label = 1
 
         " brew install fzf
-        " Use the fzf installed via Homebrew
-        set rtp+=/usr/local/opt/fzf
+        " Use the fzf installed via Homebrew (supports both Intel and Apple Silicon)
+        if isdirectory('/opt/homebrew/opt/fzf')
+            set rtp+=/opt/homebrew/opt/fzf
+        elseif isdirectory('/usr/local/opt/fzf')
+            set rtp+=/usr/local/opt/fzf
+        endif
         Plug 'junegunn/fzf.vim'
     " }
 
@@ -120,11 +114,8 @@ call plug#begin("$VIMHOME/plugged")
 " }
 " { Language Special
     " Front End {
-        " node 补全 require 或者 定位到 require 中的文件
-        Plug 'moll/vim-node'
-
-        " support css word with -
-        " set iskeyword+=-
+        " vim-node 已移除（CommonJS require 时代，ES modules 时代实用性降低）
+        " iskeyword+=- 已在 vimrc filetype autocmd 中按类型设置
     " }
     " Markdown {
         " 集成了md的语法和颜色配置,里面的toc功能不可用
@@ -138,17 +129,12 @@ call plug#begin("$VIMHOME/plugged")
         let g:tex_conceal = ""
         let g:vim_markdown_math = 1
         " 代码块的语法声明
-        let g:vim_markdown_fenced_languages = ['js=javascript, bash=sh']
+        let g:vim_markdown_fenced_languages = ['js=javascript', 'bash=sh']
         " ```js
         " content
         " ```
     " }
-    " python {
-        " Plug 'fs111/pydoc.vim'
-        Plug 'vim-scripts/python.vim'
-        " 检查python的代码错误,编译需要'+python'
-        " Plug 'pyflakes.vim'
-    " }
+    " python - 使用 Vim/Neovim 内置语法，无需额外插件
 " }
 
 call plug#end()
